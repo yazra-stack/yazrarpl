@@ -1,0 +1,2465 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Presensi Kelas · Solar Paper</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <style>
+      /* ==================== RESET & VARIABLES ==================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Light warm palette */
+        --bg-page: #fdf6ec;
+        --bg-surface: #fffaf2;
+        --bg-card: #ffffff;
+        --bg-card-hover: #fff4e0;
+
+        --border-soft: #f0e2cc;
+        --border-strong: #e6cfa8;
+
+        --text-primary: #2b1d0e;
+        --text-secondary: #6b5842;
+        --text-dim: #a89880;
+
+        --accent-sun: #f59e0b;
+        --accent-coral: #fb7185;
+        --accent-leaf: #10b981;
+        --accent-sky: #0ea5e9;
+        --accent-plum: #8b5cf6;
+        --accent-red: #ef4444;
+
+        --shadow-sm: 0 2px 8px rgba(180, 130, 60, 0.08);
+        --shadow-md: 0 8px 24px rgba(180, 130, 60, 0.12);
+        --shadow-lg: 0 20px 50px rgba(180, 130, 60, 0.15);
+        --shadow-glow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --radius-sm: 12px;
+        --radius-xs: 8px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          "Segoe UI",
+          Roboto,
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: var(--bg-page);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 28px 16px 60px;
+        overflow-x: hidden;
+        position: relative;
+        background-image:
+          linear-gradient(rgba(245, 158, 11, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(245, 158, 11, 0.05) 1px, transparent 1px),
+          radial-gradient(
+            circle at 10% 0%,
+            rgba(251, 113, 133, 0.12),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 90% 10%,
+            rgba(14, 165, 233, 0.1),
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 50% 100%,
+            rgba(139, 92, 246, 0.08),
+            transparent 50%
+          );
+        background-size:
+          40px 40px,
+          40px 40px,
+          auto,
+          auto,
+          auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* ==================== DECORATIVE TOP WAVE ==================== */
+      .top-wave {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        z-index: 100;
+        background: linear-gradient(
+          90deg,
+          var(--accent-sun) 0%,
+          var(--accent-coral) 25%,
+          var(--accent-plum) 50%,
+          var(--accent-sky) 75%,
+          var(--accent-leaf) 100%
+        );
+        background-size: 200% 100%;
+        animation: waveSlide 8s linear infinite;
+      }
+
+      @keyframes waveSlide {
+        0% {
+          background-position: 0% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      /* ==================== PAPER TEXTURE ==================== */
+      .paper-grain {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.4;
+        background-image:
+          radial-gradient(
+            circle at 20% 30%,
+            rgba(245, 158, 11, 0.06) 0,
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(251, 113, 133, 0.05) 0,
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(139, 92, 246, 0.04) 0,
+            transparent 30%
+          );
+      }
+
+      /* ==================== FLOATING SHAPES ==================== */
+      .floating-shapes {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.15;
+        filter: blur(1px);
+        animation: shapeFloat 20s ease-in-out infinite;
+      }
+
+      .shape-1 {
+        width: 120px;
+        height: 120px;
+        background: var(--accent-sun);
+        top: 12%;
+        left: 5%;
+        animation-delay: 0s;
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      }
+
+      .shape-2 {
+        width: 90px;
+        height: 90px;
+        background: var(--accent-coral);
+        top: 60%;
+        right: 8%;
+        animation-delay: -5s;
+        border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+      }
+
+      .shape-3 {
+        width: 100px;
+        height: 100px;
+        background: var(--accent-sky);
+        bottom: 15%;
+        left: 10%;
+        animation-delay: -10s;
+        border-radius: 30% 70% 50% 50% / 60% 40% 60% 40%;
+      }
+
+      .shape-4 {
+        width: 70px;
+        height: 70px;
+        background: var(--accent-plum);
+        top: 30%;
+        right: 20%;
+        animation-delay: -15s;
+        border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
+      }
+
+      @keyframes shapeFloat {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        33% {
+          transform: translate(30px, -20px) rotate(10deg);
+        }
+        66% {
+          transform: translate(-20px, 25px) rotate(-8deg);
+        }
+      }
+
+      /* ==================== CONFETTI DOTS ==================== */
+      .confetti {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2;
+        overflow: hidden;
+      }
+
+      .confetti-dot {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 2px;
+        opacity: 0;
+        animation: confettiFall linear infinite;
+      }
+
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(-10vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.7;
+        }
+        90% {
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(110vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      /* ==================== MAIN CONTAINER ==================== */
+      .container {
+        position: relative;
+        z-index: 10;
+        max-width: 540px;
+        width: 100%;
+        background: var(--bg-card);
+        border-radius: var(--radius-lg);
+        padding: 0 0 32px;
+        border: 1px solid var(--border-soft);
+        box-shadow:
+          var(--shadow-lg),
+          0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        animation: containerRise 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transition:
+          box-shadow 0.4s ease,
+          transform 0.4s ease;
+        overflow: hidden;
+      }
+
+      .container:hover {
+        box-shadow:
+          0 25px 60px rgba(180, 130, 60, 0.2),
+          0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        transform: translateY(-3px);
+      }
+
+      @keyframes containerRise {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* ==================== HEADER BAND ==================== */
+      .header-band {
+        background: linear-gradient(
+          135deg,
+          #fff4e0 0%,
+          #ffe8cc 50%,
+          #ffdfc2 100%
+        );
+        padding: 34px 28px 26px;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .header-band::before {
+        content: "";
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(245, 158, 11, 0.25),
+          transparent 70%
+        );
+        animation: sunPulse 6s ease-in-out infinite;
+      }
+
+      .header-band::after {
+        content: "";
+        position: absolute;
+        bottom: -30px;
+        left: -20px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(251, 113, 133, 0.2),
+          transparent 70%
+        );
+        animation: sunPulse 6s ease-in-out infinite reverse;
+      }
+
+      @keyframes sunPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: scale(1.15);
+          opacity: 1;
+        }
+      }
+
+      /* ==================== ICON & TITLE ==================== */
+      .icon-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 18px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .icon-circle {
+        width: 78px;
+        height: 78px;
+        border-radius: 22px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-sun) 0%,
+          var(--accent-coral) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        color: #fff;
+        box-shadow:
+          0 10px 25px rgba(245, 158, 11, 0.35),
+          0 4px 10px rgba(251, 113, 133, 0.25);
+        position: relative;
+        animation: iconBob 3s ease-in-out infinite alternate;
+        transition: transform 0.3s;
+        transform: rotate(-6deg);
+      }
+
+      .icon-circle:hover {
+        transform: rotate(0deg) scale(1.08);
+      }
+
+      .icon-circle::after {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: 26px;
+        border: 2px dashed rgba(245, 158, 11, 0.35);
+        animation: spinSlow 25s linear infinite;
+      }
+
+      @keyframes iconBob {
+        0% {
+          transform: rotate(-6deg) translateY(0);
+        }
+        100% {
+          transform: rotate(-6deg) translateY(-6px);
+        }
+      }
+
+      @keyframes spinSlow {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 900;
+        text-align: center;
+        letter-spacing: -0.5px;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+        position: relative;
+        z-index: 2;
+      }
+
+      h1 .highlight {
+        background: linear-gradient(
+          135deg,
+          var(--accent-sun),
+          var(--accent-coral)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        color: var(--text-secondary);
+        font-size: 13px;
+        text-align: center;
+        letter-spacing: 0.2px;
+        font-weight: 500;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .subtitle i {
+        color: var(--accent-sun);
+      }
+
+      /* ==================== BODY CONTENT ==================== */
+      .content {
+        padding: 24px 28px 0;
+      }
+
+      /* ==================== QR CARD ==================== */
+      .qr-card {
+        background: linear-gradient(145deg, #fffaf0, #fff4e0);
+        border-radius: var(--radius-md);
+        padding: 22px;
+        margin-bottom: 20px;
+        border: 1px solid var(--border-soft);
+        box-shadow: var(--shadow-sm);
+        transition: all 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .qr-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-sun),
+          var(--accent-coral),
+          var(--accent-plum)
+        );
+        opacity: 0.8;
+      }
+
+      .qr-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--border-strong);
+      }
+
+      #qrImage {
+        width: 190px;
+        height: 190px;
+        display: block;
+        margin: 0 auto 14px;
+        border-radius: 16px;
+        background: #fff;
+        padding: 10px;
+        box-shadow:
+          0 8px 20px rgba(180, 130, 60, 0.15),
+          0 0 0 1px var(--border-soft);
+        transition: transform 0.4s ease;
+      }
+
+      .qr-card:hover #qrImage {
+        transform: scale(1.03);
+      }
+
+      .qr-label {
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        letter-spacing: 0.3px;
+      }
+
+      .qr-label i {
+        color: var(--accent-leaf);
+        font-size: 14px;
+        animation: pulseIcon 2s ease-in-out infinite;
+      }
+
+      /* ==================== BUTTONS ==================== */
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 18px;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        text-decoration: none;
+        flex: 1;
+        min-width: 100px;
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.2px;
+        font-family: inherit;
+        border: 1px solid transparent;
+      }
+
+      .btn i {
+        font-size: 13px;
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, var(--accent-sun), #f97316);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+      }
+      .btn-success:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(245, 158, 11, 0.45);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(
+          135deg,
+          var(--accent-plum),
+          var(--accent-coral)
+        );
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+      }
+      .btn-secondary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45);
+      }
+
+      .btn-outline {
+        background: #fff;
+        color: var(--text-primary);
+        border: 1px solid var(--border-strong);
+        box-shadow: var(--shadow-sm);
+      }
+      .btn-outline:hover {
+        background: var(--bg-card-hover);
+        transform: translateY(-3px);
+        border-color: var(--accent-sun);
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+      }
+
+      /* ==================== GENERATE SECTION ==================== */
+      .generate-section {
+        background: #fffdf8;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        padding: 18px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .generate-section .section-label {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .generate-section .section-label i {
+        color: var(--accent-sun);
+        font-size: 14px;
+      }
+
+      .input-group {
+        display: flex;
+        gap: 10px;
+      }
+
+      .input-group input {
+        flex: 1;
+        padding: 12px 16px;
+        border: 1.5px solid var(--border-soft);
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        background: #fff;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        font-family: inherit;
+        font-weight: 500;
+      }
+
+      .input-group input::placeholder {
+        color: var(--text-dim);
+        font-weight: 400;
+      }
+
+      .input-group input:focus {
+        outline: none;
+        border-color: var(--accent-sun);
+        box-shadow: var(--shadow-glow);
+        background: #fffdf8;
+      }
+
+      .input-group button {
+        padding: 12px 22px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-sun),
+          var(--accent-coral)
+        );
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-weight: 800;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+        white-space: nowrap;
+        font-family: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .input-group button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(245, 158, 11, 0.45);
+      }
+
+      /* ==================== QR PREVIEW ==================== */
+      .qr-preview {
+        margin-top: 16px;
+        padding: 20px;
+        background: linear-gradient(145deg, #fffaf0, #fff4e0);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-soft);
+        text-align: center;
+        display: none;
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .qr-preview::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-sun),
+          var(--accent-leaf)
+        );
+        animation: scanTop 3s linear infinite;
+        background-size: 200% 100%;
+      }
+
+      @keyframes scanTop {
+        0% {
+          background-position: 0% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      .qr-preview.show {
+        display: block !important;
+        animation: previewPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @keyframes previewPop {
+        from {
+          opacity: 0;
+          transform: scale(0.9) translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .qr-preview img {
+        max-width: 170px;
+        height: auto;
+        border-radius: 14px;
+        background: white;
+        padding: 10px;
+        box-shadow: 0 8px 20px rgba(180, 130, 60, 0.15);
+        animation: imgFloat 4s ease-in-out infinite alternate;
+      }
+
+      @keyframes imgFloat {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .qr-preview .qr-info {
+        margin-top: 12px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        font-weight: 500;
+      }
+
+      .qr-preview .qr-info strong {
+        color: var(--accent-sun);
+        font-weight: 800;
+      }
+
+      .qr-actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .qr-actions button {
+        padding: 10px 22px;
+        border: none;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .btn-download {
+        background: linear-gradient(135deg, var(--accent-leaf), #059669);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      }
+      .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(16, 185, 129, 0.45);
+      }
+
+      .btn-close {
+        background: #fff;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-strong);
+      }
+      .btn-close:hover {
+        background: var(--bg-card-hover);
+        transform: translateY(-2px);
+      }
+
+      /* ==================== CONNECTION STATUS ==================== */
+      .connection-status {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 16px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        background: #fff;
+        justify-content: center;
+        border: 1px solid var(--border-soft);
+        box-shadow: var(--shadow-sm);
+        letter-spacing: 0.3px;
+        transition: all 0.3s;
+        margin-bottom: 16px;
+      }
+
+      .connection-status:hover {
+        border-color: var(--border-strong);
+        box-shadow: var(--shadow-md);
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+      }
+
+      .dot.online {
+        background: var(--accent-leaf);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        animation: pulseDot 2s infinite;
+      }
+      .dot.offline {
+        background: var(--accent-red);
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        animation: pulseRed 1.2s infinite;
+      }
+      .dot.checking {
+        background: var(--accent-sun);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        animation: pulseYellow 1s infinite;
+      }
+
+      @keyframes pulseDot {
+        0%,
+        100% {
+          box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.05);
+        }
+      }
+      @keyframes pulseRed {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+      @keyframes pulseYellow {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* ==================== STATUS MESSAGE ==================== */
+      #status {
+        padding: 14px 18px;
+        border-radius: var(--radius-sm);
+        font-weight: 700;
+        font-size: 13px;
+        display: none;
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        border: 1px solid transparent;
+        letter-spacing: 0.2px;
+      }
+
+      #status.success {
+        background: #ecfdf5;
+        color: #047857;
+        border-color: #a7f3d0;
+        display: flex;
+      }
+      #status.error {
+        background: #fef2f2;
+        color: #b91c1c;
+        border-color: #fecaca;
+        display: flex;
+      }
+      #status.warning {
+        background: #fffbeb;
+        color: #b45309;
+        border-color: #fde68a;
+        display: flex;
+      }
+      #status.info {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-color: #bfdbfe;
+        display: flex;
+      }
+
+      #status i {
+        font-size: 15px;
+        animation: pulseIcon 2s ease-in-out infinite;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulseIcon {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.12);
+        }
+      }
+
+      /* ==================== DIVIDER ==================== */
+      .divider {
+        display: flex;
+        align-items: center;
+        margin: 4px 0 16px;
+        gap: 14px;
+        color: var(--text-dim);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-weight: 800;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--border-strong),
+          transparent
+        );
+      }
+
+      /* ==================== SCANNER ==================== */
+      .scanner-area {
+        position: relative;
+        background: #1a1410;
+        border-radius: var(--radius-md);
+        min-height: 270px;
+        width: 100%;
+        overflow: hidden;
+        border: 2px solid var(--border-soft);
+        box-shadow:
+          inset 0 0 40px rgba(0, 0, 0, 0.6),
+          var(--shadow-md);
+        transition: border-color 0.4s;
+      }
+
+      .scanner-area:hover {
+        border-color: var(--accent-sun);
+      }
+
+      #qr-reader {
+        width: 100% !important;
+        min-height: 270px;
+        background: #1a1410;
+        position: relative;
+      }
+
+      #qr-reader video {
+        width: 100% !important;
+        height: auto !important;
+        border-radius: 0 !important;
+        display: block !important;
+      }
+
+      #qr-reader > div:not(:first-child) {
+        display: none !important;
+      }
+      #qr-reader > div:first-child {
+        width: 100% !important;
+        height: auto !important;
+      }
+      #qr-reader > div:first-child > div:first-child {
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      .scanner-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      .scan-frame {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 65%;
+        height: 48%;
+        border: 2px solid rgba(245, 158, 11, 0.6);
+        border-radius: 18px;
+        box-shadow: 0 0 0 4000px rgba(26, 20, 16, 0.78);
+        animation: framePulse 2.5s ease-in-out infinite;
+      }
+
+      @keyframes framePulse {
+        0%,
+        100% {
+          border-color: rgba(245, 158, 11, 0.6);
+          box-shadow:
+            0 0 0 4000px rgba(26, 20, 16, 0.78),
+            0 0 25px rgba(245, 158, 11, 0.3);
+        }
+        50% {
+          border-color: rgba(16, 185, 129, 0.85);
+          box-shadow:
+            0 0 0 4000px rgba(26, 20, 16, 0.78),
+            0 0 40px rgba(16, 185, 129, 0.4);
+        }
+      }
+
+      .corner {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        border-color: var(--accent-sun);
+        border-style: solid;
+        border-width: 0;
+        filter: drop-shadow(0 0 6px var(--accent-sun));
+      }
+
+      .corner-tl {
+        top: -3px;
+        left: -3px;
+        border-top-width: 4px;
+        border-left-width: 4px;
+        border-radius: 8px 0 0 0;
+      }
+      .corner-tr {
+        top: -3px;
+        right: -3px;
+        border-top-width: 4px;
+        border-right-width: 4px;
+        border-radius: 0 8px 0 0;
+      }
+      .corner-bl {
+        bottom: -3px;
+        left: -3px;
+        border-bottom-width: 4px;
+        border-left-width: 4px;
+        border-radius: 0 0 0 8px;
+      }
+      .corner-br {
+        bottom: -3px;
+        right: -3px;
+        border-bottom-width: 4px;
+        border-right-width: 4px;
+        border-radius: 0 0 8px 0;
+      }
+
+      .scan-line {
+        position: absolute;
+        top: 18%;
+        left: 10%;
+        right: 10%;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-leaf),
+          var(--accent-sun),
+          transparent
+        );
+        animation: scanMove 2.2s ease-in-out infinite alternate;
+        border-radius: 3px;
+        box-shadow:
+          0 0 15px var(--accent-leaf),
+          0 0 30px rgba(16, 185, 129, 0.4);
+      }
+
+      @keyframes scanMove {
+        0% {
+          top: 16%;
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          top: 80%;
+          opacity: 0.3;
+        }
+      }
+
+      .scan-text {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        background: rgba(26, 20, 16, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 9px 20px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(245, 158, 11, 0.4);
+        z-index: 15;
+        white-space: nowrap;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        letter-spacing: 0.3px;
+      }
+
+      .scan-text i {
+        color: var(--accent-sun);
+        font-size: 13px;
+        animation: pulseIcon 1.6s ease-in-out infinite;
+      }
+
+      /* ==================== SCANNER CONTROLS ==================== */
+      .scanner-controls {
+        display: flex;
+        gap: 10px;
+        padding: 16px 0 8px;
+      }
+
+      .scanner-controls button {
+        flex: 1;
+        padding: 13px;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-weight: 800;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        letter-spacing: 0.2px;
+        font-family: inherit;
+      }
+
+      .btn-scan {
+        background: linear-gradient(
+          135deg,
+          var(--accent-sun),
+          var(--accent-leaf)
+        );
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+      }
+      .btn-scan:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 28px rgba(245, 158, 11, 0.45);
+      }
+      .btn-scan.stop {
+        background: linear-gradient(
+          135deg,
+          var(--accent-coral),
+          var(--accent-red)
+        );
+        box-shadow: 0 4px 16px rgba(251, 113, 133, 0.35);
+      }
+      .btn-scan.stop:hover {
+        box-shadow: 0 10px 28px rgba(251, 113, 133, 0.5);
+      }
+
+      .btn-flash {
+        background: #fff;
+        color: var(--text-primary);
+        border: 1px solid var(--border-strong);
+        flex: 0.35;
+        max-width: 65px;
+        box-shadow: var(--shadow-sm);
+      }
+      .btn-flash:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--accent-sun);
+      }
+      .btn-flash.active {
+        background: var(--accent-sun);
+        color: #fff;
+        border-color: var(--accent-sun);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+      }
+
+      /* ==================== DATA SECTION ==================== */
+      .data-section {
+        margin-top: 20px;
+        background: #fff;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-soft);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: border-color 0.3s;
+      }
+
+      .data-section:hover {
+        border-color: var(--border-strong);
+      }
+
+      .data-header {
+        padding: 14px 18px;
+        background: linear-gradient(135deg, #fffaf0, #fff4e0);
+        border-bottom: 1px solid var(--border-soft);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .data-header .title {
+        color: var(--text-primary);
+        font-size: 14px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .data-header .title i {
+        color: var(--accent-sun);
+        font-size: 15px;
+      }
+
+      .data-header .count {
+        color: var(--text-secondary);
+        font-size: 11px;
+        background: #fff;
+        padding: 5px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--border-soft);
+        font-weight: 700;
+      }
+
+      .table-wrapper {
+        max-height: 230px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border-strong) transparent;
+      }
+
+      .table-wrapper::-webkit-scrollbar {
+        width: 6px;
+      }
+      .table-wrapper::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .table-wrapper::-webkit-scrollbar-thumb {
+        background: var(--border-strong);
+        border-radius: 3px;
+      }
+      .table-wrapper::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-sun);
+      }
+
+      .data-section table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .data-section table th {
+        padding: 11px 13px;
+        text-align: left;
+        color: var(--text-dim);
+        font-weight: 800;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 1px solid var(--border-soft);
+        position: sticky;
+        top: 0;
+        background: #fffdf8;
+        z-index: 2;
+      }
+
+      .data-section table td {
+        padding: 11px 13px;
+        border-bottom: 1px solid #faf3e6;
+        color: var(--text-secondary);
+        transition: all 0.2s;
+        font-weight: 500;
+      }
+
+      .data-section table tr {
+        transition: background 0.2s;
+      }
+
+      .data-section table tr:hover td {
+        background: #fffaf0;
+        color: var(--text-primary);
+      }
+
+      .status-hadir {
+        color: #047857;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .status-belum {
+        color: var(--text-dim);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .loading-text {
+        padding: 28px 18px;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .loading-text i {
+        color: var(--accent-sun);
+        margin-right: 6px;
+      }
+
+      /* ==================== FOOTER ==================== */
+      .footer-note {
+        margin-top: 20px;
+        font-size: 11px;
+        color: var(--text-dim);
+        text-align: center;
+        line-height: 1.8;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+      }
+
+      .footer-note i {
+        color: var(--accent-leaf);
+      }
+
+      .footer-note a {
+        color: var(--accent-sun);
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.3s;
+        position: relative;
+      }
+
+      .footer-note a::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--accent-sun);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s;
+      }
+
+      .footer-note a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      .footer-note a:hover {
+        color: #d97706;
+      }
+
+      /* ==================== MOBILE ==================== */
+      @media (max-width: 480px) {
+        body {
+          padding: 14px 10px 50px;
+        }
+
+        .header-band {
+          padding: 26px 20px 22px;
+        }
+
+        .content {
+          padding: 20px 20px 0;
+        }
+
+        .container {
+          border-radius: 20px;
+          padding-bottom: 26px;
+        }
+
+        .icon-circle {
+          width: 68px;
+          height: 68px;
+          font-size: 28px;
+          border-radius: 18px;
+        }
+
+        h1 {
+          font-size: 23px;
+        }
+
+        .subtitle {
+          font-size: 12px;
+        }
+
+        #qrImage {
+          width: 155px;
+          height: 155px;
+        }
+
+        .btn {
+          font-size: 12px;
+          padding: 11px 14px;
+          min-width: 80px;
+        }
+
+        .input-group {
+          flex-direction: column;
+        }
+
+        .input-group button {
+          width: 100%;
+        }
+
+        .data-section table {
+          font-size: 11px;
+        }
+
+        .data-section table th,
+        .data-section table td {
+          padding: 9px 9px;
+        }
+
+        .scanner-controls button {
+          font-size: 12px;
+          padding: 11px;
+        }
+
+        .shape-1,
+        .shape-2,
+        .shape-3,
+        .shape-4 {
+          opacity: 0.1;
+          filter: blur(3px);
+        }
+      }
+
+      @media (max-width: 360px) {
+        .header-band {
+          padding: 22px 16px 18px;
+        }
+
+        .content {
+          padding: 16px 16px 0;
+        }
+
+        .container {
+          padding-bottom: 20px;
+        }
+
+        h1 {
+          font-size: 19px;
+        }
+
+        #qrImage {
+          width: 135px;
+          height: 135px;
+        }
+
+        .btn {
+          font-size: 11px;
+          padding: 10px 10px;
+        }
+      }
+
+      /* ==================== ACCESSIBILITY ==================== */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      button:focus-visible,
+      input:focus-visible,
+      a:focus-visible {
+        outline: 2px solid var(--accent-sun);
+        outline-offset: 2px;
+      }
+
+      ::selection {
+        background: rgba(245, 158, 11, 0.25);
+        color: var(--text-primary);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ==================== DECORATIVE LAYERS ==================== -->
+    <div class="top-wave"></div>
+    <div class="paper-grain"></div>
+
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+    </div>
+
+    <div class="confetti" id="confetti"></div>
+
+    <!-- ==================== MAIN CONTAINER ==================== -->
+    <div class="container">
+      <!-- HEADER BAND -->
+      <div class="header-band">
+        <div class="icon-wrap">
+          <div class="icon-circle">
+            <i class="fas fa-qrcode"></i>
+          </div>
+        </div>
+        <h1>Presensi <span class="highlight">Kelas</span></h1>
+        <p class="subtitle">
+          <i class="fas fa-sun"></i>
+          Scan QR Code untuk Absensi Real-time
+        </p>
+      </div>
+
+      <!-- BODY CONTENT -->
+      <div class="content">
+        <div class="qr-card">
+          <img id="qrImage" src="" alt="QR Code Presensi" />
+          <div class="qr-label">
+            <i class="fas fa-check-circle"></i> Scan untuk hadir
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-success" onclick="loadDataMahasiswa()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+          <button class="btn btn-outline" onclick="downloadQR()">
+            <i class="fas fa-download"></i> QR
+          </button>
+          <a
+            href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=0#gid=0"
+            target="_blank"
+            class="btn btn-secondary"
+          >
+            <i class="fas fa-external-link-alt"></i> Sheet
+          </a>
+        </div>
+
+        <div class="generate-section">
+          <div class="section-label">
+            <i class="fas fa-qrcode"></i> Generate QR Code Mahasiswa
+          </div>
+          <div class="input-group">
+            <input
+              type="text"
+              id="qrNimInput"
+              placeholder="Masukkan NIM"
+              maxlength="10"
+            />
+            <button onclick="generateQRCode()">
+              <i class="fas fa-qrcode"></i> Generate
+            </button>
+          </div>
+          <div class="qr-preview" id="qrPreview">
+            <img id="qrResultImage" src="" alt="QR Code" />
+            <div class="qr-info" id="qrInfo"></div>
+            <div class="qr-actions">
+              <button class="btn-download" onclick="downloadQRCode()">
+                <i class="fas fa-download"></i> Download
+              </button>
+              <button class="btn-close" onclick="closeQRPreview()">
+                <i class="fas fa-times"></i> Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="connection-status" id="connectionStatus">
+          <span class="dot checking" id="statusDot"></span>
+          <span id="statusLabel">Mengecek koneksi...</span>
+        </div>
+
+        <div id="status"></div>
+
+        <div class="divider">
+          <span>Scan QR Code</span>
+        </div>
+
+        <div class="scanner-area" id="scannerArea">
+          <div id="qr-reader"></div>
+          <div class="scanner-overlay">
+            <div class="scan-frame">
+              <div class="corner corner-tl"></div>
+              <div class="corner corner-tr"></div>
+              <div class="corner corner-bl"></div>
+              <div class="corner corner-br"></div>
+              <div class="scan-line"></div>
+            </div>
+            <div class="scan-text">
+              <i class="fas fa-qrcode"></i>
+              <span id="scanStatusText">Arahkan ke QR Code</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scanner-controls">
+          <button class="btn-scan" id="btnStartScan" onclick="toggleScanner()">
+            <i class="fas fa-play"></i>
+            <span id="btnScanLabel">Mulai Scan</span>
+          </button>
+          <button class="btn-flash" id="btnFlash" onclick="toggleFlash()">
+            <i class="fas fa-bolt"></i>
+          </button>
+        </div>
+
+        <div class="data-section">
+          <div class="data-header">
+            <div class="title">
+              <i class="fas fa-users"></i> Daftar Mahasiswa
+            </div>
+            <span class="count" id="totalMahasiswa">0 mahasiswa</span>
+          </div>
+          <div class="table-wrapper" id="tableWrapper">
+            <div class="loading-text" id="loadingData">
+              <i class="fas fa-spinner fa-spin"></i> Memuat data...
+            </div>
+            <table id="dataTable" style="display: none">
+              <thead>
+                <tr>
+                  <th>NIM</th>
+                  <th>Nama</th>
+                  <th>Kelas</th>
+                  <th>Jurusan</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="footer-note">
+          <i class="fas fa-shield-alt"></i> Terhubung dengan
+          <a
+            href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675"
+            target="_blank"
+          >
+            Google Sheets
+          </a>
+          <br />
+          <span style="font-size: 10px; opacity: 0.7">
+            <i class="fas fa-check-circle"></i> Status:
+            <span id="presensiStatus">Menunggu scan</span>
+          </span>
+        </div>
+      </div>
+      <!-- /content -->
+    </div>
+    <!-- /container -->
+
+    <script>
+      // ================================================================
+      // CONFIG
+      // ================================================================
+      const WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbymSSEe8pCfzT8msv8qQfpFg5kQsFh3cZhO8loSpd5WuFXsqBFSQJ2yHco2IG7Gy1jpQA/exec";
+      const SHEET_URL =
+        "https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675";
+
+      // ================================================================
+      // STATE
+      // ================================================================
+      const AppState = {
+        scannerRunning: false,
+        flashOn: false,
+        isProcessing: false,
+        html5QrCode: null,
+        mahasiswaData: [],
+        isOffline: false,
+        debugMode: true,
+        isOnline: false,
+      };
+
+      // ================================================================
+      // DOM REFS
+      // ================================================================
+      const DOM = {
+        status: document.getElementById("status"),
+        scanStatus: document.getElementById("scanStatusText"),
+        presensiStatus: document.getElementById("presensiStatus"),
+        btnStartScan: document.getElementById("btnStartScan"),
+        btnFlash: document.getElementById("btnFlash"),
+        qrImage: document.getElementById("qrImage"),
+        tableBody: document.getElementById("tableBody"),
+        dataTable: document.getElementById("dataTable"),
+        loadingData: document.getElementById("loadingData"),
+        totalMahasiswa: document.getElementById("totalMahasiswa"),
+        connectionStatus: document.getElementById("connectionStatus"),
+        statusDot: document.getElementById("statusDot"),
+        statusLabel: document.getElementById("statusLabel"),
+        qrNimInput: document.getElementById("qrNimInput"),
+        qrResultImage: document.getElementById("qrResultImage"),
+        qrInfo: document.getElementById("qrInfo"),
+        qrPreview: document.getElementById("qrPreview"),
+      };
+
+      // ================================================================
+      // CONFETTI GENERATOR
+      // ================================================================
+      function createConfetti() {
+        const container = document.getElementById("confetti");
+        if (!container) return;
+        const colors = [
+          "#f59e0b",
+          "#fb7185",
+          "#10b981",
+          "#0ea5e9",
+          "#8b5cf6",
+          "#f97316",
+        ];
+        for (let i = 0; i < 24; i++) {
+          const dot = document.createElement("div");
+          dot.className = "confetti-dot";
+          dot.style.left = Math.random() * 100 + "%";
+          dot.style.animationDuration = 10 + Math.random() * 16 + "s";
+          dot.style.animationDelay = Math.random() * 18 + "s";
+          const size = 3 + Math.random() * 5 + "px";
+          dot.style.width = size;
+          dot.style.height = size;
+          dot.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+          dot.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          dot.style.opacity = 0;
+          container.appendChild(dot);
+        }
+      }
+
+      // ================================================================
+      // UTILITY
+      // ================================================================
+      function debugLog(message, type = "info", data = null) {
+        if (!AppState.debugMode) return;
+        const timestamp = new Date().toLocaleTimeString("id-ID");
+        if (data) console.log(`[${timestamp}] ${message}`, data);
+        else console.log(`[${timestamp}] ${message}`);
+      }
+
+      function setConnectionStatus(status, message) {
+        if (!DOM.statusDot || !DOM.statusLabel) return;
+        DOM.statusDot.className = "dot " + status;
+        DOM.statusLabel.textContent = message;
+        AppState.isOnline = status === "online";
+        debugLog(`Status: ${status} - ${message}`, status);
+      }
+
+      function showStatus(message, type = "info", duration = 4000) {
+        if (!DOM.status) return;
+        const iconMap = {
+          success: "fa-check-circle",
+          error: "fa-exclamation-circle",
+          warning: "fa-triangle-exclamation",
+          info: "fa-info-circle",
+        };
+        DOM.status.innerHTML = `<i class="fas ${iconMap[type] || iconMap.info}"></i> ${message}`;
+        DOM.status.className = type;
+        DOM.status.style.display = "flex";
+        clearTimeout(DOM.status._hideTimeout);
+        if (type === "success" || type === "error") {
+          DOM.status._hideTimeout = setTimeout(() => {
+            DOM.status.style.display = "none";
+          }, duration);
+        }
+      }
+
+      // ================================================================
+      // CONNECTION CHECK
+      // ================================================================
+      async function checkConnection() {
+        setConnectionStatus("checking", "Mengecek koneksi...");
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000);
+          const response = await fetch(WEB_APP_URL + "?action=ping", {
+            method: "GET",
+            signal: controller.signal,
+            headers: { Accept: "application/json" },
+          });
+          clearTimeout(timeoutId);
+          if (response.ok) {
+            setConnectionStatus("online", "✅ Terhubung ke server");
+            return true;
+          } else throw new Error("Server tidak merespon");
+        } catch (error) {
+          console.warn("⚠️ Koneksi offline:", error.message);
+          setConnectionStatus("offline", "📴 Offline");
+          return false;
+        }
+      }
+
+      // ================================================================
+      // CHECK PRESENSI HARI INI
+      // ================================================================
+      function checkPresensiHariIni(nim) {
+        const presensiData = JSON.parse(
+          localStorage.getItem("presensiHariIni") || "{}",
+        );
+        const today = new Date().toLocaleDateString("id-ID");
+        return presensiData[nim] === today;
+      }
+
+      // ================================================================
+      // UPDATE STATUS IN TABLE
+      // ================================================================
+      function updateStatusInTable(nim, hadir) {
+        if (!DOM.tableBody) return;
+        const rows = DOM.tableBody.querySelectorAll("tr");
+        rows.forEach((row) => {
+          const td = row.querySelector("td:first-child");
+          if (td && td.textContent.trim() === nim) {
+            const statusTd = row.querySelector("td:last-child");
+            if (statusTd) {
+              statusTd.innerHTML = `<span class="status-hadir"><i class="fas fa-check-circle"></i> Hadir</span>`;
+            }
+          }
+        });
+      }
+
+      // ================================================================
+      // RENDER DATA TABLE
+      // ================================================================
+      function renderDataTable(data) {
+        if (!DOM.tableBody || !DOM.dataTable || !DOM.loadingData) return;
+        DOM.tableBody.innerHTML = "";
+        if (!data || data.length === 0) {
+          DOM.loadingData.innerHTML =
+            '<i class="fas fa-info-circle"></i> Tidak ada data';
+          DOM.loadingData.style.display = "block";
+          DOM.dataTable.style.display = "none";
+          return;
+        }
+        data.forEach((mhs) => {
+          const isHadir = checkPresensiHariIni(mhs.nim);
+          const row = document.createElement("tr");
+          row.innerHTML = `
+          <td><strong style="color:var(--accent-sun);">${mhs.nim || "-"}</strong></td>
+          <td>${mhs.nama || "-"}</td>
+          <td>${mhs.kelas || "-"}</td>
+          <td>${mhs.jurusan || "-"}</td>
+          <td>
+            <span class="${isHadir ? "status-hadir" : "status-belum"}">
+              <i class="fas ${isHadir ? "fa-check-circle" : "fa-circle"}"></i>
+              ${isHadir ? "Hadir" : "Belum"}
+            </span>
+          </td>
+        `;
+          DOM.tableBody.appendChild(row);
+        });
+        DOM.loadingData.style.display = "none";
+        DOM.dataTable.style.display = "table";
+      }
+
+      // ================================================================
+      // LOAD DATA MAHASISWA
+      // ================================================================
+      async function loadDataMahasiswa() {
+        if (!DOM.loadingData || !DOM.dataTable || !DOM.tableBody) return;
+        DOM.loadingData.style.display = "block";
+        DOM.dataTable.style.display = "none";
+        DOM.loadingData.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Mengambil data dari Google Sheets...';
+
+        try {
+          const isOnline = await checkConnection();
+          if (!isOnline) {
+            const cachedData = localStorage.getItem("mahasiswaData");
+            if (cachedData) {
+              try {
+                const parsed = JSON.parse(cachedData);
+                if (parsed && parsed.length > 0) {
+                  AppState.mahasiswaData = parsed;
+                  renderDataTable(parsed);
+                  DOM.totalMahasiswa.textContent =
+                    parsed.length + " mahasiswa (offline)";
+                  DOM.loadingData.style.display = "none";
+                  DOM.dataTable.style.display = "table";
+                  showStatus(
+                    `📂 ${parsed.length} data dari cache (offline)`,
+                    "warning",
+                    3000,
+                  );
+                  return;
+                }
+              } catch (e) {}
+            }
+            DOM.loadingData.innerHTML = `
+            <i class="fas fa-wifi" style="color:var(--accent-red);font-size:24px;display:block;margin-bottom:12px;"></i>
+            <strong style="color:var(--accent-red);">Tidak Ada Koneksi</strong><br><br>
+            <span style="color:var(--text-dim);font-size:12px;">Tidak ada koneksi internet dan tidak ada data cache.</span><br><br>
+            <button onclick="loadDataMahasiswa()" style="padding:10px 24px;background:var(--accent-sun);color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:800;font-family:inherit;">
+              <i class="fas fa-sync-alt"></i> Coba Lagi
+            </button>
+          `;
+            DOM.loadingData.style.display = "block";
+            DOM.totalMahasiswa.textContent = "0 mahasiswa";
+            return;
+          }
+
+          const response = await fetch(WEB_APP_URL + "?action=get_all", {
+            method: "GET",
+            headers: { Accept: "application/json" },
+            signal: AbortSignal.timeout(15000),
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+          const data = await response.json();
+          if (data && Array.isArray(data) && data.length > 0) {
+            AppState.mahasiswaData = data;
+            localStorage.setItem("mahasiswaData", JSON.stringify(data));
+            renderDataTable(data);
+            DOM.totalMahasiswa.textContent = data.length + " mahasiswa";
+            setConnectionStatus(
+              "online",
+              "✅ Online - Data dari Google Sheets",
+            );
+            showStatus(
+              `✅ ${data.length} data mahasiswa dari Google Sheets!`,
+              "success",
+              3000,
+            );
+            DOM.loadingData.style.display = "none";
+            DOM.dataTable.style.display = "table";
+            return;
+          } else {
+            const cachedData = localStorage.getItem("mahasiswaData");
+            if (cachedData) {
+              try {
+                const parsed = JSON.parse(cachedData);
+                if (parsed && parsed.length > 0) {
+                  AppState.mahasiswaData = parsed;
+                  renderDataTable(parsed);
+                  DOM.totalMahasiswa.textContent =
+                    parsed.length + " mahasiswa (cache)";
+                  DOM.loadingData.style.display = "none";
+                  DOM.dataTable.style.display = "table";
+                  showStatus(
+                    `📂 ${parsed.length} data dari cache`,
+                    "warning",
+                    3000,
+                  );
+                  return;
+                }
+              } catch (e) {}
+            }
+            DOM.loadingData.innerHTML = `
+            <i class="fas fa-info-circle" style="color:var(--accent-sun);font-size:20px;display:block;margin-bottom:12px;"></i>
+            <strong style="color:var(--accent-sun);">Belum ada data di Google Sheets</strong><br><br>
+            <span style="color:var(--text-dim);font-size:12px;">Silakan tambahkan data mahasiswa di Google Sheets terlebih dahulu.</span><br><br>
+            <a href="${SHEET_URL}" target="_blank" style="padding:10px 24px;background:var(--accent-sun);color:#fff;border:none;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block;font-weight:800;font-family:inherit;">
+              <i class="fas fa-external-link-alt"></i> Buka Google Sheets
+            </a>
+            <br><br>
+            <button onclick="loadDataMahasiswa()" style="padding:8px 20px;background:#fff;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:10px;cursor:pointer;font-family:inherit;">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          `;
+            DOM.loadingData.style.display = "block";
+            DOM.totalMahasiswa.textContent = "0 mahasiswa";
+            setConnectionStatus("online", "✅ Online - Data kosong");
+          }
+        } catch (error) {
+          const cachedData = localStorage.getItem("mahasiswaData");
+          if (cachedData) {
+            try {
+              const parsed = JSON.parse(cachedData);
+              if (parsed && parsed.length > 0) {
+                AppState.mahasiswaData = parsed;
+                renderDataTable(parsed);
+                DOM.totalMahasiswa.textContent =
+                  parsed.length + " mahasiswa (cache)";
+                DOM.loadingData.style.display = "none";
+                DOM.dataTable.style.display = "table";
+                showStatus(
+                  `📂 ${parsed.length} data dari cache (error)`,
+                  "warning",
+                  3000,
+                );
+                return;
+              }
+            } catch (e) {}
+          }
+          DOM.loadingData.innerHTML = `
+          <i class="fas fa-exclamation-circle" style="color:var(--accent-red);font-size:24px;display:block;margin-bottom:12px;"></i>
+          <strong style="color:var(--accent-red);">Gagal Memuat Data</strong><br><br>
+          <span style="color:var(--text-dim);font-size:12px;">${error.message}<br><br>Pastikan Web App sudah di-deploy dan URL benar.</span><br><br>
+          <button onclick="loadDataMahasiswa()" style="padding:10px 24px;background:var(--accent-sun);color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:800;font-family:inherit;">
+            <i class="fas fa-sync-alt"></i> Coba Lagi
+          </button>
+          <br><br>
+          <a href="${SHEET_URL}" target="_blank" style="padding:8px 20px;background:#fff;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block;font-size:12px;font-family:inherit;">
+            <i class="fas fa-external-link-alt"></i> Buka Google Sheets
+          </a>
+        `;
+          DOM.loadingData.style.display = "block";
+          DOM.totalMahasiswa.textContent = "0 mahasiswa";
+          setConnectionStatus("offline", "❌ Gagal terhubung");
+        }
+      }
+
+      // ================================================================
+      // QR GENERATE
+      // ================================================================
+      function generateQR() {
+        if (!DOM.qrImage) return;
+        const qrData = {
+          nim: "ABSENSI-KELAS",
+          nama: "Presensi Kelas",
+          kelas: "Semua",
+          jurusan: "Semua",
+          link_sheet: SHEET_URL,
+          timestamp: new Date().toISOString(),
+        };
+        DOM.qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+      }
+
+      function downloadQR() {
+        if (!DOM.qrImage.src) {
+          alert("QR Code belum siap.");
+          return;
+        }
+        const link = document.createElement("a");
+        link.download = "qr-presensi-kelas.png";
+        link.href = DOM.qrImage.src;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // ================================================================
+      // GENERATE QR CODE PER MAHASISWA
+      // ================================================================
+      function generateQRCode() {
+        const nim = DOM.qrNimInput.value.trim();
+        if (!nim) {
+          showStatus("❌ Masukkan NIM terlebih dahulu", "error");
+          DOM.qrNimInput.focus();
+          return;
+        }
+        if (nim.length < 3) {
+          showStatus("❌ NIM minimal 3 karakter", "error");
+          return;
+        }
+        const mahasiswa = AppState.mahasiswaData.find((m) => m.nim === nim);
+        if (!mahasiswa) {
+          showStatus(`❌ NIM ${nim} tidak terdaftar!`, "error");
+          return;
+        }
+        const qrData = {
+          nim: mahasiswa.nim,
+          nama: mahasiswa.nama,
+          kelas: mahasiswa.kelas,
+          jurusan: mahasiswa.jurusan,
+          link_sheet: SHEET_URL,
+          timestamp: new Date().toISOString(),
+        };
+        DOM.qrResultImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+        DOM.qrInfo.innerHTML = `
+        <strong>NIM:</strong> ${mahasiswa.nim} &bull;
+        <strong>Nama:</strong> ${mahasiswa.nama} &bull;
+        <strong>Kelas:</strong> ${mahasiswa.kelas} &bull;
+        <strong>Jurusan:</strong> ${mahasiswa.jurusan}
+        <div style="margin-top:8px; font-size:12px; color:var(--accent-leaf);">
+          <i class="fas fa-check-circle"></i> Scan QR untuk presensi
+        </div>
+      `;
+        DOM.qrPreview.classList.add("show");
+        showStatus(
+          `✅ QR Code berhasil dibuat untuk ${mahasiswa.nama} (${nim})`,
+          "success",
+        );
+      }
+
+      function downloadQRCode() {
+        if (!DOM.qrResultImage.src) {
+          showStatus("❌ Tidak ada QR Code untuk didownload", "error");
+          return;
+        }
+        const link = document.createElement("a");
+        const nim = DOM.qrNimInput.value.trim() || "mahasiswa";
+        link.download = `qr-code-${nim}.png`;
+        link.href = DOM.qrResultImage.src;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showStatus("✅ QR Code berhasil didownload!", "success");
+      }
+
+      function closeQRPreview() {
+        DOM.qrPreview.classList.remove("show");
+        DOM.qrNimInput.value = "";
+      }
+
+      // ================================================================
+      // SCANNER
+      // ================================================================
+      function toggleScanner() {
+        if (AppState.scannerRunning) stopScanner();
+        else startScanner();
+      }
+
+      function startScanner() {
+        if (AppState.scannerRunning) return;
+        if (AppState.html5QrCode) {
+          try {
+            AppState.html5QrCode.clear();
+            AppState.html5QrCode = null;
+          } catch (e) {}
+        }
+        const readerElement = document.getElementById("qr-reader");
+        if (readerElement) readerElement.innerHTML = "";
+        if (DOM.btnStartScan) {
+          DOM.btnStartScan.classList.add("stop");
+          DOM.btnStartScan.innerHTML = '<i class="fas fa-stop"></i> Stop Scan';
+        }
+
+        try {
+          AppState.html5QrCode = new Html5Qrcode("qr-reader", {
+            verbose: false,
+            formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+          });
+          const config = {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0,
+          };
+
+          AppState.html5QrCode
+            .start(
+              { facingMode: "environment" },
+              config,
+              onScanSuccess,
+              onScanError,
+            )
+            .then(() => {
+              AppState.scannerRunning = true;
+              if (DOM.scanStatus)
+                DOM.scanStatus.textContent = "🔍 Mendeteksi QR Code...";
+              if (DOM.presensiStatus)
+                DOM.presensiStatus.textContent = "Mendeteksi...";
+              showStatus("📷 Kamera aktif", "info", 3000);
+            })
+            .catch((err) => {
+              AppState.html5QrCode
+                .start(
+                  { facingMode: "user" },
+                  config,
+                  onScanSuccess,
+                  onScanError,
+                )
+                .then(() => {
+                  AppState.scannerRunning = true;
+                  if (DOM.scanStatus)
+                    DOM.scanStatus.textContent = "🔍 Mendeteksi QR Code...";
+                  if (DOM.presensiStatus)
+                    DOM.presensiStatus.textContent = "Mendeteksi...";
+                  showStatus("📷 Kamera depan aktif", "info", 3000);
+                })
+                .catch((err2) => {
+                  showStatus("❌ Gagal akses kamera: " + err2.message, "error");
+                  resetScannerButton();
+                });
+            });
+        } catch (error) {
+          showStatus("❌ Gagal inisialisasi scanner", "error");
+          resetScannerButton();
+        }
+      }
+
+      function onScanError(errorMessage) {}
+
+      function stopScanner() {
+        if (AppState.html5QrCode && AppState.scannerRunning) {
+          AppState.html5QrCode
+            .stop()
+            .then(() => {
+              AppState.html5QrCode.clear();
+              AppState.html5QrCode = null;
+              AppState.scannerRunning = false;
+              resetScannerButton();
+              if (DOM.scanStatus)
+                DOM.scanStatus.textContent = "⏸ Scanner berhenti";
+              if (DOM.presensiStatus)
+                DOM.presensiStatus.textContent = "Scanner berhenti";
+            })
+            .catch((err) => {});
+        } else {
+          AppState.scannerRunning = false;
+          resetScannerButton();
+        }
+      }
+
+      function resetScannerButton() {
+        if (!DOM.btnStartScan) return;
+        DOM.btnStartScan.classList.remove("stop");
+        DOM.btnStartScan.innerHTML =
+          '<i class="fas fa-play"></i> <span id="btnScanLabel">Mulai Scan</span>';
+      }
+
+      // ================================================================
+      // SCAN SUCCESS
+      // ================================================================
+      function onScanSuccess(decodedText) {
+        if (AppState.isProcessing) return;
+        AppState.isProcessing = true;
+        if (AppState.html5QrCode && AppState.scannerRunning) {
+          AppState.html5QrCode
+            .stop()
+            .then(() => {
+              AppState.scannerRunning = false;
+              resetScannerButton();
+            })
+            .catch(() => {});
+        }
+        processPresensi(decodedText);
+      }
+
+      // ================================================================
+      // PROCESS PRESENSI
+      // ================================================================
+      async function processPresensi(qrData) {
+        try {
+          showStatus("⏳ Memproses presensi...", "info", 5000);
+          let data,
+            nim = "";
+          try {
+            data = JSON.parse(qrData);
+            nim = data.nim || "";
+          } catch (e) {
+            nim = qrData.trim();
+            data = { nim: nim };
+          }
+          if (!nim || nim.length < 3) {
+            showStatus("❌ NIM tidak valid (minimal 3 karakter)", "error");
+            AppState.isProcessing = false;
+            setTimeout(startScanner, 2000);
+            return;
+          }
+          const mahasiswa = AppState.mahasiswaData.find((m) => m.nim === nim);
+          if (!mahasiswa) {
+            showStatus(`❌ NIM ${nim} tidak terdaftar!`, "error");
+            AppState.isProcessing = false;
+            setTimeout(startScanner, 2000);
+            return;
+          }
+          const today = new Date().toLocaleDateString("id-ID");
+          const presensiData = JSON.parse(
+            localStorage.getItem("presensiHariIni") || "{}",
+          );
+          if (presensiData[nim] === today) {
+            showStatus(
+              `⚠️ ${mahasiswa.nama} sudah presensi hari ini!`,
+              "warning",
+            );
+            if (DOM.scanStatus)
+              DOM.scanStatus.textContent = "⚠️ Sudah presensi";
+            if (DOM.presensiStatus)
+              DOM.presensiStatus.textContent = "⚠️ Sudah hadir";
+            AppState.isProcessing = false;
+            setTimeout(startScanner, 2000);
+            return;
+          }
+
+          const payload = {
+            action: "presensi",
+            nim: nim,
+            nama: mahasiswa.nama || "",
+            kelas: mahasiswa.kelas || "",
+            jurusan: mahasiswa.jurusan || "",
+            mataKuliah: "Presensi Kelas",
+            status: "Hadir",
+            waktu: new Date().toLocaleString("id-ID", {
+              timeZone: "Asia/Jakarta",
+            }),
+          };
+
+          await fetch(WEB_APP_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          presensiData[nim] = today;
+          localStorage.setItem("presensiHariIni", JSON.stringify(presensiData));
+
+          showStatus(`✅ ${mahasiswa.nama} HADIR!`, "success");
+          if (DOM.scanStatus) DOM.scanStatus.textContent = "✅ Hadir!";
+          if (DOM.presensiStatus) DOM.presensiStatus.textContent = "✅ Hadir";
+
+          updateStatusInTable(nim, true);
+          setTimeout(() => {
+            loadDataMahasiswa();
+          }, 500);
+        } catch (error) {
+          showStatus(`❌ Error: ${error.message}`, "error");
+          if (DOM.scanStatus) DOM.scanStatus.textContent = "❌ Error";
+          if (DOM.presensiStatus) DOM.presensiStatus.textContent = "❌ Error";
+        } finally {
+          setTimeout(() => {
+            AppState.isProcessing = false;
+            if (DOM.scanStatus)
+              DOM.scanStatus.textContent = "Arahkan ke QR Code";
+            if (!AppState.scannerRunning) startScanner();
+          }, 3000);
+        }
+      }
+
+      // ================================================================
+      // FLASH
+      // ================================================================
+      function toggleFlash() {
+        AppState.flashOn = !AppState.flashOn;
+        if (!DOM.btnFlash) return;
+        if (AppState.flashOn) {
+          DOM.btnFlash.classList.add("active");
+          DOM.btnFlash.innerHTML =
+            '<i class="fas fa-bolt" style="color:#fff;"></i>';
+          try {
+            if (AppState.html5QrCode && AppState.html5QrCode._videoElement) {
+              const video = AppState.html5QrCode._videoElement;
+              const track = video.srcObject?.getVideoTracks()[0];
+              if (track && track.getCapabilities?.().torch) {
+                track.applyConstraints({ advanced: [{ torch: true }] });
+              }
+            }
+          } catch (e) {}
+        } else {
+          DOM.btnFlash.classList.remove("active");
+          DOM.btnFlash.innerHTML = '<i class="fas fa-bolt"></i>';
+          try {
+            if (AppState.html5QrCode && AppState.html5QrCode._videoElement) {
+              const video = AppState.html5QrCode._videoElement;
+              const track = video.srcObject?.getVideoTracks()[0];
+              if (track && track.getCapabilities?.().torch) {
+                track.applyConstraints({ advanced: [{ torch: false }] });
+              }
+            }
+          } catch (e) {}
+        }
+      }
+
+      // ================================================================
+      // CHECK CAMERA
+      // ================================================================
+      async function checkCameraPermission() {
+        try {
+          if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            showStatus("❌ Browser tidak mendukung kamera", "error");
+            return false;
+          }
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" },
+          });
+          stream.getTracks().forEach((track) => track.stop());
+          return true;
+        } catch (error) {
+          showStatus("❌ Izin kamera diperlukan untuk scan QR Code", "error");
+          return false;
+        }
+      }
+
+      // ================================================================
+      // INIT
+      // ================================================================
+      async function init() {
+        console.log(
+          "%c☀️ Presensi Kelas · Solar Paper Edition",
+          "color:#f59e0b;font-size:16px;font-weight:bold;",
+        );
+        createConfetti();
+        generateQR();
+        if (DOM.presensiStatus)
+          DOM.presensiStatus.textContent = "Menunggu scan...";
+
+        const isOnline = await checkConnection();
+        await loadDataMahasiswa();
+        setInterval(loadDataMahasiswa, 30000);
+
+        const cameraReady = await checkCameraPermission();
+        if (cameraReady) {
+          setTimeout(startScanner, 800);
+        } else {
+          showStatus("❌ Izin kamera diperlukan untuk scan QR Code", "error");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+
+      window.addEventListener("beforeunload", function () {
+        if (AppState.html5QrCode && AppState.scannerRunning) {
+          AppState.html5QrCode
+            .stop()
+            .then(() => {
+              AppState.html5QrCode.clear();
+              AppState.html5QrCode = null;
+            })
+            .catch(() => {});
+        }
+      });
+    </script>
+  </body>
+</html>
