@@ -6,13 +6,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Presensi Kelas · Cyber Samurai</title>
+    <title>Presensi Kelas · Zen Garden</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Serif+JP:wght@400;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Nanum+Myeongjo:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
@@ -25,34 +25,31 @@
       }
 
       :root {
-        --rice: #f5efe3;
-        --rice-2: #ebe4d4;
-        --rice-dark: #d8ceba;
-        --ink: #0f0e0c;
-        --ink-2: #2a2622;
-        --ink-soft: #5a5450;
-        --ink-fade: #8a827a;
+        --cream: #f7f3ec;
+        --cream-2: #ede7dc;
+        --cream-3: #e0d8c9;
+        --sand: #d9cdb8;
+        --sand-dark: #c4b39a;
 
-        --blood: #b91c1c;
-        --blood-dark: #7f1d1d;
-        --blood-glow: rgba(185, 28, 28, 0.4);
+        --sage: #8a9a7b;
+        --sage-dark: #5f6b52;
+        --sage-light: #a8b59a;
 
-        --gold: #a8863d;
-        --jade: #2f6e5c;
+        --terracotta: #b8785a;
+        --terracotta-dark: #8a5a42;
 
-        --paper-texture:
-          radial-gradient(
-            ellipse at center,
-            transparent 30%,
-            rgba(15, 14, 12, 0.04) 100%
-          ),
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.05 0 0 0 0 0.04 0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        --stone: #4a4a45;
+        --stone-mid: #6e6e66;
+        --stone-light: #96968d;
 
-        --font-serif: "Shippori Mincho", serif;
-        --font-body: "Zen Kaku Gothic New", sans-serif;
-        --font-jp: "Noto Serif JP", serif;
+        --paper: #fbf9f5;
 
-        --seal-shadow: 2px 2px 0 var(--ink);
+        --font-display: "Cormorant Garamond", serif;
+        --font-body: "Inter", sans-serif;
+        --font-jp: "Nanum Myeongjo", serif;
+
+        --shadow-zen: 0 2px 20px rgba(74, 74, 69, 0.06);
+        --shadow-hover: 0 8px 30px rgba(74, 74, 69, 0.12);
       }
 
       html {
@@ -61,744 +58,528 @@
 
       body {
         font-family: var(--font-body);
-        background: var(--ink);
-        color: var(--rice);
+        background: var(--cream);
+        color: var(--stone);
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        padding: 24px 12px 60px;
+        padding: 40px 16px 80px;
         overflow-x: hidden;
         position: relative;
         -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
       }
 
-      /* ==================== INK WASH BG ==================== */
-      .ink-bg {
+      /* ==================== PAPER TEXTURE ==================== */
+      body::before {
+        content: "";
         position: fixed;
         inset: 0;
         z-index: 0;
         pointer-events: none;
-        overflow: hidden;
-        background:
-          radial-gradient(
-            ellipse 50% 40% at 15% 20%,
-            rgba(185, 28, 28, 0.15),
-            transparent 60%
-          ),
-          radial-gradient(
-            ellipse 40% 50% at 85% 80%,
-            rgba(47, 110, 92, 0.12),
-            transparent 60%
-          ),
-          radial-gradient(
-            ellipse 60% 40% at 50% 50%,
-            rgba(168, 134, 61, 0.05),
-            transparent 70%
-          );
+        opacity: 0.5;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.38 0 0 0 0 0.34 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       }
 
-      /* Bamboo leaves silhouettes */
-      .bamboo {
+      /* ==================== ENSŌ CIRCLE ==================== */
+      .enso {
         position: fixed;
-        width: 2px;
-        background: linear-gradient(
-          180deg,
-          transparent,
-          rgba(245, 239, 227, 0.15) 20%,
-          rgba(245, 239, 227, 0.15) 80%,
-          transparent
-        );
         pointer-events: none;
         z-index: 1;
-        animation: sway 8s ease-in-out infinite;
+        opacity: 0.08;
       }
 
-      .bamboo-1 {
-        left: 6%;
-        top: 10%;
-        height: 60%;
-        animation-delay: 0s;
+      .enso-1 {
+        width: 500px;
+        height: 500px;
+        top: -150px;
+        right: -200px;
+        border: 1px solid var(--stone);
+        border-radius: 50%;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        animation: rotateSlow 60s linear infinite;
       }
-      .bamboo-2 {
-        left: 8%;
-        top: 30%;
-        height: 50%;
-        animation-delay: -2s;
+
+      .enso-2 {
+        width: 300px;
+        height: 300px;
+        bottom: 100px;
+        left: -100px;
+        border: 1px solid var(--sage);
+        border-radius: 50%;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        animation: rotateSlow 80s linear infinite reverse;
       }
-      .bamboo-3 {
-        right: 7%;
+
+      .enso-3 {
+        width: 180px;
+        height: 180px;
+        top: 40%;
+        right: 5%;
+        border: 1px solid var(--terracotta);
+        border-radius: 50%;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        opacity: 0.05;
+        animation: rotateSlow 100s linear infinite;
+      }
+
+      @keyframes rotateSlow {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ==================== FLOATING LEAVES ==================== */
+      .leaf {
+        position: fixed;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.4;
+        font-size: 18px;
+        animation: leafFloat 20s ease-in-out infinite;
+      }
+
+      .leaf-1 {
         top: 15%;
-        height: 55%;
-        animation-delay: -4s;
-      }
-      .bamboo-4 {
-        right: 9%;
-        top: 40%;
-        height: 45%;
-        animation-delay: -6s;
-      }
-
-      @keyframes sway {
-        0%,
-        100% {
-          transform: rotate(-2deg);
-        }
-        50% {
-          transform: rotate(2deg);
-        }
-      }
-
-      @media (max-width: 720px) {
-        .bamboo {
-          display: none;
-        }
-      }
-
-      /* ==================== FLOATING KANJI ==================== */
-      .kanji-float {
-        position: fixed;
-        font-family: var(--font-jp);
-        font-weight: 900;
-        color: rgba(185, 28, 28, 0.08);
-        pointer-events: none;
-        z-index: 1;
-        user-select: none;
-        animation: drift 15s ease-in-out infinite;
-      }
-
-      .kf-1 {
-        font-size: 180px;
-        top: 5%;
-        left: -40px;
+        left: 8%;
         animation-delay: 0s;
       }
-      .kf-2 {
-        font-size: 140px;
-        top: 40%;
-        right: -30px;
-        animation-delay: -5s;
+      .leaf-2 {
+        top: 45%;
+        right: 10%;
+        animation-delay: -7s;
+        font-size: 14px;
       }
-      .kf-3 {
-        font-size: 200px;
-        bottom: 10%;
-        left: -60px;
-        animation-delay: -10s;
+      .leaf-3 {
+        bottom: 20%;
+        left: 12%;
+        animation-delay: -14s;
+        font-size: 16px;
       }
 
-      @keyframes drift {
+      @keyframes leafFloat {
         0%,
         100% {
-          transform: translate(0, 0) rotate(0deg);
-          opacity: 0.6;
+          transform: translateY(0) rotate(0deg);
+          opacity: 0.3;
+        }
+        25% {
+          transform: translateY(-30px) rotate(15deg);
+          opacity: 0.5;
         }
         50% {
-          transform: translate(20px, -20px) rotate(3deg);
-          opacity: 1;
+          transform: translateY(-10px) rotate(-10deg);
+          opacity: 0.4;
         }
-      }
-
-      @media (max-width: 720px) {
-        .kanji-float {
-          font-size: 100px;
+        75% {
+          transform: translateY(-40px) rotate(20deg);
           opacity: 0.5;
         }
       }
 
-      /* ==================== SCROLL CONTAINER ==================== */
-      .scroll-container {
-        position: relative;
-        z-index: 10;
-        max-width: 540px;
-        width: 100%;
-        background: var(--rice);
-        color: var(--ink);
-        border: 1px solid var(--ink);
-        background-image: var(--paper-texture);
-        box-shadow:
-          0 30px 60px rgba(0, 0, 0, 0.6),
-          0 0 0 1px rgba(168, 134, 61, 0.3),
-          inset 0 0 100px rgba(15, 14, 12, 0.05);
-        animation: scrollUnroll 1s cubic-bezier(0.16, 1, 0.3, 1);
-        position: relative;
-        padding: 0;
+      @media (max-width: 720px) {
+        .enso-1 {
+          width: 300px;
+          height: 300px;
+        }
+        .enso-2 {
+          width: 200px;
+          height: 200px;
+        }
+        .enso-3 {
+          display: none;
+        }
       }
 
-      @keyframes scrollUnroll {
+      /* ==================== MAIN CONTAINER ==================== */
+      .zen-container {
+        position: relative;
+        z-index: 10;
+        max-width: 560px;
+        width: 100%;
+        background: var(--paper);
+        border-radius: 4px;
+        padding: 0;
+        box-shadow:
+          0 0 0 1px rgba(74, 74, 69, 0.08),
+          0 20px 60px rgba(74, 74, 69, 0.08),
+          0 4px 20px rgba(74, 74, 69, 0.04);
+        animation: gentleRise 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+      }
+
+      @keyframes gentleRise {
         from {
           opacity: 0;
-          clip-path: inset(0 0 100% 0);
-          transform: translateY(-20px);
+          transform: translateY(30px);
         }
         to {
           opacity: 1;
-          clip-path: inset(0 0 0 0);
           transform: translateY(0);
         }
       }
 
-      /* Decorative top rod */
-      .scroll-rod-top,
-      .scroll-rod-bottom {
-        height: 22px;
-        background: linear-gradient(
-          180deg,
-          #1a1814 0%,
-          #2a2622 50%,
-          #1a1814 100%
-        );
-        position: relative;
-        border-radius: 11px;
-        box-shadow:
-          inset 0 2px 4px rgba(255, 255, 255, 0.1),
-          inset 0 -2px 4px rgba(0, 0, 0, 0.5),
-          0 4px 10px rgba(0, 0, 0, 0.5);
-      }
-
-      .scroll-rod-top {
-        margin: -8px -6px 0;
-      }
-
-      .scroll-rod-bottom {
-        margin: 0 -6px -8px;
-      }
-
-      .scroll-rod-top::before,
-      .scroll-rod-top::after,
-      .scroll-rod-bottom::before,
-      .scroll-rod-bottom::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 14px;
-        height: 14px;
-        background: radial-gradient(
-          circle at 30% 30%,
-          var(--gold),
-          #7a6028 60%,
-          #4a3a18 100%
-        );
-        border-radius: 50%;
-        box-shadow:
-          0 0 8px rgba(168, 134, 61, 0.5),
-          inset 0 1px 2px rgba(255, 255, 255, 0.3);
-      }
-
-      .scroll-rod-top::before,
-      .scroll-rod-bottom::before {
-        left: -4px;
-      }
-      .scroll-rod-top::after,
-      .scroll-rod-bottom::after {
-        right: -4px;
-      }
-
       /* ==================== HEADER ==================== */
       .header {
-        padding: 26px 26px 20px;
-        border-bottom: 2px solid var(--ink);
+        padding: 56px 40px 40px;
         text-align: center;
         position: relative;
+        border-bottom: 1px solid var(--cream-2);
       }
 
       .header::before {
         content: "";
         position: absolute;
-        top: 6px;
-        left: 6px;
-        right: 6px;
-        bottom: 6px;
-        border: 1px solid var(--blood);
-        opacity: 0.4;
-        pointer-events: none;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1px;
+        height: 24px;
+        background: var(--sand-dark);
       }
 
-      .header-symbol {
+      .header::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 2px;
+        background: var(--sage);
+      }
+
+      .header-kanji {
         font-family: var(--font-jp);
-        font-size: 30px;
-        color: var(--blood);
-        font-weight: 900;
-        line-height: 1;
-        margin-bottom: 4px;
-        letter-spacing: 8px;
-      }
-
-      .header-tagline {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-family: var(--font-body);
-        font-size: 9px;
-        letter-spacing: 3px;
-        color: var(--ink-soft);
+        font-size: 13px;
+        letter-spacing: 12px;
+        color: var(--sage-dark);
         text-transform: uppercase;
-        margin-bottom: 14px;
-        position: relative;
-        z-index: 2;
+        font-weight: 400;
+        margin-bottom: 20px;
+        padding-left: 12px;
+        opacity: 0.7;
       }
 
       h1 {
-        font-family: var(--font-serif);
-        font-size: 30px;
-        font-weight: 800;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 42px;
         line-height: 1.1;
-        letter-spacing: 2px;
-        color: var(--ink);
-        margin-bottom: 6px;
-        position: relative;
-        z-index: 2;
+        letter-spacing: -0.5px;
+        color: var(--stone);
+        margin-bottom: 12px;
       }
 
-      h1 .kanji {
-        display: block;
-        font-family: var(--font-jp);
-        font-size: 14px;
-        color: var(--blood);
-        font-weight: 700;
-        letter-spacing: 12px;
-        margin-bottom: 8px;
-        padding-left: 12px;
-      }
-
-      h1 .accent {
-        position: relative;
-        display: inline-block;
-      }
-
-      h1 .accent::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background: var(--blood);
-        z-index: -1;
-        opacity: 0.15;
+      h1 .italic {
+        font-style: italic;
+        font-weight: 500;
+        color: var(--sage-dark);
       }
 
       .subtitle {
         font-family: var(--font-body);
         font-size: 11px;
-        color: var(--ink-soft);
-        letter-spacing: 3px;
+        font-weight: 400;
+        letter-spacing: 4px;
         text-transform: uppercase;
-        font-weight: 500;
-        position: relative;
-        z-index: 2;
-      }
-
-      /* Red seal / hanko */
-      .hanko-seal {
-        position: absolute;
-        top: 22px;
-        right: 22px;
-        width: 44px;
-        height: 44px;
-        background: var(--blood);
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--rice);
-        font-family: var(--font-jp);
-        font-size: 18px;
-        font-weight: 900;
-        line-height: 1;
-        transform: rotate(-6deg);
-        box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4);
-        z-index: 3;
-      }
-
-      .hanko-seal::before {
-        content: "";
-        position: absolute;
-        inset: 3px;
-        border: 1px solid rgba(245, 239, 227, 0.5);
-        border-radius: 3px;
+        color: var(--stone-light);
+        margin-top: 8px;
       }
 
       /* ==================== LIVE CLOCK ==================== */
-      .clock-strip {
+      .clock-block {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        padding: 10px 22px;
-        background: var(--ink);
-        color: var(--rice);
-        font-family: var(--font-body);
-        font-size: 10px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        border-bottom: 2px solid var(--ink);
+        gap: 14px;
+        margin-top: 26px;
+        padding: 10px 0;
       }
 
-      .clock-strip .left-info {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .clock-block .line-deco {
+        width: 30px;
+        height: 1px;
+        background: var(--sand-dark);
       }
 
-      .clock-strip .live-dot {
-        width: 8px;
-        height: 8px;
-        background: var(--blood);
-        border-radius: 50%;
-        box-shadow: 0 0 12px var(--blood);
-        animation: pulse-blood 1.5s ease-in-out infinite;
+      .clock-block .time-text {
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 3px;
+        color: var(--stone-mid);
       }
 
-      @keyframes pulse-blood {
+      .clock-block .time-text::before {
+        content: "◦";
+        color: var(--terracotta);
+        margin-right: 8px;
+        font-size: 12px;
+        animation: breathe 3s ease-in-out infinite;
+        display: inline-block;
+      }
+
+      @keyframes breathe {
         0%,
         100% {
-          opacity: 1;
+          opacity: 0.4;
           transform: scale(1);
         }
         50% {
-          opacity: 0.5;
-          transform: scale(0.75);
+          opacity: 1;
+          transform: scale(1.3);
         }
-      }
-
-      .clock-strip .time {
-        font-family: var(--font-serif);
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--rice);
       }
 
       /* ==================== CONTENT ==================== */
       .content {
-        padding: 22px 22px 26px;
+        padding: 40px 40px 44px;
       }
 
-      /* ==================== SECTION TITLE ==================== */
-      .sec-title {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 8px 0 16px;
-        position: relative;
-      }
-
-      .sec-title .seal {
-        flex-shrink: 0;
-        width: 32px;
-        height: 32px;
-        background: var(--ink);
-        color: var(--rice);
-        font-family: var(--font-jp);
-        font-size: 13px;
-        font-weight: 900;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        position: relative;
-        box-shadow: 2px 2px 0 var(--blood);
-      }
-
-      .sec-title .seal::after {
-        content: "";
-        position: absolute;
-        inset: 2px;
-        border: 1px solid rgba(245, 239, 227, 0.3);
-        border-radius: 2px;
-      }
-
-      .sec-title .txt {
-        font-family: var(--font-serif);
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--ink);
-        text-transform: uppercase;
-        position: relative;
-      }
-
-      .sec-title .txt::after {
-        content: "";
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: var(--blood);
-      }
-
-      .sec-title .jp-line {
-        flex: 1;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          var(--ink) 0%,
-          transparent 100%
-        );
-        opacity: 0.3;
-        margin-left: 8px;
-      }
-
-      /* ==================== STATS ==================== */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 22px;
-        position: relative;
-      }
-
-      .stat-card {
-        padding: 16px 10px;
-        background: var(--rice);
-        border: 2px solid var(--ink);
+      /* ==================== SECTION HEADER ==================== */
+      .sec-head {
         text-align: center;
+        margin-bottom: 26px;
         position: relative;
-        transition: all 0.3s;
-        cursor: default;
       }
 
-      .stat-card::before {
-        content: "";
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
-        border: 1px solid var(--ink);
-        opacity: 0.3;
-        pointer-events: none;
-      }
-
-      .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 4px 4px 0 var(--blood);
-      }
-
-      .stat-card .jp-label {
-        font-family: var(--font-jp);
-        font-size: 10px;
-        font-weight: 700;
-        color: var(--blood);
-        letter-spacing: 2px;
+      .sec-head .sec-num {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 13px;
+        color: var(--terracotta);
+        letter-spacing: 3px;
+        display: block;
         margin-bottom: 6px;
       }
 
-      .stat-card .val {
-        font-family: var(--font-serif);
-        font-size: 30px;
-        font-weight: 800;
-        line-height: 1;
-        color: var(--ink);
-        margin-bottom: 4px;
-      }
-
-      .stat-card .lbl {
-        font-family: var(--font-body);
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--ink-soft);
+      .sec-head h2 {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 22px;
+        letter-spacing: 1px;
+        color: var(--stone);
         text-transform: uppercase;
+        margin-bottom: 8px;
       }
 
-      .stat-card.hadir .val {
-        color: var(--jade);
-      }
-      .stat-card.hadir .jp-label {
-        color: var(--jade);
-      }
-
-      .stat-card.belum .val {
-        color: var(--blood);
-      }
-      .stat-card.belum .jp-label {
-        color: var(--blood);
+      .sec-head::after {
+        content: "";
+        display: block;
+        width: 24px;
+        height: 1px;
+        background: var(--sand-dark);
+        margin: 12px auto 0;
       }
 
-      /* ==================== QR SCROLL ==================== */
-      .qr-scroll {
+      /* ==================== STATS ==================== */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 36px;
+      }
+
+      .stat-item {
         text-align: center;
-        padding: 22px 16px;
-        background: var(--rice);
-        border: 2px solid var(--ink);
-        margin-bottom: 20px;
+        padding: 20px 8px 22px;
+        background: var(--cream);
+        border-radius: 4px;
         position: relative;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: default;
       }
 
-      .qr-scroll::before,
-      .qr-scroll::after {
+      .stat-item::before {
         content: "";
         position: absolute;
-        top: 8px;
-        bottom: 8px;
-        width: 6px;
-        background: repeating-linear-gradient(
-          180deg,
-          var(--ink) 0px,
-          var(--ink) 3px,
-          transparent 3px,
-          transparent 6px
-        );
-        opacity: 0.15;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 1px;
+        background: var(--sage);
+        transition: width 0.4s;
       }
 
-      .qr-scroll::before {
-        left: 8px;
-      }
-      .qr-scroll::after {
-        right: 8px;
+      .stat-item:hover {
+        background: var(--cream-2);
+        transform: translateY(-2px);
       }
 
-      .qr-frame-inner {
-        display: inline-block;
+      .stat-item:hover::before {
+        width: 40px;
+      }
+
+      .stat-item .num {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 38px;
+        line-height: 1;
+        color: var(--stone);
+        margin-bottom: 8px;
+        letter-spacing: -1px;
+      }
+
+      .stat-item.hadir .num {
+        color: var(--sage-dark);
+      }
+      .stat-item.belum .num {
+        color: var(--terracotta-dark);
+      }
+
+      .stat-item .lbl {
+        font-family: var(--font-body);
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--stone-light);
+      }
+
+      /* ==================== QR CARD ==================== */
+      .qr-block {
+        text-align: center;
+        margin-bottom: 32px;
+        padding: 40px 20px;
+        background: var(--cream);
+        border-radius: 4px;
         position: relative;
-        padding: 12px;
-        background: #fff;
-        border: 2px solid var(--ink);
-        box-shadow:
-          0 0 0 4px var(--rice),
-          0 0 0 5px var(--ink);
       }
 
-      /* Corner kanji decorations */
-      .qr-frame-inner::before,
-      .qr-frame-inner::after {
-        content: "◆";
+      .qr-block::before,
+      .qr-block::after {
+        content: "";
         position: absolute;
-        font-size: 12px;
-        color: var(--blood);
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--sand-dark);
       }
 
-      .qr-frame-inner::before {
-        top: -22px;
-        left: 50%;
-        transform: translateX(-50%);
+      .qr-block::before {
+        top: 12px;
+        left: 12px;
+        border-right: none;
+        border-bottom: none;
       }
-      .qr-frame-inner::after {
-        bottom: -22px;
-        left: 50%;
-        transform: translateX(-50%);
+
+      .qr-block::after {
+        bottom: 12px;
+        right: 12px;
+        border-left: none;
+        border-top: none;
       }
 
       #qrImage {
-        width: 175px;
-        height: 175px;
+        width: 190px;
+        height: 190px;
         display: block;
+        margin: 0 auto 22px;
         background: #fff;
-        filter: contrast(1.05);
-      }
-
-      .qr-caption {
-        margin-top: 18px;
-        font-family: var(--font-serif);
-        font-size: 13px;
-        color: var(--ink);
-        letter-spacing: 1px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 18px;
-        background: var(--ink);
-        color: var(--rice);
+        padding: 14px;
         border-radius: 2px;
+        box-shadow: 0 4px 20px rgba(74, 74, 69, 0.08);
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      .qr-caption .heart {
-        color: var(--blood);
-        animation: pulse-blood 1.5s ease-in-out infinite;
+      #qrImage:hover {
+        transform: scale(1.03);
+      }
+
+      .qr-text {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 15px;
+        color: var(--stone-mid);
+        letter-spacing: 1px;
+      }
+
+      .qr-text .dot-deco {
+        color: var(--sage);
+        margin: 0 8px;
       }
 
       /* ==================== BUTTONS ==================== */
       .btn-row {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 22px;
+        gap: 10px;
+        margin-bottom: 36px;
       }
 
-      .katana-btn {
-        padding: 14px 8px;
-        background: var(--rice);
-        border: 2px solid var(--ink);
-        color: var(--ink);
-        font-family: var(--font-serif);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
+      .zen-btn {
+        padding: 16px 8px;
+        background: transparent;
+        border: 1px solid var(--sand-dark);
+        color: var(--stone-mid);
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
         text-transform: uppercase;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 10px;
         text-decoration: none;
         position: relative;
-        box-shadow: 3px 3px 0 var(--ink);
+        border-radius: 2px;
       }
 
-      .katana-btn i {
+      .zen-btn i {
         font-size: 16px;
-        color: var(--blood);
-        transition: all 0.2s;
+        color: var(--sage-dark);
+        transition: all 0.4s;
       }
 
-      .katana-btn:hover {
-        transform: translate(-1px, -1px);
-        box-shadow: 5px 5px 0 var(--blood);
-        background: var(--ink);
-        color: var(--rice);
+      .zen-btn:hover {
+        background: var(--sage);
+        border-color: var(--sage);
+        color: var(--paper);
+        transform: translateY(-2px);
       }
 
-      .katana-btn:hover i {
-        color: var(--rice);
+      .zen-btn:hover i {
+        color: var(--paper);
       }
 
-      .katana-btn:active {
-        transform: translate(2px, 2px);
-        box-shadow: 0 0 0 var(--ink);
+      .zen-btn:active {
+        transform: translateY(0);
       }
 
-      /* ==================== GENERATE SECTION ==================== */
-      .generate-panel {
-        background: var(--rice);
-        border: 2px solid var(--ink);
-        padding: 16px;
-        margin-bottom: 22px;
+      /* ==================== GENERATE ==================== */
+      .gen-block {
+        padding: 28px 24px;
+        background: var(--cream);
+        border-radius: 4px;
+        margin-bottom: 32px;
         position: relative;
       }
 
-      .generate-panel::before {
-        content: "★";
-        position: absolute;
-        top: -8px;
-        left: 16px;
-        background: var(--rice);
-        padding: 0 6px;
-        color: var(--blood);
-        font-size: 12px;
-      }
-
-      .generate-label {
-        font-family: var(--font-serif);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--ink);
-        text-transform: uppercase;
-        margin-bottom: 12px;
+      .gen-label {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 14px;
+        color: var(--stone-mid);
+        letter-spacing: 1px;
+        margin-bottom: 16px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
       }
 
-      .generate-label .jp {
-        font-family: var(--font-jp);
-        color: var(--blood);
-        font-size: 12px;
-        letter-spacing: 3px;
+      .gen-label::before {
+        content: "";
+        width: 20px;
+        height: 1px;
+        background: var(--sage);
       }
 
       .input-row {
@@ -808,116 +589,118 @@
 
       .input-row input {
         flex: 1;
-        padding: 12px 14px;
-        border: 2px solid var(--ink);
-        background: var(--rice);
-        color: var(--ink);
-        font-family: var(--font-serif);
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        transition: all 0.2s;
+        padding: 14px 18px;
+        border: 1px solid var(--sand);
+        background: var(--paper);
+        color: var(--stone);
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        border-radius: 2px;
+        transition: all 0.3s;
       }
 
       .input-row input::placeholder {
-        color: var(--ink-fade);
+        color: var(--stone-light);
         font-style: italic;
-        font-weight: 400;
       }
 
       .input-row input:focus {
         outline: none;
+        border-color: var(--sage);
         background: #fff;
-        box-shadow: inset 0 0 0 3px var(--blood-glow);
-        border-color: var(--blood);
+        box-shadow: 0 0 0 3px rgba(138, 154, 123, 0.1);
       }
 
       .input-row button {
-        padding: 12px 20px;
-        border: 2px solid var(--ink);
-        background: var(--blood);
-        color: var(--rice);
-        font-family: var(--font-serif);
-        font-size: 11px;
-        font-weight: 700;
+        padding: 14px 22px;
+        background: var(--stone);
+        color: var(--paper);
+        border: 1px solid var(--stone);
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
         letter-spacing: 2px;
         text-transform: uppercase;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         white-space: nowrap;
-        box-shadow: 3px 3px 0 var(--ink);
+        border-radius: 2px;
       }
 
       .input-row button:hover {
-        transform: translate(-1px, -1px);
-        box-shadow: 5px 5px 0 var(--ink);
-        background: var(--blood-dark);
+        background: var(--sage-dark);
+        border-color: var(--sage-dark);
+        transform: translateY(-1px);
       }
 
       .input-row button:active {
-        transform: translate(2px, 2px);
-        box-shadow: 0 0 0 var(--ink);
+        transform: translateY(0);
       }
 
       /* ==================== QR PREVIEW ==================== */
       .qr-preview {
         display: none;
-        margin-top: 14px;
-        padding: 16px;
-        background: var(--rice-2);
-        border: 2px dashed var(--blood);
+        margin-top: 18px;
+        padding: 20px;
+        background: var(--paper);
+        border: 1px solid var(--sand);
+        border-radius: 4px;
         text-align: center;
+        position: relative;
       }
 
       .qr-preview.show {
         display: block !important;
-        animation: inkSplash 0.4s ease-out;
+        animation: softFade 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      @keyframes inkSplash {
+      @keyframes softFade {
         from {
           opacity: 0;
-          clip-path: circle(0% at 50% 50%);
+          transform: translateY(10px);
         }
         to {
           opacity: 1;
-          clip-path: circle(100% at 50% 50%);
+          transform: translateY(0);
         }
       }
 
       .qr-preview img {
         max-width: 150px;
+        border-radius: 2px;
         background: #fff;
-        border: 2px solid var(--ink);
-        padding: 8px;
-        margin-bottom: 12px;
+        padding: 10px;
+        margin-bottom: 14px;
+        box-shadow: 0 2px 10px rgba(74, 74, 69, 0.06);
       }
 
       .qr-preview .qr-info {
-        font-family: var(--font-serif);
+        font-family: var(--font-body);
         font-size: 12px;
         line-height: 2;
         text-align: left;
-        padding: 12px 14px;
-        background: var(--rice);
-        border-left: 4px solid var(--blood);
-        color: var(--ink);
-        margin-bottom: 12px;
-        letter-spacing: 0.5px;
+        padding: 14px 16px;
+        background: var(--cream);
+        color: var(--stone-mid);
+        border-radius: 2px;
+        margin-bottom: 14px;
+        letter-spacing: 0.3px;
       }
 
       .qr-preview .qr-info strong {
         font-family: var(--font-body);
         font-size: 9px;
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: 2px;
-        color: var(--blood);
+        color: var(--sage-dark);
+        text-transform: uppercase;
         display: inline-block;
         min-width: 70px;
-        text-transform: uppercase;
       }
 
       .qr-actions {
@@ -927,71 +710,69 @@
       }
 
       .qr-actions button {
-        padding: 10px;
-        border: 2px solid var(--ink);
-        font-family: var(--font-serif);
+        padding: 12px;
+        border: 1px solid var(--sand-dark);
+        background: transparent;
+        color: var(--stone);
+        font-family: var(--font-body);
         font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
+        font-weight: 500;
+        letter-spacing: 2px;
         text-transform: uppercase;
         cursor: pointer;
-        transition: all 0.2s;
-        background: var(--rice);
-        color: var(--ink);
-        box-shadow: 2px 2px 0 var(--ink);
+        transition: all 0.3s;
+        border-radius: 2px;
       }
 
       .qr-actions button:first-child {
-        background: var(--jade);
-        color: var(--rice);
+        background: var(--sage);
+        border-color: var(--sage);
+        color: var(--paper);
       }
 
       .qr-actions button:hover {
-        transform: translate(-1px, -1px);
-        box-shadow: 4px 4px 0 var(--blood);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(74, 74, 69, 0.1);
       }
 
       /* ==================== CONNECTION ==================== */
-      .conn-line {
+      .conn-status {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        padding: 10px 16px;
-        background: var(--ink);
-        color: var(--rice);
+        padding: 12px;
         font-family: var(--font-body);
         font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 2px;
+        font-weight: 400;
+        letter-spacing: 3px;
         text-transform: uppercase;
-        margin-bottom: 16px;
-        border: 2px solid var(--ink);
+        color: var(--stone-light);
+        margin-bottom: 24px;
+        border-top: 1px solid var(--cream-2);
+        border-bottom: 1px solid var(--cream-2);
       }
 
       .dot {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
         display: inline-block;
       }
 
       .dot.online {
-        background: #4ade80;
-        box-shadow: 0 0 10px #4ade80;
-        animation: pulse-blood 2s ease-in-out infinite;
+        background: var(--sage-dark);
+        animation: breathe 2s ease-in-out infinite;
       }
 
       .dot.offline {
-        background: var(--blood);
-        box-shadow: 0 0 10px var(--blood);
-        animation: pulse-blood 0.8s ease-in-out infinite;
+        background: var(--terracotta);
+        animation: breathe 1s ease-in-out infinite;
       }
 
       .dot.checking {
-        background: var(--gold);
-        box-shadow: 0 0 10px var(--gold);
-        animation: pulse-blood 0.5s ease-in-out infinite;
+        background: var(--sand-dark);
+        animation: breathe 0.6s ease-in-out infinite;
       }
 
       /* ==================== STATUS MESSAGE ==================== */
@@ -999,106 +780,105 @@
         display: none;
         align-items: center;
         gap: 12px;
-        padding: 12px 16px;
-        font-family: var(--font-serif);
+        padding: 14px 20px;
+        font-family: var(--font-body);
         font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        margin-bottom: 16px;
-        border: 2px solid var(--ink);
-        box-shadow: 3px 3px 0 var(--ink);
-        animation: inkSplash 0.3s ease-out;
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin-bottom: 24px;
+        border-radius: 2px;
+        border-left: 2px solid;
+        animation: softFade 0.4s ease;
       }
 
       #status.success {
         display: flex;
-        background: #d4edda;
-        color: #155724;
+        background: rgba(138, 154, 123, 0.08);
+        color: var(--sage-dark);
+        border-left-color: var(--sage-dark);
       }
       #status.error {
         display: flex;
-        background: #f8d7da;
-        color: #721c24;
+        background: rgba(184, 120, 90, 0.08);
+        color: var(--terracotta-dark);
+        border-left-color: var(--terracotta-dark);
       }
       #status.warning {
         display: flex;
-        background: #fff3cd;
-        color: #856404;
+        background: rgba(196, 179, 154, 0.15);
+        color: #7a6a4a;
+        border-left-color: var(--sand-dark);
       }
       #status.info {
         display: flex;
-        background: #d1ecf1;
-        color: #0c5460;
+        background: rgba(110, 110, 102, 0.06);
+        color: var(--stone-mid);
+        border-left-color: var(--stone-light);
       }
 
       /* ==================== DIVIDER ==================== */
-      .ink-divider {
+      .zen-divider {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 14px;
-        margin: 14px 0;
-        color: var(--ink-soft);
+        margin: 20px 0;
       }
 
-      .ink-divider::before,
-      .ink-divider::after {
+      .zen-divider::before,
+      .zen-divider::after {
         content: "";
         flex: 1;
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--ink) 50%,
-          transparent
-        );
-        opacity: 0.4;
+        background: var(--cream-2);
       }
 
-      .ink-divider span {
-        font-family: var(--font-jp);
-        font-size: 12px;
-        color: var(--blood);
-        letter-spacing: 4px;
+      .zen-divider .dot-group {
+        display: flex;
+        gap: 6px;
+      }
+
+      .zen-divider .dot-group span {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--sand-dark);
       }
 
       /* ==================== SCANNER ==================== */
-      .scanner-frame {
-        border: 2px solid var(--ink);
-        background: #000;
-        padding: 8px;
-        margin-bottom: 12px;
+      .scanner-wrap {
+        margin-bottom: 16px;
+        padding: 16px;
+        background: var(--cream);
+        border-radius: 4px;
         position: relative;
-        box-shadow: 4px 4px 0 var(--blood);
       }
 
-      .scanner-frame::before {
-        content: "◈ KAMERA ◈";
+      .scanner-wrap::before {
+        content: "";
         position: absolute;
-        top: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--ink);
-        color: var(--rice);
-        padding: 2px 12px;
-        font-family: var(--font-body);
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        white-space: nowrap;
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        border: 1px solid var(--sand);
+        border-radius: 2px;
+        pointer-events: none;
+        z-index: 1;
       }
 
       .scanner-inner {
-        background: #000;
+        background: var(--stone);
         overflow: hidden;
         position: relative;
-        min-height: 260px;
+        border-radius: 2px;
+        min-height: 280px;
       }
 
       #qr-reader {
         width: 100% !important;
-        min-height: 260px;
-        background: #000;
+        min-height: 280px;
+        background: var(--stone);
       }
 
       #qr-reader video {
@@ -1106,7 +886,7 @@
         height: auto !important;
         border-radius: 0 !important;
         display: block !important;
-        filter: contrast(1.15) saturate(0.85) sepia(0.15);
+        filter: contrast(1.02) saturate(0.9) sepia(0.08);
       }
 
       #qr-reader > div:not(:first-child) {
@@ -1126,417 +906,413 @@
         inset: 0;
         pointer-events: none;
         z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      .scan-box {
+      .scan-target {
+        position: relative;
+        width: 62%;
+        aspect-ratio: 1;
+        border: 1px solid rgba(247, 243, 236, 0.4);
+        border-radius: 4px;
+        box-shadow: 0 0 0 4000px rgba(74, 74, 69, 0.75);
+      }
+
+      /* Zen corner marks */
+      .scan-corner {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 60%;
-        height: 60%;
-        border: 2px solid var(--blood);
-        box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.72);
+        width: 24px;
+        height: 24px;
+        border: 2px solid var(--paper);
       }
 
-      /* Samurai corner strokes */
-      .scan-box::before,
-      .scan-box::after {
-        content: "";
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        border: 3px solid var(--rice);
-        filter: drop-shadow(0 0 6px var(--blood));
-      }
-
-      .scan-box::before {
-        top: -3px;
-        left: -3px;
+      .scan-corner-tl {
+        top: -2px;
+        left: -2px;
         border-right: none;
         border-bottom: none;
       }
-      .scan-box::after {
-        bottom: -3px;
-        right: -3px;
-        border-left: none;
-        border-top: none;
-      }
-
-      .scan-corner-tr,
-      .scan-corner-bl {
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        border: 3px solid var(--rice);
-        filter: drop-shadow(0 0 6px var(--blood));
-      }
-
       .scan-corner-tr {
-        top: -3px;
-        right: -3px;
+        top: -2px;
+        right: -2px;
         border-left: none;
         border-bottom: none;
       }
       .scan-corner-bl {
-        bottom: -3px;
-        left: -3px;
+        bottom: -2px;
+        left: -2px;
         border-right: none;
         border-top: none;
       }
+      .scan-corner-br {
+        bottom: -2px;
+        right: -2px;
+        border-left: none;
+        border-top: none;
+      }
 
-      .scan-slash {
+      .scan-line {
         position: absolute;
-        left: 4%;
-        right: 4%;
-        height: 2px;
+        left: 8px;
+        right: 8px;
+        height: 1px;
         background: linear-gradient(
           90deg,
           transparent,
-          var(--blood),
+          var(--sage-light),
           transparent
         );
-        box-shadow:
-          0 0 15px var(--blood),
-          0 0 30px var(--blood);
-        animation: slashMove 2s ease-in-out infinite alternate;
+        box-shadow: 0 0 8px rgba(168, 181, 154, 0.6);
+        animation: slowSweep 3.5s ease-in-out infinite alternate;
       }
 
-      @keyframes slashMove {
+      @keyframes slowSweep {
         0% {
           top: 12%;
-          opacity: 0.4;
+          opacity: 0.3;
         }
         50% {
-          opacity: 1;
+          opacity: 0.9;
         }
         100% {
-          top: 88%;
-          opacity: 0.4;
+          top: 86%;
+          opacity: 0.3;
         }
       }
 
       .scan-hint {
         position: absolute;
-        bottom: 14px;
+        bottom: 24px;
         left: 50%;
         transform: translateX(-50%);
-        padding: 6px 16px;
-        background: var(--ink);
-        border: 2px solid var(--rice);
-        color: var(--rice);
         font-family: var(--font-body);
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 2.5px;
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 3px;
         text-transform: uppercase;
+        color: var(--paper);
         white-space: nowrap;
+        padding: 8px 18px;
+        background: rgba(74, 74, 69, 0.85);
+        backdrop-filter: blur(8px);
+        border-radius: 20px;
+        border: 1px solid rgba(247, 243, 236, 0.15);
         z-index: 15;
       }
 
       .scan-hint i {
-        color: var(--blood);
-        margin-right: 6px;
+        margin-right: 8px;
+        color: var(--sage-light);
+        font-size: 11px;
       }
 
       /* ==================== SCANNER CONTROLS ==================== */
       .scan-controls {
         display: grid;
         grid-template-columns: 2fr 1fr;
-        gap: 8px;
-        margin-bottom: 22px;
+        gap: 10px;
+        margin-bottom: 36px;
       }
 
       .scan-controls button {
-        padding: 14px;
-        border: 2px solid var(--ink);
-        font-family: var(--font-serif);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 2px;
+        padding: 15px;
+        border: 1px solid var(--stone);
+        background: transparent;
+        color: var(--stone);
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2.5px;
         text-transform: uppercase;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        box-shadow: 3px 3px 0 var(--ink);
+        gap: 10px;
+        border-radius: 2px;
       }
 
       .scan-controls button:hover {
-        transform: translate(-1px, -1px);
-        box-shadow: 5px 5px 0 var(--blood);
+        background: var(--stone);
+        color: var(--paper);
+        transform: translateY(-1px);
       }
 
-      .btn-start-scan {
-        background: var(--blood);
-        color: var(--rice);
+      .scan-controls button:active {
+        transform: translateY(0);
       }
 
-      .btn-start-scan.stop {
-        background: var(--ink);
+      .btn-scan-zen {
+        background: var(--stone);
+        color: var(--paper);
       }
 
-      .btn-flash-vintage {
-        background: var(--rice);
-        color: var(--ink);
+      .btn-scan-zen:hover {
+        background: var(--sage-dark);
+        border-color: var(--sage-dark);
+        color: var(--paper);
       }
 
-      .btn-flash-vintage.active {
-        background: var(--gold);
-        color: var(--ink);
+      .btn-scan-zen.stop {
+        background: var(--terracotta-dark);
+        border-color: var(--terracotta-dark);
+      }
+
+      .btn-flash-zen.active {
+        background: var(--sand-dark);
+        border-color: var(--sand-dark);
+        color: var(--paper);
       }
 
       /* ==================== DATA TABLE ==================== */
-      .ledger {
-        background: var(--rice);
-        border: 2px solid var(--ink);
+      .data-block {
+        padding: 0;
+        background: var(--cream);
+        border-radius: 4px;
         overflow: hidden;
-        margin-bottom: 18px;
-        position: relative;
+        margin-bottom: 24px;
       }
 
-      .ledger::before {
-        content: "";
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
-        border: 1px solid var(--ink);
-        opacity: 0.2;
-        pointer-events: none;
-        z-index: 5;
-      }
-
-      .ledger-head {
-        padding: 12px 18px;
-        background: var(--ink);
-        color: var(--rice);
+      .data-head {
+        padding: 16px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-family: var(--font-serif);
-        font-size: 12px;
-        font-weight: 700;
+        border-bottom: 1px solid var(--cream-3);
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 500;
+        font-style: italic;
+        color: var(--stone-mid);
+        letter-spacing: 1px;
+      }
+
+      .data-head .count-txt {
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 400;
+        font-style: normal;
         letter-spacing: 2px;
         text-transform: uppercase;
-        position: relative;
-        z-index: 6;
-      }
-
-      .ledger-head .ledger-title {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .ledger-head .ledger-title::before {
-        content: "◆";
-        color: var(--blood);
-        font-size: 10px;
-      }
-
-      .ledger-head .count-badge {
-        padding: 3px 10px;
-        background: var(--blood);
-        color: var(--rice);
-        font-size: 9px;
-        letter-spacing: 1.5px;
+        color: var(--stone-light);
       }
 
       .table-wrap {
-        max-height: 220px;
+        max-height: 240px;
         overflow-y: auto;
-        position: relative;
-        z-index: 4;
       }
 
       .table-wrap::-webkit-scrollbar {
-        width: 8px;
+        width: 4px;
       }
       .table-wrap::-webkit-scrollbar-track {
-        background: var(--rice-2);
+        background: transparent;
       }
       .table-wrap::-webkit-scrollbar-thumb {
-        background: var(--ink);
+        background: var(--sand-dark);
+        border-radius: 2px;
       }
 
-      .ledger table {
+      .data-block table {
         width: 100%;
         border-collapse: collapse;
-        font-family: var(--font-serif);
+        font-family: var(--font-body);
         font-size: 12px;
       }
 
-      .ledger th {
-        padding: 9px 10px;
+      .data-block th {
+        padding: 12px 14px;
         text-align: left;
-        background: var(--rice-2);
-        font-family: var(--font-body);
         font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--ink);
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        color: var(--stone-light);
         text-transform: uppercase;
-        border-bottom: 2px solid var(--ink);
-        border-right: 1px solid var(--ink);
+        background: transparent;
+        border-bottom: 1px solid var(--cream-3);
         position: sticky;
         top: 0;
+        background: var(--cream);
         z-index: 2;
       }
 
-      .ledger th:last-child {
-        border-right: none;
+      .data-block td {
+        padding: 14px;
+        border-bottom: 1px solid var(--cream-2);
+        color: var(--stone-mid);
+        font-weight: 400;
+        transition: all 0.3s;
       }
 
-      .ledger td {
-        padding: 10px;
-        border-bottom: 1px solid var(--rice-dark);
-        border-right: 1px solid var(--rice-dark);
-        color: var(--ink-soft);
-        font-weight: 500;
+      .data-block tbody tr {
+        transition: all 0.3s;
       }
 
-      .ledger td:last-child {
-        border-right: none;
+      .data-block tbody tr:hover td {
+        background: var(--cream-2);
+        color: var(--stone);
       }
 
-      .ledger tbody tr:hover td {
-        background: var(--rice-2);
-        color: var(--ink);
-      }
-
-      .ledger td strong {
-        font-family: var(--font-serif);
-        font-size: 12px;
-        font-weight: 800;
-        color: var(--blood);
+      .data-block td strong {
+        font-family: var(--font-display);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--stone);
         letter-spacing: 0.5px;
       }
 
       .status-hadir {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        padding: 3px 9px;
-        background: var(--jade);
-        color: var(--rice);
+        gap: 6px;
         font-family: var(--font-body);
         font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: var(--sage-dark);
         text-transform: uppercase;
+      }
+
+      .status-hadir::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--sage-dark);
+        animation: breathe 2s ease-in-out infinite;
       }
 
       .status-belum {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        padding: 3px 9px;
-        background: transparent;
-        color: var(--ink-soft);
+        gap: 6px;
         font-family: var(--font-body);
         font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: var(--stone-light);
         text-transform: uppercase;
-        border: 1px solid var(--ink-soft);
+      }
+
+      .status-belum::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--sand-dark);
       }
 
       .loading-text {
-        padding: 30px 18px;
+        padding: 40px 20px;
         text-align: center;
-        font-family: var(--font-serif);
+        font-family: var(--font-display);
         font-style: italic;
-        font-size: 14px;
-        color: var(--ink-soft);
+        font-size: 15px;
+        color: var(--stone-light);
+        letter-spacing: 1px;
+      }
+
+      .loading-text i {
+        color: var(--sage);
+        margin-right: 10px;
       }
 
       /* ==================== FOOTER ==================== */
       .footer {
-        padding: 18px 20px 16px;
+        padding: 32px 40px 40px;
         text-align: center;
-        border-top: 2px solid var(--ink);
-        background: var(--rice-2);
+        background: var(--cream);
+        border-top: 1px solid var(--cream-2);
+        margin: 0 -40px -44px;
+      }
+
+      .footer .footer-enso {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto 14px;
+        border: 1.5px solid var(--sage);
+        border-radius: 50%;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        animation: rotateSlow 30s linear infinite;
+      }
+
+      .footer .footer-text {
         font-family: var(--font-body);
         font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 2px;
-        color: var(--ink-soft);
+        font-weight: 400;
+        letter-spacing: 3px;
+        color: var(--stone-light);
         text-transform: uppercase;
-        line-height: 2;
+        line-height: 2.2;
       }
 
       .footer a {
-        color: var(--blood);
+        color: var(--sage-dark);
         text-decoration: none;
-        font-weight: 700;
-        border-bottom: 1px dashed var(--blood);
+        font-weight: 500;
+        border-bottom: 1px solid var(--sage);
+        padding-bottom: 1px;
+        transition: all 0.3s;
       }
 
       .footer a:hover {
-        background: var(--blood);
-        color: var(--rice);
-      }
-
-      .footer .jp-title {
-        font-family: var(--font-jp);
-        font-size: 12px;
-        color: var(--ink);
-        letter-spacing: 6px;
-        font-weight: 700;
-        margin-bottom: 6px;
+        color: var(--terracotta-dark);
+        border-bottom-color: var(--terracotta-dark);
       }
 
       /* ==================== MOBILE ==================== */
       @media (max-width: 480px) {
         body {
-          padding: 16px 8px 50px;
+          padding: 20px 10px 60px;
+        }
+
+        .header {
+          padding: 40px 24px 32px;
         }
 
         h1 {
-          font-size: 22px;
+          font-size: 32px;
         }
 
-        h1 .kanji {
+        .header-kanji {
           font-size: 11px;
           letter-spacing: 8px;
         }
 
-        .header {
-          padding: 20px 18px 16px;
-        }
-
-        .hanko-seal {
-          width: 36px;
-          height: 36px;
-          font-size: 15px;
-          top: 18px;
-          right: 18px;
-        }
-
         .content {
-          padding: 16px;
+          padding: 28px 22px 32px;
         }
 
-        .stat-card .val {
-          font-size: 22px;
+        .stat-item .num {
+          font-size: 30px;
         }
 
-        .stat-card .jp-label {
-          font-size: 9px;
+        .stat-item .lbl {
+          font-size: 8px;
+          letter-spacing: 2px;
         }
 
         #qrImage {
-          width: 150px;
-          height: 150px;
+          width: 160px;
+          height: 160px;
         }
 
-        .katana-btn {
-          font-size: 10px;
-          padding: 12px 6px;
+        .qr-block {
+          padding: 30px 16px;
+        }
+
+        .zen-btn {
+          font-size: 9px;
+          padding: 14px 6px;
+          letter-spacing: 1.5px;
+        }
+
+        .zen-btn i {
+          font-size: 14px;
         }
 
         .input-row {
@@ -1548,25 +1324,30 @@
           justify-content: center;
         }
 
-        .ledger table {
+        .data-block table {
           font-size: 11px;
         }
-        .ledger th,
-        .ledger td {
-          padding: 7px 6px;
+        .data-block th,
+        .data-block td {
+          padding: 10px 8px;
+        }
+
+        .footer {
+          padding: 26px 24px 32px;
+          margin: 0 -22px -32px;
         }
       }
 
       @media (max-width: 360px) {
         h1 {
-          font-size: 18px;
+          font-size: 26px;
         }
         #qrImage {
-          width: 130px;
-          height: 130px;
+          width: 140px;
+          height: 140px;
         }
-        .stat-card .val {
-          font-size: 18px;
+        .stat-item .num {
+          font-size: 26px;
         }
       }
 
@@ -1580,118 +1361,90 @@
       }
 
       ::selection {
-        background: var(--blood);
-        color: var(--rice);
+        background: var(--sage);
+        color: var(--paper);
       }
     </style>
   </head>
   <body>
-    <!-- INK WASH BACKGROUND -->
-    <div class="ink-bg"></div>
+    <!-- DECORATIVE ELEMENTS -->
+    <div class="enso enso-1"></div>
+    <div class="enso enso-2"></div>
+    <div class="enso enso-3"></div>
 
-    <!-- BAMBOO SILHOUETTES -->
-    <div class="bamboo bamboo-1"></div>
-    <div class="bamboo bamboo-2"></div>
-    <div class="bamboo bamboo-3"></div>
-    <div class="bamboo bamboo-4"></div>
+    <div class="leaf leaf-1">🍃</div>
+    <div class="leaf leaf-2">🍃</div>
+    <div class="leaf leaf-3">🍃</div>
 
-    <!-- FLOATING KANJI -->
-    <div class="kanji-float kf-1">武</div>
-    <div class="kanji-float kf-2">道</div>
-    <div class="kanji-float kf-3">侍</div>
-
-    <!-- MAIN SCROLL CONTAINER -->
-    <div class="scroll-container">
-      <!-- TOP ROD -->
-      <div class="scroll-rod-top"></div>
-
+    <!-- MAIN CONTAINER -->
+    <div class="zen-container">
       <!-- HEADER -->
       <div class="header">
-        <div class="hanko-seal">印</div>
-
-        <div class="header-tagline">
-          <span>◆ EDISI 2025</span>
-          <span>◆</span>
-          <span>VOL. 参</span>
-        </div>
-
-        <div class="header-symbol">侍・道</div>
-
+        <div class="header-kanji">出席 確認</div>
         <h1>
-          <span class="kanji">出席 確認</span>
-          Presensi <span class="accent">Kelas</span>
+          Presensi <span class="italic">Kelas</span>
         </h1>
+        <div class="subtitle">Kehadiran · Kesadaran · Ketenangan</div>
 
-        <div class="subtitle">~ scan untuk hadir ~</div>
-      </div>
-
-      <!-- CLOCK STRIP -->
-      <div class="clock-strip">
-        <div class="left-info">
-          <span class="live-dot"></span>
-          <span>LIVE FEED</span>
+        <div class="clock-block">
+          <span class="line-deco"></span>
+          <span class="time-text" id="liveTime">--:--:--</span>
+          <span class="line-deco"></span>
         </div>
-        <span class="time" id="liveTime">--:--:--</span>
       </div>
 
       <!-- CONTENT -->
       <div class="content">
         <!-- STATS -->
-        <div class="sec-title">
-          <span class="seal">一</span>
-          <span class="txt">Statistik</span>
-          <span class="jp-line"></span>
+        <div class="sec-head">
+          <span class="sec-num">— i —</span>
+          <h2>Ringkasan</h2>
         </div>
 
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="jp-label">全て</div>
-            <div class="val" id="statTotal">0</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="num" id="statTotal">0</div>
             <div class="lbl">Total</div>
           </div>
-          <div class="stat-card hadir">
-            <div class="jp-label">出席</div>
-            <div class="val" id="statHadir">0</div>
+          <div class="stat-item hadir">
+            <div class="num" id="statHadir">0</div>
             <div class="lbl">Hadir</div>
           </div>
-          <div class="stat-card belum">
-            <div class="jp-label">欠席</div>
-            <div class="val" id="statBelum">0</div>
+          <div class="stat-item belum">
+            <div class="num" id="statBelum">0</div>
             <div class="lbl">Belum</div>
           </div>
         </div>
 
-        <!-- QR SCROLL -->
-        <div class="sec-title">
-          <span class="seal">二</span>
-          <span class="txt">Kode QR</span>
-          <span class="jp-line"></span>
+        <!-- QR -->
+        <div class="sec-head">
+          <span class="sec-num">— ii —</span>
+          <h2>Kode QR</h2>
         </div>
 
-        <div class="qr-scroll">
-          <div class="qr-frame-inner">
-            <img id="qrImage" src="" alt="QR Code" />
-          </div>
-          <div class="qr-caption">
-            <span class="heart">◆</span> Scan untuk hadir
-            <span class="heart">◆</span>
+        <div class="qr-block">
+          <img id="qrImage" src="" alt="QR Code" />
+          <div class="qr-text">
+            <span class="dot-deco">◦</span>
+            Scan untuk hadir
+            <span class="dot-deco">◦</span>
           </div>
         </div>
 
         <!-- BUTTONS -->
         <div class="btn-row">
-          <button class="katana-btn" onclick="loadDataMahasiswa()">
+          <button class="zen-btn" onclick="loadDataMahasiswa()">
             <i class="fas fa-sync-alt"></i>
-            <span>Refresh</span>
+            <span>Segarkan</span>
           </button>
-          <button class="katana-btn" onclick="downloadQR()">
+          <button class="zen-btn" onclick="downloadQR()">
             <i class="fas fa-download"></i>
             <span>QR</span>
           </button>
           <a
             href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=0#gid=0"
             target="_blank"
-            class="katana-btn"
+            class="zen-btn"
           >
             <i class="fas fa-external-link-alt"></i>
             <span>Sheet</span>
@@ -1699,17 +1452,13 @@
         </div>
 
         <!-- GENERATE -->
-        <div class="sec-title">
-          <span class="seal">三</span>
-          <span class="txt">Generate QR</span>
-          <span class="jp-line"></span>
+        <div class="sec-head">
+          <span class="sec-num">— iii —</span>
+          <h2>Kartu Mahasiswa</h2>
         </div>
 
-        <div class="generate-panel">
-          <div class="generate-label">
-            <span class="jp">◆ 学生証</span>
-            Kartu Mahasiswa
-          </div>
+        <div class="gen-block">
+          <div class="gen-label">Generate QR per mahasiswa</div>
           <div class="input-row">
             <input
               type="text"
@@ -1718,7 +1467,7 @@
               maxlength="10"
             />
             <button onclick="generateQRCode()">
-              <i class="fas fa-stamp"></i> Generate
+              <i class="fas fa-feather-alt"></i> Buat
             </button>
           </div>
           <div class="qr-preview" id="qrPreview">
@@ -1736,35 +1485,32 @@
         </div>
 
         <!-- CONNECTION -->
-        <div class="conn-line">
+        <div class="conn-status">
           <span class="dot checking" id="statusDot"></span>
-          <span id="statusLabel">Menghubungkan...</span>
+          <span id="statusLabel">Menghubungkan</span>
         </div>
 
         <div id="status"></div>
 
         <!-- SCANNER -->
-        <div class="sec-title">
-          <span class="seal">四</span>
-          <span class="txt">Scanner</span>
-          <span class="jp-line"></span>
+        <div class="sec-head">
+          <span class="sec-num">— iv —</span>
+          <h2>Pemindai</h2>
         </div>
 
-        <div class="ink-divider">
-          <span>◈ ◈ ◈</span>
-        </div>
-
-        <div class="scanner-frame">
+        <div class="scanner-wrap">
           <div class="scanner-inner">
             <div id="qr-reader"></div>
             <div class="scan-overlay">
-              <div class="scan-box">
-                <div class="scan-corner-tr"></div>
-                <div class="scan-corner-bl"></div>
-                <div class="scan-slash"></div>
+              <div class="scan-target">
+                <div class="scan-corner scan-corner-tl"></div>
+                <div class="scan-corner scan-corner-tr"></div>
+                <div class="scan-corner scan-corner-bl"></div>
+                <div class="scan-corner scan-corner-br"></div>
+                <div class="scan-line"></div>
               </div>
               <div class="scan-hint" id="scanStatusText">
-                <i class="fas fa-crosshairs"></i> Arahkan ke QR Code
+                <i class="fas fa-camera"></i> Arahkan ke QR Code
               </div>
             </div>
           </div>
@@ -1772,33 +1518,28 @@
 
         <div class="scan-controls">
           <button
-            class="btn-start-scan"
+            class="btn-scan-zen"
             id="btnStartScan"
             onclick="toggleScanner()"
           >
             <i class="fas fa-play"></i>
-            <span>Mulai Scan</span>
+            <span>Mulai Pindai</span>
           </button>
-          <button
-            class="btn-flash-vintage"
-            id="btnFlash"
-            onclick="toggleFlash()"
-          >
-            <i class="fas fa-bolt"></i>
+          <button class="btn-flash-zen" id="btnFlash" onclick="toggleFlash()">
+            <i class="fas fa-sun"></i>
           </button>
         </div>
 
         <!-- DATA TABLE -->
-        <div class="sec-title">
-          <span class="seal">五</span>
-          <span class="txt">Daftar Hadir</span>
-          <span class="jp-line"></span>
+        <div class="sec-head">
+          <span class="sec-num">— v —</span>
+          <h2>Daftar Hadir</h2>
         </div>
 
-        <div class="ledger">
-          <div class="ledger-head">
-            <span class="ledger-title">Buku Absensi</span>
-            <span class="count-badge" id="totalMahasiswa">0 BARIS</span>
+        <div class="data-block">
+          <div class="data-head">
+            <span>Buku Kehadiran</span>
+            <span class="count-txt" id="totalMahasiswa">0 baris</span>
           </div>
           <div class="table-wrap" id="tableWrapper">
             <div class="loading-text" id="loadingData">
@@ -1817,11 +1558,13 @@
             </table>
           </div>
         </div>
+      </div>
 
-        <!-- FOOTER -->
-        <div class="footer">
-          <div class="jp-title">◆ 出席 ◆ 確認 ◆ 帳簿 ◆</div>
-          <i class="fas fa-cloud"></i> Terhubung dengan
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class="footer-enso"></div>
+        <div class="footer-text">
+          Terhubung dengan
           <a
             href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675"
             target="_blank"
@@ -1829,12 +1572,9 @@
             Google Sheets
           </a>
           <br />
-          Status: <span id="presensiStatus">Menunggu scan</span>
+          Status · <span id="presensiStatus">Menunggu</span>
         </div>
       </div>
-
-      <!-- BOTTOM ROD -->
-      <div class="scroll-rod-bottom"></div>
     </div>
 
     <script>
@@ -1887,7 +1627,7 @@
           second: "2-digit",
           timeZone: "Asia/Jakarta",
         });
-        DOM.liveTime.textContent = t + " WIB";
+        DOM.liveTime.textContent = t;
       }
       setInterval(updateClock, 1000);
       updateClock();
@@ -1903,10 +1643,10 @@
       function showStatus(message, type = "info", duration = 4000) {
         if (!DOM.status) return;
         const iconMap = {
-          success: "fa-check-circle",
-          error: "fa-exclamation-circle",
-          warning: "fa-triangle-exclamation",
-          info: "fa-info-circle",
+          success: "fa-check",
+          error: "fa-times",
+          warning: "fa-exclamation",
+          info: "fa-info",
         };
         DOM.status.innerHTML = `<i class="fas ${iconMap[type] || iconMap.info}"></i> <span>${message}</span>`;
         DOM.status.className = type;
@@ -1936,7 +1676,7 @@
 
       // CONNECTION
       async function checkConnection() {
-        setConnectionStatus("checking", "Menghubungkan...");
+        setConnectionStatus("checking", "Menghubungkan");
         try {
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -1947,7 +1687,7 @@
           });
           clearTimeout(timeoutId);
           if (response.ok) {
-            setConnectionStatus("online", "Terhubung ✿");
+            setConnectionStatus("online", "Terhubung");
             return true;
           } else throw new Error("No response");
         } catch (e) {
@@ -1972,7 +1712,7 @@
           if (td && td.textContent.trim() === nim) {
             const statusTd = row.querySelector("td:last-child");
             if (statusTd) {
-              statusTd.innerHTML = `<span class="status-hadir">◆ Hadir</span>`;
+              statusTd.innerHTML = `<span class="status-hadir">Hadir</span>`;
             }
           }
         });
@@ -1985,7 +1725,7 @@
         DOM.tableBody.innerHTML = "";
         if (!data || data.length === 0) {
           DOM.loadingData.innerHTML =
-            '<i class="fas fa-scroll"></i> Belum ada catatan';
+            '<i class="fas fa-leaf"></i> Belum ada catatan';
           DOM.loadingData.style.display = "block";
           DOM.dataTable.style.display = "none";
           return;
@@ -1999,7 +1739,7 @@
           <td>${mhs.kelas || "-"}</td>
           <td>
             <span class="${isHadir ? "status-hadir" : "status-belum"}">
-              ${isHadir ? "◆ Hadir" : "○ Belum"}
+              ${isHadir ? "Hadir" : "Belum"}
             </span>
           </td>
         `;
@@ -2016,7 +1756,7 @@
         DOM.loadingData.style.display = "block";
         DOM.dataTable.style.display = "none";
         DOM.loadingData.innerHTML =
-          '<i class="fas fa-spinner fa-spin"></i> Membuka gulungan...';
+          '<i class="fas fa-spinner fa-spin"></i> Memuat catatan...';
 
         try {
           const isOnline = await checkConnection();
@@ -2027,20 +1767,16 @@
               if (parsed.length > 0) {
                 AppState.mahasiswaData = parsed;
                 renderDataTable(parsed);
-                DOM.totalMahasiswa.textContent = parsed.length + " BARIS";
-                showStatus(
-                  `${parsed.length} catatan dari arsip`,
-                  "warning",
-                  3000,
-                );
+                DOM.totalMahasiswa.textContent = parsed.length + " baris";
+                showStatus(`${parsed.length} catatan dari arsip`, "warning", 3000);
                 return;
               }
             }
             DOM.loadingData.innerHTML = `
-            <i class="fas fa-unlink" style="font-size:22px;display:block;margin-bottom:12px;color:var(--blood);"></i>
-            <strong>Tidak Ada Koneksi</strong><br><br>
-            <button onclick="loadDataMahasiswa()" style="padding:8px 18px;border:2px solid var(--ink);background:var(--rice);font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:1.5px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);text-transform:uppercase;font-weight:700;">
-              ⟳ COBA LAGI
+            <i class="fas fa-unlink" style="color:var(--terracotta);"></i>
+            Tidak ada koneksi<br>
+            <button onclick="loadDataMahasiswa()" style="margin-top:14px;padding:10px 22px;background:transparent;border:1px solid var(--stone);color:var(--stone);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;">
+              Coba Lagi
             </button>
           `;
             return;
@@ -2058,16 +1794,16 @@
             AppState.mahasiswaData = data;
             localStorage.setItem("mahasiswaData", JSON.stringify(data));
             renderDataTable(data);
-            DOM.totalMahasiswa.textContent = data.length + " BARIS";
-            setConnectionStatus("online", "Terhubung ✿");
+            DOM.totalMahasiswa.textContent = data.length + " baris";
+            setConnectionStatus("online", "Terhubung");
             showStatus(`${data.length} catatan dimuat`, "success", 2500);
           } else {
             DOM.loadingData.innerHTML = `
-            <i class="fas fa-scroll" style="font-size:22px;display:block;margin-bottom:12px;color:var(--gold);"></i>
-            <strong>Gulungan Kosong</strong><br><br>
-            <a href="${SHEET_URL}" target="_blank" style="padding:8px 18px;border:2px solid var(--ink);background:var(--rice);font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:1.5px;text-decoration:none;color:var(--ink);box-shadow:3px 3px 0 var(--ink);text-transform:uppercase;font-weight:700;">BUKA SHEET</a>
+            <i class="fas fa-leaf" style="color:var(--sage);"></i>
+            Buku masih kosong<br><br>
+            <a href="${SHEET_URL}" target="_blank" style="padding:10px 22px;background:var(--sage);border:1px solid var(--sage);color:var(--paper);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;border-radius:2px;">Buka Sheet</a>
           `;
-            DOM.totalMahasiswa.textContent = "0 BARIS";
+            DOM.totalMahasiswa.textContent = "0 baris";
           }
         } catch (error) {
           const cached = localStorage.getItem("mahasiswaData");
@@ -2076,16 +1812,16 @@
             if (parsed.length > 0) {
               AppState.mahasiswaData = parsed;
               renderDataTable(parsed);
-              DOM.totalMahasiswa.textContent = parsed.length + " BARIS";
+              DOM.totalMahasiswa.textContent = parsed.length + " baris";
               return;
             }
           }
           DOM.loadingData.innerHTML = `
-          <i class="fas fa-times-circle" style="font-size:22px;display:block;margin-bottom:12px;color:var(--blood);"></i>
-          <strong>Gagal Memuat</strong><br><br>
-          <span style="font-size:10px;font-style:italic;">${error.message}</span><br><br>
-          <button onclick="loadDataMahasiswa()" style="padding:8px 18px;border:2px solid var(--ink);background:var(--rice);font-family:'Shippori Mincho',serif;font-size:10px;letter-spacing:1.5px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);text-transform:uppercase;font-weight:700;">
-            ⟳ COBA LAGI
+          <i class="fas fa-times-circle" style="color:var(--terracotta);"></i>
+          Gagal memuat catatan<br>
+          <span style="font-size:11px;opacity:0.7;">${error.message}</span><br><br>
+          <button onclick="loadDataMahasiswa()" style="padding:10px 22px;background:transparent;border:1px solid var(--stone);color:var(--stone);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;">
+            Coba Lagi
           </button>
         `;
           setConnectionStatus("offline", "Terputus");
@@ -2101,7 +1837,7 @@
           link_sheet: SHEET_URL,
           timestamp: new Date().toISOString(),
         };
-        DOM.qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=0f0e0c&bgcolor=ffffff`;
+        DOM.qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=4a4a45&bgcolor=ffffff`;
       }
 
       function downloadQR() {
@@ -2132,7 +1868,7 @@
           link_sheet: SHEET_URL,
           timestamp: new Date().toISOString(),
         };
-        DOM.qrResultImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=0f0e0c&bgcolor=ffffff`;
+        DOM.qrResultImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=4a4a45&bgcolor=ffffff`;
         DOM.qrInfo.innerHTML = `
         <strong>NIM</strong>${mhs.nim}<br>
         <strong>Nama</strong>${mhs.nama}<br>
@@ -2174,7 +1910,7 @@
         if (DOM.btnStartScan) {
           DOM.btnStartScan.classList.add("stop");
           DOM.btnStartScan.innerHTML =
-            '<i class="fas fa-stop"></i> <span>Stop Scan</span>';
+            '<i class="fas fa-stop"></i> <span>Berhenti</span>';
         }
 
         try {
@@ -2196,7 +1932,7 @@
               AppState.scannerRunning = true;
               if (DOM.scanStatus)
                 DOM.scanStatus.innerHTML =
-                  '<i class="fas fa-crosshairs"></i> Memindai...';
+                  '<i class="fas fa-camera"></i> Memindai...';
               showStatus("Kamera aktif", "info", 2500);
             })
             .catch(() => {
@@ -2212,12 +1948,12 @@
                   showStatus("Kamera depan aktif", "info", 2500);
                 })
                 .catch(() => {
-                  showStatus("Gagal akses kamera", "error");
+                  showStatus("Gagal mengakses kamera", "error");
                   resetScannerButton();
                 });
             });
         } catch (e) {
-          showStatus("Scanner gagal dimuat", "error");
+          showStatus("Pemindai gagal dimuat", "error");
           resetScannerButton();
         }
       }
@@ -2245,7 +1981,7 @@
         if (!DOM.btnStartScan) return;
         DOM.btnStartScan.classList.remove("stop");
         DOM.btnStartScan.innerHTML =
-          '<i class="fas fa-play"></i> <span>Mulai Scan</span>';
+          '<i class="fas fa-play"></i> <span>Mulai Pindai</span>';
       }
 
       function onScanSuccess(decodedText) {
@@ -2265,7 +2001,7 @@
 
       async function processPresensi(qrData) {
         try {
-          showStatus("Memproses presensi...", "info", 5000);
+          showStatus("Memproses presensi", "info", 5000);
           let nim = "";
           try {
             const data = JSON.parse(qrData);
@@ -2318,21 +2054,21 @@
           presensiData[nim] = today;
           localStorage.setItem("presensiHariIni", JSON.stringify(presensiData));
 
-          showStatus(`◆ ${mhs.nama} tercatat hadir`, "success");
+          showStatus(`${mhs.nama} tercatat hadir`, "success");
           if (DOM.scanStatus)
-            DOM.scanStatus.innerHTML = '<i class="fas fa-check"></i> Hadir!';
-          if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Hadir ◆";
+            DOM.scanStatus.innerHTML = '<i class="fas fa-check"></i> Hadir';
+          if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Hadir";
 
           updateStatusInTable(nim);
           setTimeout(loadDataMahasiswa, 500);
         } catch (error) {
-          showStatus(`Error: ${error.message}`, "error");
+          showStatus(`Kesalahan: ${error.message}`, "error");
         } finally {
           setTimeout(() => {
             AppState.isProcessing = false;
             if (DOM.scanStatus)
               DOM.scanStatus.innerHTML =
-                '<i class="fas fa-crosshairs"></i> Arahkan ke QR Code';
+                '<i class="fas fa-camera"></i> Arahkan ke QR Code';
             if (!AppState.scannerRunning) startScanner();
           }, 3000);
         }
@@ -2374,13 +2110,13 @@
 
       async function init() {
         console.log(
-          "%c侍 PRESENSI KELAS · CYBER SAMURAI EDITION 侍",
-          "color:#b91c1c;background:#f5efe3;font-size:14px;font-weight:bold;padding:10px 20px;font-family:'Shippori Mincho',serif;letter-spacing:3px;border:2px solid #0f0e0c;",
+          "%c◦ Presensi Kelas · Zen Garden Edition ◦",
+          "color:#8a9a7b;background:#f7f3ec;font-size:14px;font-weight:500;padding:12px 24px;font-family:'Cormorant Garamond',serif;font-style:italic;letter-spacing:2px;border:1px solid #d9cdb8;",
         );
         generateQR();
         updateClock();
         updateStats();
-        if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Menunggu scan";
+        if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Menunggu";
 
         await checkConnection();
         await loadDataMahasiswa();
