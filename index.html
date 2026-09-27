@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Presensi Kelas · Deep Ocean v6</title>
+    <title>Presensi Kelas · Deep Ocean v7</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -16,8 +16,8 @@
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-      /* ==================== RESET ==================== */
       * {
         margin: 0;
         padding: 0;
@@ -39,18 +39,37 @@
         --glow-gold: #ffd966;
         --glow-orange: #ff9a3c;
 
+        --accent-1: #4dd9ff;
+        --accent-2: #5b8def;
+
         --text-main: #e6f4ff;
         --text-soft: #a8c8e8;
         --text-dim: #5a7ba8;
 
-        --glass: rgba(77, 217, 255, 0.08);
-        --glass-border: rgba(77, 217, 255, 0.25);
-
         --font-display: "Cinzel", serif;
         --font-body: "DM Sans", sans-serif;
+      }
 
-        --shadow-deep: 0 20px 60px rgba(0, 0, 0, 0.5);
-        --shadow-glow: 0 0 40px rgba(77, 217, 255, 0.2);
+      /* THEME ACCENT PRESETS */
+      body[data-accent="cyan"] {
+        --glow-cyan: #4dd9ff;
+        --glow-teal: #00ffc6;
+      }
+      body[data-accent="purple"] {
+        --glow-cyan: #a78bfa;
+        --glow-teal: #c4b5fd;
+      }
+      body[data-accent="pink"] {
+        --glow-cyan: #ff7ac6;
+        --glow-teal: #ff9ed4;
+      }
+      body[data-accent="gold"] {
+        --glow-cyan: #ffd966;
+        --glow-teal: #ffea8f;
+      }
+      body[data-accent="green"] {
+        --glow-cyan: #00ffc6;
+        --glow-teal: #4ade80;
       }
 
       body.light-mode {
@@ -60,8 +79,6 @@
         --text-main: #0a1628;
         --text-soft: #2a4a68;
         --text-dim: #5a7ba8;
-        --glass: rgba(91, 141, 239, 0.08);
-        --glass-border: rgba(91, 141, 239, 0.3);
       }
 
       html {
@@ -83,7 +100,6 @@
         transition: background 0.5s, color 0.5s;
       }
 
-      /* ==================== OCEAN BACKGROUND ==================== */
       .ocean-bg {
         position: fixed;
         inset: 0;
@@ -115,13 +131,7 @@
       }
 
       body.light-mode .ocean-bg {
-        background:
-          radial-gradient(
-            ellipse 60% 40% at 50% 0%,
-            rgba(91, 141, 239, 0.25) 0%,
-            transparent 60%
-          ),
-          linear-gradient(180deg, #e8f4fc 0%, #d4eaf5 50%, #c0dff0 100%);
+        background: linear-gradient(180deg, #e8f4fc 0%, #d4eaf5 50%, #c0dff0 100%);
       }
 
       .light-rays {
@@ -137,20 +147,15 @@
         top: -20%;
         width: 2px;
         height: 120vh;
-        background: linear-gradient(
-          180deg,
-          rgba(77, 217, 255, 0.4) 0%,
-          rgba(77, 217, 255, 0.1) 40%,
-          transparent 100%
-        );
+        background: linear-gradient(180deg, rgba(77, 217, 255, 0.4) 0%, transparent 100%);
         filter: blur(2px);
         animation: raySway 8s ease-in-out infinite;
       }
 
       .ray-1 { left: 15%; opacity: 0.6; }
-      .ray-2 { left: 35%; animation-delay: -2s; opacity: 0.4; width: 1px; }
-      .ray-3 { left: 55%; animation-delay: -4s; opacity: 0.5; width: 3px; }
-      .ray-4 { left: 75%; animation-delay: -6s; opacity: 0.35; width: 1px; }
+      .ray-2 { left: 35%; animation-delay: -2s; opacity: 0.4; }
+      .ray-3 { left: 55%; animation-delay: -4s; opacity: 0.5; }
+      .ray-4 { left: 75%; animation-delay: -6s; opacity: 0.35; }
       .ray-5 { left: 90%; animation-delay: -3s; opacity: 0.45; }
 
       @keyframes raySway {
@@ -158,7 +163,7 @@
         50% { transform: translateX(20px) skewX(2deg); opacity: 0.7; }
       }
 
-      .bubbles {
+      .bubbles, .plankton {
         position: fixed;
         inset: 0;
         z-index: 2;
@@ -170,59 +175,15 @@
         position: absolute;
         bottom: -50px;
         border-radius: 50%;
-        background: radial-gradient(
-          circle at 30% 30%,
-          rgba(255, 255, 255, 0.4) 0%,
-          rgba(77, 217, 255, 0.15) 30%,
-          rgba(77, 217, 255, 0.05) 70%,
-          transparent 100%
-        );
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, rgba(77, 217, 255, 0.15) 30%, transparent 100%);
         border: 1px solid rgba(77, 217, 255, 0.3);
-        box-shadow:
-          inset -2px -2px 8px rgba(77, 217, 255, 0.4),
-          0 0 20px rgba(77, 217, 255, 0.2);
         animation: bubbleRise linear infinite;
       }
 
       @keyframes bubbleRise {
-        0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
-        10% { opacity: 1; transform: translateY(-10vh) translateX(5px) scale(1); }
-        50% { transform: translateY(-50vh) translateX(-10px) scale(1); }
-        90% { opacity: 0.8; }
-        100% { transform: translateY(-110vh) translateX(15px) scale(1.1); opacity: 0; }
-      }
-
-      .fish {
-        position: fixed;
-        z-index: 2;
-        pointer-events: none;
-        font-size: 22px;
-        opacity: 0.15;
-        filter: blur(0.5px);
-        color: var(--glow-cyan);
-        text-shadow: 0 0 15px var(--glow-cyan);
-      }
-
-      .fish-1 { top: 25%; left: -60px; animation: swimRight 35s linear infinite; }
-      .fish-2 { top: 65%; left: -80px; font-size: 16px; animation: swimRight 45s linear infinite 8s; opacity: 0.12; }
-      .fish-3 { top: 45%; right: -60px; font-size: 18px; animation: swimLeft 40s linear infinite 5s; }
-
-      @keyframes swimRight {
-        0% { transform: translateX(0) scaleX(1); }
-        100% { transform: translateX(calc(100vw + 200px)) scaleX(1); }
-      }
-
-      @keyframes swimLeft {
-        0% { transform: translateX(0) scaleX(-1); }
-        100% { transform: translateX(calc(-100vw - 200px)) scaleX(-1); }
-      }
-
-      .plankton {
-        position: fixed;
-        inset: 0;
-        z-index: 3;
-        pointer-events: none;
-        overflow: hidden;
+        0% { transform: translateY(0) scale(0.5); opacity: 0; }
+        10% { opacity: 1; transform: translateY(-10vh) scale(1); }
+        100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
       }
 
       .plankton-dot {
@@ -237,9 +198,7 @@
 
       @keyframes planktonDrift {
         0%, 100% { transform: translate(0, 0); opacity: 0; }
-        25% { opacity: 1; }
         50% { transform: translate(30px, -40px); opacity: 0.6; }
-        75% { opacity: 1; }
       }
 
       /* ==================== TOGGLE CONTROLS ==================== */
@@ -284,54 +243,126 @@
         .toggle-btn { width: 38px; height: 38px; font-size: 14px; }
       }
 
+      /* ==================== KIOSK MODE ==================== */
+      body.kiosk-mode .aquarium .content > *:not(.kiosk-display),
+      body.kiosk-mode .header-badge,
+      body.kiosk-mode .subtitle,
+      body.kiosk-mode .footer {
+        display: none !important;
+      }
+
+      body.kiosk-mode .aquarium {
+        max-width: 100%;
+        border-radius: 20px;
+      }
+
+      body.kiosk-mode .header {
+        padding: 60px 30px 40px;
+      }
+
+      body.kiosk-mode h1 {
+        font-size: 56px;
+      }
+
+      body.kiosk-mode .clock-strip {
+        font-size: 28px;
+        padding: 16px 32px;
+      }
+
+      .kiosk-display {
+        display: none;
+      }
+
+      body.kiosk-mode .kiosk-display {
+        display: block;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .kiosk-display .kiosk-qr {
+        width: 400px;
+        height: 400px;
+        max-width: 90vw;
+        background: #fff;
+        padding: 20px;
+        border-radius: 24px;
+        margin: 0 auto 30px;
+        box-shadow: 0 0 80px rgba(77, 217, 255, 0.5);
+        animation: kioskPulse 3s ease-in-out infinite;
+      }
+
+      @keyframes kioskPulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 80px rgba(77, 217, 255, 0.5); }
+        50% { transform: scale(1.03); box-shadow: 0 0 120px rgba(77, 217, 255, 0.7); }
+      }
+
+      .kiosk-display .kiosk-text {
+        font-family: var(--font-display);
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--glow-cyan);
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        text-shadow: 0 0 30px currentColor;
+      }
+
+      .kiosk-display .kiosk-stats {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+      }
+
+      .kiosk-display .kiosk-stat {
+        text-align: center;
+      }
+
+      .kiosk-display .kiosk-stat .n {
+        font-family: var(--font-display);
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--glow-teal);
+        text-shadow: 0 0 30px currentColor;
+        line-height: 1;
+      }
+
+      .kiosk-display .kiosk-stat .l {
+        font-size: 12px;
+        letter-spacing: 3px;
+        color: var(--text-soft);
+        text-transform: uppercase;
+        margin-top: 8px;
+      }
+
       /* ==================== MAIN AQUARIUM ==================== */
       .aquarium {
         position: relative;
         z-index: 10;
         max-width: 560px;
         width: 100%;
-        background: linear-gradient(
-          180deg,
-          rgba(13, 31, 58, 0.85) 0%,
-          rgba(10, 22, 40, 0.95) 100%
-        );
+        background: linear-gradient(180deg, rgba(13, 31, 58, 0.85) 0%, rgba(10, 22, 40, 0.95) 100%);
         backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
         border-radius: 30px;
-        padding: 0;
-        border: 2px solid var(--glass-border);
-        box-shadow:
-          var(--shadow-deep),
-          inset 0 1px 0 rgba(255, 255, 255, 0.1),
-          0 0 0 6px rgba(77, 217, 255, 0.05),
-          0 0 60px rgba(77, 217, 255, 0.15);
+        border: 2px solid rgba(77, 217, 255, 0.25);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 60px rgba(77, 217, 255, 0.15);
         animation: aquariumFloat 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         overflow: hidden;
       }
 
       body.light-mode .aquarium {
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.85) 0%,
-          rgba(232, 244, 252, 0.95) 100%
-        );
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(232, 244, 252, 0.95) 100%);
       }
 
       @keyframes aquariumFloat {
-        from { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(10px); }
-        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        from { opacity: 0; transform: translateY(40px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
       }
 
       .water-surface {
         height: 8px;
-        background: linear-gradient(
-          90deg,
-          transparent 0%,
-          rgba(77, 217, 255, 0.4) 20%,
-          rgba(0, 255, 198, 0.3) 50%,
-          rgba(167, 139, 250, 0.4) 80%,
-          transparent 100%
-        );
+        background: linear-gradient(90deg, transparent 0%, rgba(77, 217, 255, 0.4) 20%, rgba(0, 255, 198, 0.3) 50%, rgba(167, 139, 250, 0.4) 80%, transparent 100%);
         box-shadow: 0 0 30px rgba(77, 217, 255, 0.4);
         animation: surfaceShimmer 4s ease-in-out infinite;
       }
@@ -341,30 +372,11 @@
         50% { opacity: 1; }
       }
 
-      /* ==================== HEADER ==================== */
       .header {
         padding: 40px 30px 30px;
         text-align: center;
         position: relative;
         border-bottom: 1px solid rgba(77, 217, 255, 0.15);
-      }
-
-      .header::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(77, 217, 255, 0.15) 0%, transparent 60%);
-        pointer-events: none;
-        animation: headerGlow 4s ease-in-out infinite;
-      }
-
-      @keyframes headerGlow {
-        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.6; }
-        50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
       }
 
       .header-badge {
@@ -375,23 +387,18 @@
         background: rgba(77, 217, 255, 0.08);
         border: 1px solid rgba(77, 217, 255, 0.3);
         border-radius: 30px;
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 3px;
         color: var(--glow-cyan);
         text-transform: uppercase;
         margin-bottom: 18px;
-        position: relative;
-        z-index: 2;
         box-shadow: 0 0 20px rgba(77, 217, 255, 0.2);
       }
 
       .header-badge i { animation: bubbleRotate 3s linear infinite; }
 
-      @keyframes bubbleRotate {
-        to { transform: rotate(360deg); }
-      }
+      @keyframes bubbleRotate { to { transform: rotate(360deg); } }
 
       h1 {
         font-family: var(--font-display);
@@ -401,8 +408,6 @@
         letter-spacing: 1px;
         color: var(--text-main);
         margin-bottom: 8px;
-        position: relative;
-        z-index: 2;
         text-shadow: 0 0 30px rgba(77, 217, 255, 0.5);
       }
 
@@ -421,21 +426,17 @@
       }
 
       .subtitle {
-        font-family: var(--font-body);
         font-weight: 300;
         font-size: 12px;
         letter-spacing: 4px;
         text-transform: uppercase;
         color: var(--text-soft);
-        position: relative;
-        z-index: 2;
         display: inline-flex;
         align-items: center;
         gap: 10px;
       }
 
-      .subtitle::before,
-      .subtitle::after {
+      .subtitle::before, .subtitle::after {
         content: "";
         width: 24px;
         height: 1px;
@@ -444,7 +445,6 @@
 
       .clock-strip {
         display: inline-flex;
-        justify-content: center;
         align-items: center;
         gap: 12px;
         margin-top: 22px;
@@ -457,8 +457,6 @@
         font-weight: 500;
         letter-spacing: 3px;
         color: var(--glow-cyan);
-        position: relative;
-        z-index: 2;
       }
 
       .clock-strip .pulse-orb {
@@ -475,12 +473,10 @@
         50% { transform: scale(0.6); opacity: 0.5; }
       }
 
-      /* ==================== CONTENT ==================== */
       .content {
         padding: 30px 28px 34px;
       }
 
-      /* ==================== SECTION TITLE ==================== */
       .sec-title {
         display: flex;
         align-items: center;
@@ -492,7 +488,6 @@
         color: var(--glow-cyan);
         text-transform: uppercase;
         margin: 14px 0 18px;
-        position: relative;
       }
 
       .sec-title::before {
@@ -528,8 +523,6 @@
         text-align: center;
         position: relative;
         transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        backdrop-filter: blur(10px);
-        overflow: hidden;
       }
 
       .stat-card::before {
@@ -542,18 +535,6 @@
         height: 2px;
         background: linear-gradient(90deg, transparent, var(--glow-cyan), transparent);
         box-shadow: 0 0 10px var(--glow-cyan);
-      }
-
-      .stat-card::after {
-        content: "";
-        position: absolute;
-        bottom: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 4px;
-        height: 20px;
-        background: linear-gradient(180deg, rgba(77, 217, 255, 0.6), transparent);
-        filter: blur(1px);
       }
 
       .stat-card:hover {
@@ -589,7 +570,6 @@
       .stat-card.belum .num { color: var(--glow-pink); }
 
       .stat-card .lbl {
-        font-family: var(--font-body);
         font-size: 9px;
         font-weight: 500;
         letter-spacing: 2.5px;
@@ -597,90 +577,174 @@
         text-transform: uppercase;
       }
 
-      /* ==================== PROGRESS CHART ==================== */
-      .chart-panel {
+      /* ==================== WEEKLY CHART ==================== */
+      .weekly-panel {
         background: rgba(77, 217, 255, 0.05);
         border: 1px solid rgba(77, 217, 255, 0.2);
         border-radius: 20px;
         padding: 18px 20px;
         margin-bottom: 22px;
+      }
+
+      .weekly-chart {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 8px;
+        height: 120px;
+        margin-top: 14px;
+        padding-bottom: 24px;
         position: relative;
       }
 
-      .chart-panel::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 24px;
-        right: 24px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--glow-teal), transparent);
-      }
-
-      .chart-head {
+      .weekly-bar-wrap {
+        flex: 1;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
-        margin-bottom: 14px;
+        height: 100%;
+        justify-content: flex-end;
+        position: relative;
       }
 
-      .chart-head .chart-label {
+      .weekly-bar {
+        width: 100%;
+        max-width: 32px;
+        background: linear-gradient(180deg, var(--glow-teal) 0%, var(--glow-cyan) 100%);
+        border-radius: 6px 6px 3px 3px;
+        transition: height 1s cubic-bezier(0.16, 1, 0.3, 1);
+        min-height: 4px;
+        box-shadow: 0 0 12px rgba(0, 255, 198, 0.4);
+        position: relative;
+      }
+
+      .weekly-bar.empty {
+        background: rgba(90, 123, 168, 0.25);
+        box-shadow: none;
+      }
+
+      .weekly-bar:hover {
+        filter: brightness(1.3);
+      }
+
+      .weekly-bar-wrap .day-label {
+        position: absolute;
+        bottom: -22px;
         font-family: var(--font-body);
-        font-size: 11px;
-        font-weight: 500;
-        letter-spacing: 2.5px;
-        color: var(--text-soft);
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-dim);
+        letter-spacing: 1px;
         text-transform: uppercase;
       }
 
-      .chart-head .chart-pct {
-        font-family: var(--font-display);
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--glow-teal);
-        text-shadow: 0 0 15px var(--glow-teal);
-      }
-
-      .chart-bar {
-        height: 10px;
-        background: rgba(10, 22, 40, 0.6);
-        border-radius: 5px;
-        overflow: hidden;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
-
-      .chart-fill {
-        height: 100%;
-        width: 0%;
-        background: linear-gradient(90deg, var(--glow-teal) 0%, var(--glow-cyan) 50%, var(--glow-purple) 100%);
-        border-radius: 5px;
-        transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 0 15px rgba(0, 255, 198, 0.5);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .chart-fill::after {
-        content: "";
+      .weekly-bar-wrap .bar-value {
         position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-        animation: shimmerBar 2.5s ease-in-out infinite;
+        top: -6px;
+        font-family: var(--font-display);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--glow-teal);
       }
 
-      @keyframes shimmerBar {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
+      .weekly-bar-wrap.today .day-label {
+        color: var(--glow-gold);
+        font-weight: 700;
       }
 
-      .chart-sub {
+      .weekly-bar-wrap.today .weekly-bar {
+        background: linear-gradient(180deg, var(--glow-gold) 0%, var(--glow-orange) 100%);
+        box-shadow: 0 0 15px rgba(255, 217, 102, 0.5);
+      }
+
+      /* ==================== LEADERBOARD ==================== */
+      .leaderboard-panel {
+        background: rgba(77, 217, 255, 0.05);
+        border: 1px solid rgba(77, 217, 255, 0.2);
+        border-radius: 20px;
+        padding: 18px 20px;
+        margin-bottom: 22px;
+      }
+
+      .leaderboard-list {
         display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        font-family: var(--font-body);
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .lb-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        background: rgba(10, 22, 40, 0.4);
+        border-radius: 12px;
+        transition: all 0.3s;
+      }
+
+      .lb-item:hover {
+        background: rgba(77, 217, 255, 0.1);
+        transform: translateX(4px);
+      }
+
+      .lb-rank {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-display);
+        font-size: 12px;
+        font-weight: 700;
+        background: rgba(90, 123, 168, 0.2);
+        color: var(--text-soft);
+        flex-shrink: 0;
+      }
+
+      .lb-item.gold .lb-rank {
+        background: linear-gradient(135deg, #ffd966, #ff9a3c);
+        color: var(--deep-1);
+        box-shadow: 0 0 15px rgba(255, 217, 102, 0.5);
+      }
+      .lb-item.silver .lb-rank {
+        background: linear-gradient(135deg, #e0e8f0, #a8b8c8);
+        color: var(--deep-1);
+      }
+      .lb-item.bronze .lb-rank {
+        background: linear-gradient(135deg, #cd7f32, #a05a1c);
+        color: #fff;
+      }
+
+      .lb-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .lb-name {
+        font-family: var(--font-display);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .lb-sub {
         font-size: 10px;
         color: var(--text-dim);
         letter-spacing: 1px;
+        margin-top: 2px;
+      }
+
+      .lb-count {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--glow-teal);
+        text-shadow: 0 0 12px var(--glow-teal);
       }
 
       /* ==================== CALENDAR ==================== */
@@ -690,19 +754,6 @@
         border-radius: 20px;
         padding: 20px;
         margin-bottom: 22px;
-        position: relative;
-        backdrop-filter: blur(10px);
-      }
-
-      .calendar-panel::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 30px;
-        right: 30px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--glow-purple), transparent);
-        box-shadow: 0 0 10px var(--glow-purple);
       }
 
       .cal-header {
@@ -719,13 +770,9 @@
         letter-spacing: 2px;
         color: var(--glow-cyan);
         text-transform: uppercase;
-        text-shadow: 0 0 15px rgba(77, 217, 255, 0.4);
       }
 
-      .cal-nav {
-        display: flex;
-        gap: 6px;
-      }
+      .cal-nav { display: flex; gap: 6px; }
 
       .cal-nav-btn {
         width: 32px;
@@ -744,13 +791,7 @@
 
       .cal-nav-btn:hover {
         background: rgba(77, 217, 255, 0.2);
-        border-color: var(--glow-cyan);
         transform: scale(1.1);
-        box-shadow: 0 0 15px rgba(77, 217, 255, 0.4);
-      }
-
-      .cal-nav-btn:active {
-        transform: scale(0.95);
       }
 
       .cal-weekdays {
@@ -762,7 +803,6 @@
 
       .cal-weekday {
         text-align: center;
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 600;
         letter-spacing: 1px;
@@ -771,9 +811,7 @@
         padding: 6px 0;
       }
 
-      .cal-weekday.weekend {
-        color: var(--glow-pink);
-      }
+      .cal-weekday.weekend { color: var(--glow-pink); }
 
       .cal-days {
         display: grid;
@@ -787,13 +825,12 @@
         align-items: center;
         justify-content: center;
         border-radius: 10px;
-        font-family: var(--font-body);
         font-size: 12px;
         font-weight: 500;
         color: var(--text-soft);
         cursor: pointer;
         position: relative;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.3s;
         background: rgba(77, 217, 255, 0.03);
         border: 1px solid transparent;
         user-select: none;
@@ -803,26 +840,16 @@
         background: rgba(77, 217, 255, 0.15);
         border-color: var(--glow-cyan);
         transform: scale(1.08);
-        z-index: 2;
         color: var(--text-main);
       }
 
-      .cal-day.empty {
-        cursor: default;
-        background: transparent;
-        opacity: 0.2;
-      }
+      .cal-day.empty { cursor: default; background: transparent; opacity: 0.2; }
 
       .cal-day.today {
         background: rgba(255, 217, 102, 0.15);
         border: 2px solid var(--glow-gold);
         color: var(--glow-gold);
         font-weight: 700;
-        box-shadow: 0 0 15px rgba(255, 217, 102, 0.4);
-      }
-
-      .cal-day.has-event {
-        position: relative;
       }
 
       .cal-day.has-event::after {
@@ -843,35 +870,14 @@
         box-shadow: 0 0 8px var(--glow-gold);
       }
 
-      .cal-day.has-event.full::after {
-        background: var(--glow-teal);
-        box-shadow: 0 0 8px var(--glow-teal);
-        width: 8px;
-        height: 8px;
-        bottom: 2px;
-      }
-
       .cal-day.selected {
         background: linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
         color: var(--deep-1);
         font-weight: 700;
         box-shadow: 0 0 20px rgba(77, 217, 255, 0.6);
-        transform: scale(1.05);
-        border-color: transparent;
       }
 
-      .cal-day.selected::after {
-        background: var(--deep-1);
-        box-shadow: none;
-      }
-
-      .cal-day.weekend {
-        color: var(--glow-pink);
-      }
-
-      .cal-day.weekend.today {
-        color: var(--glow-gold);
-      }
+      .cal-day.weekend { color: var(--glow-pink); }
 
       .cal-legend {
         display: flex;
@@ -887,7 +893,6 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        font-family: var(--font-body);
         font-size: 10px;
         color: var(--text-soft);
         letter-spacing: 1px;
@@ -904,34 +909,29 @@
         background: var(--glow-teal);
         box-shadow: 0 0 8px var(--glow-teal);
       }
-
       .cal-legend-dot.partial {
         background: var(--glow-gold);
         box-shadow: 0 0 8px var(--glow-gold);
       }
-
       .cal-legend-dot.today {
         background: var(--glow-gold);
         border: 1.5px solid var(--glow-gold);
-        box-shadow: 0 0 8px var(--glow-gold);
       }
 
-      /* Detail panel for selected date */
       .cal-detail {
         margin-top: 12px;
         padding: 12px 14px;
         background: rgba(10, 22, 40, 0.6);
         border-left: 3px solid var(--glow-cyan);
         border-radius: 8px;
-        font-family: var(--font-body);
         font-size: 12px;
         color: var(--text-soft);
         display: none;
-        animation: softSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
       .cal-detail.show {
         display: block;
+        animation: softSlide 0.3s;
       }
 
       @keyframes softSlide {
@@ -979,7 +979,6 @@
       .cal-detail .detail-badge.empty {
         background: rgba(90, 123, 168, 0.15);
         color: var(--text-dim);
-        border: 1px solid rgba(90, 123, 168, 0.3);
       }
 
       /* ==================== QR BUBBLE ==================== */
@@ -1020,9 +1019,7 @@
         pointer-events: none;
       }
 
-      @keyframes spinRing {
-        to { transform: translate(-50%, -50%) rotate(360deg); }
-      }
+      @keyframes spinRing { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
       #qrImage {
         width: 185px;
@@ -1038,13 +1035,10 @@
         transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      #qrImage:hover {
-        transform: scale(1.05) rotate(2deg);
-      }
+      #qrImage:hover { transform: scale(1.05) rotate(2deg); }
 
       .qr-caption {
         margin-top: 16px;
-        font-family: var(--font-body);
         font-size: 12px;
         font-weight: 300;
         letter-spacing: 3px;
@@ -1057,10 +1051,7 @@
         gap: 8px;
       }
 
-      .qr-caption i {
-        color: var(--glow-teal);
-        animation: bob 2s ease-in-out infinite;
-      }
+      .qr-caption i { color: var(--glow-teal); animation: bob 2s ease-in-out infinite; }
 
       /* ==================== BUTTONS ==================== */
       .btn-row {
@@ -1076,7 +1067,6 @@
         border: 1px solid rgba(77, 217, 255, 0.25);
         border-radius: 16px;
         color: var(--text-soft);
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 1.5px;
@@ -1088,7 +1078,6 @@
         align-items: center;
         gap: 8px;
         text-decoration: none;
-        backdrop-filter: blur(8px);
       }
 
       .bubble-btn i {
@@ -1122,7 +1111,6 @@
         border: 1px solid rgba(77, 217, 255, 0.2);
         border-radius: 14px;
         color: var(--text-soft);
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 1.5px;
@@ -1135,10 +1123,7 @@
         gap: 8px;
       }
 
-      .quick-btn i {
-        color: var(--glow-cyan);
-        font-size: 13px;
-      }
+      .quick-btn i { color: var(--glow-cyan); font-size: 13px; }
 
       .quick-btn:hover {
         background: rgba(77, 217, 255, 0.12);
@@ -1149,6 +1134,45 @@
 
       .quick-btn.export i { color: var(--glow-teal); }
       .quick-btn.history i { color: var(--glow-gold); }
+      .quick-btn.share i { color: var(--glow-purple); }
+      .quick-btn.kiosk i { color: var(--glow-orange); }
+      .quick-btn.print i { color: var(--glow-pink); }
+      .quick-btn.batch i { color: var(--glow-cyan); }
+
+      /* ==================== ACCENT PICKER ==================== */
+      .accent-picker {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 22px;
+        padding: 14px 20px;
+        background: rgba(77, 217, 255, 0.05);
+        border: 1px solid rgba(77, 217, 255, 0.15);
+        border-radius: 16px;
+      }
+
+      .accent-dot {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+      }
+
+      .accent-dot:hover { transform: scale(1.15); }
+
+      .accent-dot.active {
+        border-color: var(--text-main);
+        box-shadow: 0 0 15px currentColor;
+      }
+
+      .accent-dot.cyan { background: linear-gradient(135deg, #4dd9ff, #00ffc6); }
+      .accent-dot.purple { background: linear-gradient(135deg, #a78bfa, #c4b5fd); }
+      .accent-dot.pink { background: linear-gradient(135deg, #ff7ac6, #ff9ed4); }
+      .accent-dot.gold { background: linear-gradient(135deg, #ffd966, #ffea8f); }
+      .accent-dot.green { background: linear-gradient(135deg, #00ffc6, #4ade80); }
 
       /* ==================== GENERATE ==================== */
       .gen-panel {
@@ -1157,22 +1181,9 @@
         border-radius: 20px;
         padding: 20px;
         margin-bottom: 26px;
-        position: relative;
-      }
-
-      .gen-panel::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 30px;
-        right: 30px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--glow-teal), transparent);
-        box-shadow: 0 0 10px var(--glow-teal);
       }
 
       .gen-label {
-        font-family: var(--font-body);
         font-size: 11px;
         font-weight: 500;
         letter-spacing: 3px;
@@ -1186,10 +1197,7 @@
 
       .gen-label i { animation: bubbleRotate 4s linear infinite; }
 
-      .input-row {
-        display: flex;
-        gap: 8px;
-      }
+      .input-row { display: flex; gap: 8px; }
 
       .input-row input {
         flex: 1;
@@ -1203,15 +1211,11 @@
         transition: all 0.3s;
       }
 
-      .input-row input::placeholder {
-        color: var(--text-dim);
-        font-style: italic;
-      }
+      .input-row input::placeholder { color: var(--text-dim); font-style: italic; }
 
       .input-row input:focus {
         outline: none;
         border-color: var(--glow-cyan);
-        background: rgba(10, 22, 40, 0.85);
         box-shadow: 0 0 0 3px rgba(77, 217, 255, 0.15);
       }
 
@@ -1227,7 +1231,7 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: all 0.4s;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -1253,12 +1257,12 @@
 
       .qr-preview.show {
         display: block !important;
-        animation: bubblePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: bubblePop 0.5s;
       }
 
       @keyframes bubblePop {
-        0% { opacity: 0; transform: scale(0.6); filter: blur(8px); }
-        100% { opacity: 1; transform: scale(1); filter: blur(0); }
+        0% { opacity: 0; transform: scale(0.6); }
+        100% { opacity: 1; transform: scale(1); }
       }
 
       .qr-preview img {
@@ -1267,11 +1271,9 @@
         padding: 8px;
         border-radius: 12px;
         margin-bottom: 14px;
-        box-shadow: 0 0 30px rgba(77, 217, 255, 0.3);
       }
 
       .qr-preview .qr-info {
-        font-family: var(--font-body);
         font-size: 12px;
         line-height: 2;
         text-align: left;
@@ -1303,7 +1305,6 @@
       .qr-actions button {
         padding: 11px;
         border-radius: 12px;
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 600;
         letter-spacing: 2px;
@@ -1316,7 +1317,6 @@
       .qr-actions button:first-child {
         background: linear-gradient(135deg, var(--glow-teal), var(--glow-cyan));
         color: var(--deep-1);
-        box-shadow: 0 4px 15px rgba(0, 255, 198, 0.3);
       }
 
       .qr-actions button:last-child {
@@ -1325,8 +1325,55 @@
         border: 1px solid rgba(255, 122, 198, 0.4);
       }
 
-      .qr-actions button:hover {
-        transform: translateY(-2px);
+      /* ==================== BATCH GENERATE ==================== */
+      .batch-panel {
+        display: none;
+        margin-top: 14px;
+        padding: 16px;
+        background: rgba(10, 22, 40, 0.6);
+        border: 1px solid rgba(77, 217, 255, 0.3);
+        border-radius: 14px;
+      }
+
+      .batch-panel.show { display: block; }
+
+      .batch-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        margin-top: 12px;
+      }
+
+      .batch-item {
+        background: #fff;
+        padding: 6px;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .batch-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(77, 217, 255, 0.5);
+      }
+
+      .batch-item img {
+        width: 100%;
+        display: block;
+        border-radius: 4px;
+      }
+
+      .batch-item .bname {
+        font-size: 8px;
+        color: #0a1628;
+        font-weight: 600;
+        margin-top: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       /* ==================== CONNECTION ==================== */
@@ -1339,7 +1386,6 @@
         background: rgba(77, 217, 255, 0.05);
         border: 1px solid rgba(77, 217, 255, 0.15);
         border-radius: 30px;
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 3px;
@@ -1357,19 +1403,19 @@
 
       .dot.online {
         background: var(--glow-teal);
-        box-shadow: 0 0 10px var(--glow-teal), 0 0 20px var(--glow-teal);
+        box-shadow: 0 0 10px var(--glow-teal);
         animation: orbPulse 2s ease-in-out infinite;
       }
 
       .dot.offline {
         background: var(--glow-pink);
-        box-shadow: 0 0 10px var(--glow-pink), 0 0 20px var(--glow-pink);
+        box-shadow: 0 0 10px var(--glow-pink);
         animation: orbPulse 1s ease-in-out infinite;
       }
 
       .dot.checking {
         background: var(--glow-gold);
-        box-shadow: 0 0 10px var(--glow-gold), 0 0 20px var(--glow-gold);
+        box-shadow: 0 0 10px var(--glow-gold);
         animation: orbPulse 0.6s ease-in-out infinite;
       }
 
@@ -1380,12 +1426,10 @@
         gap: 12px;
         padding: 14px 20px;
         border-radius: 16px;
-        font-family: var(--font-body);
         font-size: 11px;
         font-weight: 500;
         letter-spacing: 1px;
         margin-bottom: 20px;
-        animation: bubblePop 0.4s ease;
         border: 1px solid;
       }
 
@@ -1424,15 +1468,6 @@
         border: 1px solid rgba(77, 217, 255, 0.2);
       }
 
-      .scanner-shell::before {
-        content: "";
-        position: absolute;
-        inset: 4px;
-        border-radius: 20px;
-        border: 1px solid rgba(77, 217, 255, 0.1);
-        pointer-events: none;
-      }
-
       .scanner-inner {
         background: #000;
         border-radius: 16px;
@@ -1450,21 +1485,15 @@
       #qr-reader video {
         width: 100% !important;
         height: auto !important;
-        border-radius: 0 !important;
         display: block !important;
         filter: contrast(1.1) saturate(1.15) hue-rotate(-10deg);
       }
 
       #qr-reader > div:not(:first-child) { display: none !important; }
-      #qr-reader > div:first-child { width: 100% !important; height: auto !important; }
-      #qr-reader > div:first-child > div:first-child { width: 100% !important; height: auto !important; }
+      #qr-reader > div:first-child { width: 100% !important; }
+      #qr-reader > div:first-child > div:first-child { width: 100% !important; }
 
-      .scan-overlay {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 10;
-      }
+      .scan-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
 
       .scan-target {
         position: absolute;
@@ -1487,9 +1516,9 @@
       }
 
       .scan-corner-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
-      .scan-corner-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; border-color: var(--glow-teal); box-shadow: 0 0 15px var(--glow-teal); }
-      .scan-corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; border-color: var(--glow-purple); box-shadow: 0 0 15px var(--glow-purple); }
-      .scan-corner-br { bottom: -2px; right: -2px; border-left: none; border-top: none; border-color: var(--glow-pink); box-shadow: 0 0 15px var(--glow-pink); }
+      .scan-corner-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; border-color: var(--glow-teal); }
+      .scan-corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; border-color: var(--glow-purple); }
+      .scan-corner-br { bottom: -2px; right: -2px; border-left: none; border-top: none; border-color: var(--glow-pink); }
 
       .scan-beam {
         position: absolute;
@@ -1514,11 +1543,9 @@
         transform: translateX(-50%);
         padding: 8px 18px;
         background: rgba(10, 22, 40, 0.9);
-        backdrop-filter: blur(10px);
         border: 1px solid rgba(77, 217, 255, 0.4);
         border-radius: 30px;
         color: var(--glow-cyan);
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 3px;
@@ -1530,9 +1557,7 @@
         gap: 8px;
       }
 
-      .scan-hint i { animation: bob 1.8s ease-in-out infinite; }
-
-      /* ==================== SCANNER CONTROLS ==================== */
+      /* ==================== SCAN CONTROLS ==================== */
       .scan-controls {
         display: grid;
         grid-template-columns: 2fr 1fr;
@@ -1543,13 +1568,11 @@
       .scan-controls button {
         padding: 15px;
         border-radius: 16px;
-        font-family: var(--font-body);
         font-size: 11px;
         font-weight: 600;
         letter-spacing: 2.5px;
         text-transform: uppercase;
         cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1570,10 +1593,7 @@
         50% { background-position: 100% 50%; }
       }
 
-      .btn-scan-ocean:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 35px rgba(77, 217, 255, 0.6);
-      }
+      .btn-scan-ocean:hover { transform: translateY(-3px); }
 
       .btn-scan-ocean.stop {
         background: linear-gradient(135deg, var(--glow-pink) 0%, #ff5a7a 100%);
@@ -1589,7 +1609,6 @@
       .btn-flash-ocean.active {
         background: linear-gradient(135deg, var(--glow-gold) 0%, var(--glow-orange) 100%);
         color: var(--deep-1);
-        box-shadow: 0 0 30px rgba(255, 217, 102, 0.6);
       }
 
       /* ==================== DATA TABLE ==================== */
@@ -1603,7 +1622,7 @@
 
       .data-head {
         padding: 14px 20px;
-        background: linear-gradient(90deg, rgba(77, 217, 255, 0.1) 0%, rgba(167, 139, 250, 0.08) 100%);
+        background: linear-gradient(90deg, rgba(77, 217, 255, 0.1), rgba(167, 139, 250, 0.08));
         border-bottom: 1px solid rgba(77, 217, 255, 0.15);
         display: flex;
         justify-content: space-between;
@@ -1621,20 +1640,13 @@
         background: rgba(77, 217, 255, 0.15);
         border: 1px solid rgba(77, 217, 255, 0.3);
         border-radius: 20px;
-        font-family: var(--font-body);
         font-size: 10px;
-        font-weight: 500;
         color: var(--glow-cyan);
-        letter-spacing: 1.5px;
       }
 
-      .table-wrap {
-        max-height: 280px;
-        overflow-y: auto;
-      }
+      .table-wrap { max-height: 280px; overflow-y: auto; }
 
       .table-wrap::-webkit-scrollbar { width: 6px; }
-      .table-wrap::-webkit-scrollbar-track { background: transparent; }
       .table-wrap::-webkit-scrollbar-thumb {
         background: linear-gradient(var(--glow-cyan), var(--glow-purple));
         border-radius: 3px;
@@ -1643,7 +1655,6 @@
       .data-shell table {
         width: 100%;
         border-collapse: collapse;
-        font-family: var(--font-body);
         font-size: 12px;
       }
 
@@ -1661,15 +1672,12 @@
         position: sticky;
         top: 0;
         z-index: 2;
-        backdrop-filter: blur(8px);
       }
 
       .data-shell td {
         padding: 12px 14px;
         border-bottom: 1px solid rgba(77, 217, 255, 0.06);
         color: var(--text-soft);
-        font-weight: 400;
-        transition: all 0.2s;
       }
 
       .data-shell tbody tr:hover td {
@@ -1680,9 +1688,7 @@
       .data-shell td strong {
         font-family: var(--font-display);
         font-size: 12px;
-        font-weight: 600;
         color: var(--glow-cyan);
-        letter-spacing: 0.5px;
       }
 
       .status-hadir {
@@ -1694,7 +1700,6 @@
         border: 1px solid rgba(0, 255, 198, 0.4);
         border-radius: 20px;
         color: var(--glow-teal);
-        font-family: var(--font-body);
         font-size: 9px;
         font-weight: 600;
         letter-spacing: 1.5px;
@@ -1710,7 +1715,6 @@
         border: 1px solid rgba(90, 123, 168, 0.3);
         border-radius: 20px;
         color: var(--text-dim);
-        font-family: var(--font-body);
         font-size: 9px;
         font-weight: 600;
         letter-spacing: 1.5px;
@@ -1724,16 +1728,12 @@
         font-style: italic;
         font-size: 14px;
         color: var(--text-soft);
-        letter-spacing: 1px;
       }
 
       .loading-text i { color: var(--glow-cyan); margin-right: 10px; }
 
       /* ==================== SEARCH ==================== */
-      .search-wrap {
-        position: relative;
-        margin-bottom: 16px;
-      }
+      .search-wrap { position: relative; margin-bottom: 16px; }
 
       .search-wrap input {
         width: 100%;
@@ -1744,14 +1744,9 @@
         color: var(--text-main);
         font-family: var(--font-body);
         font-size: 13px;
-        transition: all 0.3s;
       }
 
-      .search-wrap input::placeholder {
-        color: var(--text-dim);
-        font-style: italic;
-      }
-
+      .search-wrap input::placeholder { color: var(--text-dim); font-style: italic; }
       .search-wrap input:focus {
         outline: none;
         border-color: var(--glow-cyan);
@@ -1765,7 +1760,6 @@
         transform: translateY(-50%);
         color: var(--glow-cyan);
         font-size: 14px;
-        pointer-events: none;
       }
 
       .search-wrap .clear-btn {
@@ -1795,19 +1789,12 @@
         padding-bottom: 6px;
       }
 
-      .filter-tabs::-webkit-scrollbar { height: 3px; }
-      .filter-tabs::-webkit-scrollbar-thumb {
-        background: rgba(77, 217, 255, 0.3);
-        border-radius: 2px;
-      }
-
       .filter-tab {
         padding: 8px 16px;
         background: rgba(77, 217, 255, 0.06);
         border: 1px solid rgba(77, 217, 255, 0.2);
         border-radius: 20px;
         color: var(--text-soft);
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 1.5px;
@@ -1826,7 +1813,6 @@
         background: linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
         color: var(--deep-1);
         border-color: transparent;
-        box-shadow: 0 4px 15px rgba(77, 217, 255, 0.4);
       }
 
       /* ==================== MODAL ==================== */
@@ -1840,15 +1826,9 @@
         align-items: center;
         justify-content: center;
         padding: 20px;
-        animation: fadeIn 0.3s;
       }
 
       .modal-overlay.show { display: flex; }
-
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
 
       .modal {
         background: linear-gradient(180deg, rgba(13, 31, 58, 0.98), rgba(10, 22, 40, 0.98));
@@ -1858,15 +1838,14 @@
         width: 100%;
         max-height: 80vh;
         overflow: hidden;
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(77, 217, 255, 0.2);
-        animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         display: flex;
         flex-direction: column;
+        animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
       @keyframes modalPop {
-        from { opacity: 0; transform: scale(0.85) translateY(20px); }
-        to { opacity: 1; transform: scale(1) translateY(0); }
+        from { opacity: 0; transform: scale(0.85); }
+        to { opacity: 1; transform: scale(1); }
       }
 
       .modal-head {
@@ -1900,8 +1879,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s;
         font-size: 14px;
+        transition: all 0.3s;
       }
 
       .modal-close:hover {
@@ -1944,11 +1923,9 @@
         color: var(--glow-cyan);
         letter-spacing: 1.5px;
         margin-bottom: 6px;
-        text-transform: uppercase;
       }
 
       .history-count {
-        font-family: var(--font-body);
         font-size: 12px;
         color: var(--text-soft);
         display: flex;
@@ -1967,13 +1944,77 @@
         font-weight: 600;
       }
 
+      /* ==================== SETTINGS PANEL ==================== */
+      .setting-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 4px;
+        border-bottom: 1px solid rgba(77, 217, 255, 0.1);
+      }
+
+      .setting-item:last-child { border-bottom: none; }
+
+      .setting-item label {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        color: var(--text-soft);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .setting-item label i { color: var(--glow-cyan); font-size: 14px; }
+
+      .switch {
+        position: relative;
+        width: 48px;
+        height: 26px;
+        background: rgba(90, 123, 168, 0.3);
+        border-radius: 13px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .switch::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--text-soft);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .switch.on {
+        background: linear-gradient(135deg, var(--glow-teal), var(--glow-cyan));
+      }
+
+      .switch.on::after {
+        left: 25px;
+        background: var(--deep-1);
+      }
+
+      .setting-item input[type="time"],
+      .setting-item input[type="text"] {
+        padding: 8px 14px;
+        background: rgba(10, 22, 40, 0.6);
+        border: 1px solid rgba(77, 217, 255, 0.25);
+        border-radius: 10px;
+        color: var(--text-main);
+        font-family: var(--font-body);
+        font-size: 12px;
+      }
+
       /* ==================== FOOTER ==================== */
       .footer {
         padding: 26px 20px 30px;
         text-align: center;
         border-top: 1px solid rgba(77, 217, 255, 0.1);
         background: rgba(10, 22, 40, 0.4);
-        font-family: var(--font-body);
         font-size: 10px;
         font-weight: 300;
         letter-spacing: 3px;
@@ -1987,12 +2028,6 @@
         text-decoration: none;
         font-weight: 500;
         border-bottom: 1px dashed var(--glow-cyan);
-        transition: all 0.3s;
-      }
-
-      .footer a:hover {
-        color: var(--glow-teal);
-        border-bottom-color: var(--glow-teal);
       }
 
       /* ==================== TOAST ==================== */
@@ -2007,7 +2042,6 @@
         border: 1px solid rgba(77, 217, 255, 0.3);
         border-radius: 30px;
         color: var(--glow-cyan);
-        font-family: var(--font-body);
         font-size: 12px;
         font-weight: 500;
         letter-spacing: 1.5px;
@@ -2015,10 +2049,8 @@
         opacity: 0;
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        gap: 10px;
         max-width: 90vw;
+        text-align: center;
       }
 
       .toast.show {
@@ -2032,17 +2064,10 @@
         .aquarium { border-radius: 24px; }
         .header { padding: 30px 20px 24px; }
         h1 { font-size: 26px; }
-        .subtitle { font-size: 10px; letter-spacing: 2px; }
         .content { padding: 24px 18px 28px; }
         .stat-card .num { font-size: 24px; }
-        .stat-card .emoji { font-size: 18px; }
-        .stat-card .lbl { font-size: 8px; }
-        .chart-head .chart-pct { font-size: 20px; }
         #qrImage { width: 155px; height: 155px; }
-        .qr-bubble::before { width: 210px; height: 210px; }
-        .qr-bubble::after { width: 260px; height: 260px; }
         .bubble-btn { font-size: 9px; padding: 12px 6px; }
-        .bubble-btn i { font-size: 14px; }
         .quick-btn { font-size: 9px; padding: 10px; }
         .input-row { flex-direction: column; }
         .input-row button { width: 100%; justify-content: center; }
@@ -2051,32 +2076,14 @@
         .filter-tab { padding: 7px 12px; font-size: 9px; }
         .calendar-panel { padding: 16px; }
         .cal-title { font-size: 13px; }
-        .cal-day { font-size: 11px; border-radius: 8px; }
-        .cal-weekday { font-size: 9px; }
-      }
-
-      @media (max-width: 360px) {
-        h1 { font-size: 22px; }
-        #qrImage { width: 135px; height: 135px; }
-        .stat-card .num { font-size: 20px; }
-        .cal-day { font-size: 10px; }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-          animation-duration: 0.01ms !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-
-      ::selection {
-        background: var(--glow-cyan);
-        color: var(--deep-1);
+        .cal-day { font-size: 11px; }
+        .batch-grid { grid-template-columns: repeat(2, 1fr); }
+        body.kiosk-mode h1 { font-size: 32px; }
+        body.kiosk-mode .kiosk-display .kiosk-qr { width: 260px; height: 260px; }
       }
     </style>
   </head>
-  <body>
-    <!-- OCEAN LAYERS -->
+  <body data-accent="cyan">
     <div class="ocean-bg"></div>
     <div class="light-rays">
       <div class="ray ray-1"></div>
@@ -2088,31 +2095,26 @@
     <div class="bubbles" id="bubbles"></div>
     <div class="plankton" id="plankton"></div>
 
-    <!-- FISH -->
-    <div class="fish fish-1">🐠</div>
-    <div class="fish fish-2">🐟</div>
-    <div class="fish fish-3">🐡</div>
-
-    <!-- TOGGLE CONTROLS -->
     <div class="toggle-controls">
       <button class="toggle-btn" id="soundToggle" onclick="toggleSound()" title="Suara">
         <i class="fas fa-volume-up sound-on"></i>
         <i class="fas fa-volume-mute sound-off"></i>
+      </button>
+      <button class="toggle-btn" id="settingsToggle" onclick="showSettings()" title="Pengaturan">
+        <i class="fas fa-cog"></i>
       </button>
       <button class="toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Tema">
         <i class="fas fa-moon"></i>
       </button>
     </div>
 
-    <!-- MAIN AQUARIUM -->
-    <div class="aquarium">
+    <div class="aquarium" id="aquarium">
       <div class="water-surface"></div>
 
-      <!-- HEADER -->
       <div class="header">
         <div class="header-badge">
           <i class="fas fa-water"></i>
-          Deep Ocean · v6.0
+          Deep Ocean · v7.0
         </div>
         <h1>
           Presensi <span class="accent">Kelas</span>
@@ -2125,8 +2127,27 @@
         </div>
       </div>
 
-      <!-- CONTENT -->
       <div class="content">
+        <!-- KIOSK DISPLAY -->
+        <div class="kiosk-display" id="kioskDisplay">
+          <div class="kiosk-text">📱 SCAN UNTUK HADIR</div>
+          <img class="kiosk-qr" id="kioskQr" src="" alt="QR" />
+          <div class="kiosk-stats">
+            <div class="kiosk-stat">
+              <div class="n" id="kioskTotal">0</div>
+              <div class="l">Total</div>
+            </div>
+            <div class="kiosk-stat">
+              <div class="n" id="kioskHadir" style="color:var(--glow-teal);">0</div>
+              <div class="l">Hadir</div>
+            </div>
+            <div class="kiosk-stat">
+              <div class="n" id="kioskBelum" style="color:var(--glow-pink);">0</div>
+              <div class="l">Belum</div>
+            </div>
+          </div>
+        </div>
+
         <!-- STATS -->
         <div class="sec-title">Kedalaman</div>
         <div class="stats-grid">
@@ -2147,40 +2168,43 @@
           </div>
         </div>
 
-        <!-- PROGRESS CHART -->
-        <div class="sec-title">Progress</div>
-        <div class="chart-panel">
-          <div class="chart-head">
-            <span class="chart-label">Tingkat Kehadiran</span>
-            <span class="chart-pct" id="chartPct">0%</span>
-          </div>
-          <div class="chart-bar">
-            <div class="chart-fill" id="chartFill"></div>
-          </div>
-          <div class="chart-sub">
-            <span id="chartHadirTxt">0 hadir</span>
-            <span id="chartTotalTxt">dari 0</span>
+        <!-- WEEKLY CHART -->
+        <div class="sec-title">📈 7 Hari Terakhir</div>
+        <div class="weekly-panel">
+          <div class="weekly-chart" id="weeklyChart"></div>
+        </div>
+
+        <!-- ACCENT PICKER -->
+        <div class="sec-title">🎨 Warna Aksen</div>
+        <div class="accent-picker">
+          <div class="accent-dot cyan active" data-accent="cyan" onclick="setAccent('cyan')" title="Cyan"></div>
+          <div class="accent-dot purple" data-accent="purple" onclick="setAccent('purple')" title="Purple"></div>
+          <div class="accent-dot pink" data-accent="pink" onclick="setAccent('pink')" title="Pink"></div>
+          <div class="accent-dot gold" data-accent="gold" onclick="setAccent('gold')" title="Gold"></div>
+          <div class="accent-dot green" data-accent="green" onclick="setAccent('green')" title="Green"></div>
+        </div>
+
+        <!-- LEADERBOARD -->
+        <div class="sec-title">🏆 Paling Rajin</div>
+        <div class="leaderboard-panel">
+          <div class="leaderboard-list" id="leaderboardList">
+            <div style="text-align:center;color:var(--text-dim);font-size:12px;padding:20px;">
+              Belum ada data
+            </div>
           </div>
         </div>
 
-        <!-- 📅 CALENDAR -->
-        <div class="sec-title">Kalender</div>
+        <!-- CALENDAR -->
+        <div class="sec-title">📅 Kalender</div>
         <div class="calendar-panel">
           <div class="cal-header">
             <div class="cal-title" id="calTitle">— 2025 —</div>
             <div class="cal-nav">
-              <button class="cal-nav-btn" onclick="prevMonth()" title="Bulan lalu">
-                <i class="fas fa-chevron-left"></i>
-              </button>
-              <button class="cal-nav-btn" onclick="goToday()" title="Hari ini">
-                <i class="fas fa-crosshairs"></i>
-              </button>
-              <button class="cal-nav-btn" onclick="nextMonth()" title="Bulan depan">
-                <i class="fas fa-chevron-right"></i>
-              </button>
+              <button class="cal-nav-btn" onclick="prevMonth()"><i class="fas fa-chevron-left"></i></button>
+              <button class="cal-nav-btn" onclick="goToday()"><i class="fas fa-crosshairs"></i></button>
+              <button class="cal-nav-btn" onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
             </div>
           </div>
-
           <div class="cal-weekdays">
             <div class="cal-weekday">S</div>
             <div class="cal-weekday">S</div>
@@ -2190,11 +2214,8 @@
             <div class="cal-weekday weekend">S</div>
             <div class="cal-weekday weekend">M</div>
           </div>
-
           <div class="cal-days" id="calDays"></div>
-
           <div class="cal-detail" id="calDetail"></div>
-
           <div class="cal-legend">
             <div class="cal-legend-item">
               <span class="cal-legend-dot today"></span> Hari Ini
@@ -2203,7 +2224,7 @@
               <span class="cal-legend-dot full"></span> Hadir Penuh
             </div>
             <div class="cal-legend-item">
-              <span class="cal-legend-dot partial"></span> Hadir Sebagian
+              <span class="cal-legend-dot partial"></span> Sebagian
             </div>
           </div>
         </div>
@@ -2243,6 +2264,18 @@
           <button class="quick-btn history" onclick="showHistory()">
             <i class="fas fa-history"></i> Riwayat
           </button>
+          <button class="quick-btn share" onclick="shareStats()">
+            <i class="fas fa-share-alt"></i> Bagikan
+          </button>
+          <button class="quick-btn kiosk" onclick="toggleKiosk()">
+            <i class="fas fa-tv"></i> Mode Kiosk
+          </button>
+          <button class="quick-btn print" onclick="printReport()">
+            <i class="fas fa-print"></i> Cetak
+          </button>
+          <button class="quick-btn batch" onclick="toggleBatch()">
+            <i class="fas fa-layer-group"></i> Batch QR
+          </button>
         </div>
 
         <!-- GENERATE -->
@@ -2268,6 +2301,15 @@
                 <i class="fas fa-times"></i> Tutup
               </button>
             </div>
+          </div>
+          <div class="batch-panel" id="batchPanel">
+            <div class="gen-label" style="margin-bottom:8px;">
+              <i class="fas fa-layer-group"></i> Semua QR Mahasiswa
+            </div>
+            <button onclick="downloadBatch()" style="width:100%;padding:10px;background:linear-gradient(135deg,var(--glow-cyan),var(--glow-teal));border:none;border-radius:12px;color:var(--deep-1);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:11px;cursor:pointer;margin-bottom:12px;">
+              <i class="fas fa-download"></i> Download Semua
+            </button>
+            <div class="batch-grid" id="batchGrid"></div>
           </div>
         </div>
 
@@ -2312,7 +2354,6 @@
         <!-- DATA TABLE -->
         <div class="sec-title">Daftar Hadir</div>
 
-        <!-- SEARCH -->
         <div class="search-wrap">
           <i class="fas fa-search search-icon"></i>
           <input type="text" id="searchInput" placeholder="Cari nama atau NIM..." oninput="handleSearch(this.value)" />
@@ -2321,7 +2362,6 @@
           </button>
         </div>
 
-        <!-- FILTER TABS -->
         <div class="filter-tabs" id="filterTabs">
           <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">Semua</button>
           <button class="filter-tab" data-filter="hadir" onclick="setFilter('hadir')">Hadir</button>
@@ -2352,7 +2392,6 @@
         </div>
       </div>
 
-      <!-- FOOTER -->
       <div class="footer">
         <i class="fas fa-anchor"></i> Terhubung dengan
         <a href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675" target="_blank">
@@ -2367,9 +2406,7 @@
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
       <div class="modal" onclick="event.stopPropagation()">
         <div class="modal-head">
-          <div class="modal-title" id="modalTitle">
-            <i class="fas fa-history"></i> Riwayat
-          </div>
+          <div class="modal-title" id="modalTitle"><i class="fas fa-history"></i> Riwayat</div>
           <button class="modal-close" onclick="closeModal()">
             <i class="fas fa-times"></i>
           </button>
@@ -2378,7 +2415,6 @@
       </div>
     </div>
 
-    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
     <script>
@@ -2402,16 +2438,20 @@
         lightMode: false,
         currentFilter: "all",
         searchQuery: "",
-        // Calendar state
         calCurrentMonth: new Date().getMonth(),
         calCurrentYear: new Date().getFullYear(),
         calSelectedDate: null,
+        kioskMode: false,
+        currentAccent: "cyan",
+        reminderEnabled: false,
+        reminderTime: "07:00",
       };
 
       const MONTH_NAMES = [
         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember"
       ];
+      const DAY_SHORT = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
       const DOM = {
         status: document.getElementById("status"),
@@ -2420,6 +2460,7 @@
         btnStartScan: document.getElementById("btnStartScan"),
         btnFlash: document.getElementById("btnFlash"),
         qrImage: document.getElementById("qrImage"),
+        kioskQr: document.getElementById("kioskQr"),
         tableBody: document.getElementById("tableBody"),
         dataTable: document.getElementById("dataTable"),
         loadingData: document.getElementById("loadingData"),
@@ -2434,10 +2475,9 @@
         statTotal: document.getElementById("statTotal"),
         statHadir: document.getElementById("statHadir"),
         statBelum: document.getElementById("statBelum"),
-        chartPct: document.getElementById("chartPct"),
-        chartFill: document.getElementById("chartFill"),
-        chartHadirTxt: document.getElementById("chartHadirTxt"),
-        chartTotalTxt: document.getElementById("chartTotalTxt"),
+        kioskTotal: document.getElementById("kioskTotal"),
+        kioskHadir: document.getElementById("kioskHadir"),
+        kioskBelum: document.getElementById("kioskBelum"),
         searchInput: document.getElementById("searchInput"),
         clearSearch: document.getElementById("clearSearch"),
         modalOverlay: document.getElementById("modalOverlay"),
@@ -2447,21 +2487,21 @@
         calTitle: document.getElementById("calTitle"),
         calDays: document.getElementById("calDays"),
         calDetail: document.getElementById("calDetail"),
+        weeklyChart: document.getElementById("weeklyChart"),
+        leaderboardList: document.getElementById("leaderboardList"),
+        batchPanel: document.getElementById("batchPanel"),
+        batchGrid: document.getElementById("batchGrid"),
       };
 
       // ================================================================
       // SOUND
       // ================================================================
       let audioCtx = null;
-
       function initAudio() {
         if (!audioCtx) {
-          try {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          } catch (e) {}
+          try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
         }
       }
-
       function playSound(type) {
         if (!AppState.soundEnabled) return;
         initAudio();
@@ -2472,46 +2512,40 @@
           const gain = audioCtx.createGain();
           osc.connect(gain);
           gain.connect(audioCtx.destination);
-
           if (type === "success") {
             osc.type = "sine";
             osc.frequency.setValueAtTime(523, now);
             osc.frequency.exponentialRampToValueAtTime(1046, now + 0.3);
             gain.gain.setValueAtTime(0.15, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-            osc.start(now);
-            osc.stop(now + 0.4);
+            osc.start(now); osc.stop(now + 0.4);
           } else if (type === "error") {
             osc.type = "square";
             osc.frequency.setValueAtTime(220, now);
             osc.frequency.exponentialRampToValueAtTime(110, now + 0.3);
             gain.gain.setValueAtTime(0.1, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-            osc.start(now);
-            osc.stop(now + 0.35);
+            osc.start(now); osc.stop(now + 0.35);
           } else if (type === "scan") {
             osc.type = "sine";
             osc.frequency.setValueAtTime(880, now);
             osc.frequency.exponentialRampToValueAtTime(1760, now + 0.1);
             gain.gain.setValueAtTime(0.12, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-            osc.start(now);
-            osc.stop(now + 0.15);
+            osc.start(now); osc.stop(now + 0.15);
           } else if (type === "click") {
             osc.type = "sine";
             osc.frequency.setValueAtTime(660, now);
             gain.gain.setValueAtTime(0.08, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-            osc.start(now);
-            osc.stop(now + 0.08);
+            osc.start(now); osc.stop(now + 0.08);
           }
         } catch (e) {}
       }
 
       function toggleSound() {
         AppState.soundEnabled = !AppState.soundEnabled;
-        const btn = document.getElementById("soundToggle");
-        btn.classList.toggle("muted", !AppState.soundEnabled);
+        document.getElementById("soundToggle").classList.toggle("muted", !AppState.soundEnabled);
         playSound("click");
         showToast(AppState.soundEnabled ? "🔊 Suara aktif" : "🔇 Suara mati");
       }
@@ -2522,8 +2556,7 @@
       function toggleTheme() {
         AppState.lightMode = !AppState.lightMode;
         document.body.classList.toggle("light-mode", AppState.lightMode);
-        const btn = document.getElementById("themeToggle");
-        btn.innerHTML = AppState.lightMode
+        document.getElementById("themeToggle").innerHTML = AppState.lightMode
           ? '<i class="fas fa-sun"></i>'
           : '<i class="fas fa-moon"></i>';
         localStorage.setItem("theme", AppState.lightMode ? "light" : "dark");
@@ -2536,8 +2569,34 @@
           AppState.lightMode = true;
           document.body.classList.add("light-mode");
           setTimeout(() => {
-            document.getElementById("themeToggle").innerHTML =
-              '<i class="fas fa-sun"></i>';
+            document.getElementById("themeToggle").innerHTML = '<i class="fas fa-sun"></i>';
+          }, 100);
+        }
+      })();
+
+      // ================================================================
+      // ACCENT PICKER
+      // ================================================================
+      function setAccent(color) {
+        AppState.currentAccent = color;
+        document.body.setAttribute("data-accent", color);
+        document.querySelectorAll(".accent-dot").forEach((d) => {
+          d.classList.toggle("active", d.dataset.accent === color);
+        });
+        localStorage.setItem("accent", color);
+        playSound("click");
+        showToast(`🎨 Warna diubah ke ${color}`);
+      }
+
+      (function loadAccent() {
+        const saved = localStorage.getItem("accent");
+        if (saved) {
+          AppState.currentAccent = saved;
+          document.body.setAttribute("data-accent", saved);
+          setTimeout(() => {
+            document.querySelectorAll(".accent-dot").forEach((d) => {
+              d.classList.toggle("active", d.dataset.accent === saved);
+            });
           }, 100);
         }
       })();
@@ -2551,41 +2610,403 @@
         DOM.toast.innerHTML = message;
         DOM.toast.classList.add("show");
         clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => {
-          DOM.toast.classList.remove("show");
-        }, duration);
+        toastTimeout = setTimeout(() => DOM.toast.classList.remove("show"), duration);
       }
 
       // ================================================================
-      // 📅 CALENDAR
+      // KIOSK MODE
+      // ================================================================
+      function toggleKiosk() {
+        AppState.kioskMode = !AppState.kioskMode;
+        document.body.classList.toggle("kiosk-mode", AppState.kioskMode);
+        if (AppState.kioskMode) {
+          DOM.kioskQr.src = DOM.qrImage.src;
+          updateKioskStats();
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          }
+          showToast("🖥️ Mode Kiosk aktif · Tekan ESC untuk keluar");
+        } else {
+          if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+          showToast("Mode Kiosk dimatikan");
+        }
+        playSound("click");
+      }
+
+      function updateKioskStats() {
+        if (DOM.kioskTotal) DOM.kioskTotal.textContent = DOM.statTotal.textContent;
+        if (DOM.kioskHadir) DOM.kioskHadir.textContent = DOM.statHadir.textContent;
+        if (DOM.kioskBelum) DOM.kioskBelum.textContent = DOM.statBelum.textContent;
+      }
+
+      // ================================================================
+      // WEEKLY CHART
+      // ================================================================
+      function renderWeeklyChart() {
+        if (!DOM.weeklyChart) return;
+        const history = JSON.parse(localStorage.getItem("presensiHistory") || "{}");
+        const days = [];
+        const today = new Date();
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date(today);
+          d.setDate(today.getDate() - i);
+          const key = d.toLocaleDateString("id-ID");
+          const h = history[key];
+          const pct = h && h.total > 0 ? (h.count / h.total) * 100 : 0;
+          days.push({
+            date: d,
+            key: key,
+            pct: pct,
+            count: h ? h.count : 0,
+            total: h ? h.total : 0,
+            label: DAY_SHORT[d.getDay()],
+            isToday: i === 0,
+          });
+        }
+
+        DOM.weeklyChart.innerHTML = days
+          .map(
+            (d) => `
+          <div class="weekly-bar-wrap ${d.isToday ? "today" : ""}" title="${d.key}: ${d.count}/${d.total}">
+            ${d.pct > 0 ? `<div class="bar-value">${d.count}</div>` : ""}
+            <div class="weekly-bar ${d.pct === 0 ? "empty" : ""}" style="height:${Math.max(d.pct, 4)}%;"></div>
+            <div class="day-label">${d.label}</div>
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      // ================================================================
+      // LEADERBOARD
+      // ================================================================
+      function renderLeaderboard() {
+        if (!DOM.leaderboardList) return;
+        if (AppState.mahasiswaData.length === 0) {
+          DOM.leaderboardList.innerHTML =
+            '<div style="text-align:center;color:var(--text-dim);font-size:12px;padding:20px;">Belum ada data</div>';
+          return;
+        }
+        const history = JSON.parse(localStorage.getItem("presensiHistory") || "{}");
+
+        // Compute per mahasiswa kehadiran count
+        // Note: we only have per-day counts in history; use current presensi for today
+        const today = new Date().toLocaleDateString("id-ID");
+        const current = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
+        const classes = {};
+        AppState.mahasiswaData.forEach((m) => {
+          const k = m.kelas || "Lainnya";
+          if (!classes[k]) classes[k] = { total: 0, hadir: 0 };
+          classes[k].total++;
+          if (current[m.nim] === today) classes[k].hadir++;
+        });
+
+        const sorted = Object.entries(classes)
+          .map(([k, v]) => ({ name: k, hadir: v.hadir, total: v.total }))
+          .sort((a, b) => b.hadir - a.hadir)
+          .slice(0, 5);
+
+        DOM.leaderboardList.innerHTML = sorted
+          .map((c, i) => {
+            let rankClass = "";
+            if (i === 0) rankClass = "gold";
+            else if (i === 1) rankClass = "silver";
+            else if (i === 2) rankClass = "bronze";
+            const pct = c.total > 0 ? Math.round((c.hadir / c.total) * 100) : 0;
+            return `
+              <div class="lb-item ${rankClass}">
+                <div class="lb-rank">${i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1}</div>
+                <div class="lb-info">
+                  <div class="lb-name">Kelas ${c.name}</div>
+                  <div class="lb-sub">${c.hadir}/${c.total} · ${pct}%</div>
+                </div>
+                <div class="lb-count">${c.hadir}</div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      // ================================================================
+      // SHARE STATS
+      // ================================================================
+      async function shareStats() {
+        const total = DOM.statTotal.textContent;
+        const hadir = DOM.statHadir.textContent;
+        const pct = total > 0 ? Math.round((hadir / total) * 100) : 0;
+        const date = new Date().toLocaleDateString("id-ID", {
+          weekday: "long", day: "numeric", month: "long", year: "numeric",
+        });
+
+        const text = `🌊 *Presensi Kelas*\n📅 ${date}\n\n✅ Hadir: ${hadir}/${total}\n📊 Kehadiran: ${pct}%\n\n_Deep Ocean v7.0_`;
+
+        if (navigator.share) {
+          try {
+            await navigator.share({ title: "Presensi Kelas", text });
+            playSound("success");
+            return;
+          } catch (e) {}
+        }
+
+        // Fallback: copy to clipboard
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("📋 Statistik disalin!");
+          playSound("success");
+        } catch (e) {
+          showToast("❌ Gagal berbagi");
+          playSound("error");
+        }
+      }
+
+      // ================================================================
+      // PRINT REPORT
+      // ================================================================
+      function printReport() {
+        const today = new Date().toLocaleDateString("id-ID", {
+          weekday: "long", day: "numeric", month: "long", year: "numeric",
+        });
+        const presensi = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
+        let hadirList = [];
+        AppState.mahasiswaData.forEach((m) => {
+          if (presensi[m.nim] === new Date().toLocaleDateString("id-ID")) {
+            hadirList.push(m);
+          }
+        });
+        const total = AppState.mahasiswaData.length;
+        const hadir = hadirList.length;
+        const pct = total > 0 ? Math.round((hadir / total) * 100) : 0;
+
+        const printWindow = window.open("", "_blank");
+        printWindow.document.write(`
+          <!doctype html>
+          <html><head><title>Laporan Presensi - ${today}</title>
+          <style>
+            body { font-family: 'Georgia', serif; padding: 40px; color: #111; }
+            h1 { text-align: center; border-bottom: 3px double #111; padding-bottom: 12px; }
+            .meta { text-align: center; margin: 20px 0; color: #555; }
+            .stats { display: flex; justify-content: space-around; margin: 30px 0; padding: 20px; border: 1px solid #ccc; }
+            .stats > div { text-align: center; }
+            .stats .num { font-size: 32px; font-weight: bold; }
+            .stats .lbl { font-size: 12px; letter-spacing: 2px; color: #666; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th { background: #111; color: #fff; padding: 10px; text-align: left; }
+            td { padding: 8px 10px; border-bottom: 1px solid #ddd; }
+            .footer { text-align: center; margin-top: 40px; font-size: 11px; color: #888; }
+            @media print { body { padding: 20px; } }
+          </style></head><body>
+          <h1>LAPORAN PRESENSI KELAS</h1>
+          <div class="meta"><strong>${today}</strong></div>
+          <div class="stats">
+            <div><div class="num">${total}</div><div class="lbl">TOTAL</div></div>
+            <div><div class="num" style="color:#1a7a3a;">${hadir}</div><div class="lbl">HADIR</div></div>
+            <div><div class="num" style="color:#b8306c;">${total - hadir}</div><div class="lbl">BELUM</div></div>
+            <div><div class="num">${pct}%</div><div class="lbl">PERSENTASE</div></div>
+          </div>
+          <h3>Daftar Kehadiran</h3>
+          <table>
+            <tr><th>No</th><th>NIM</th><th>Nama</th><th>Kelas</th><th>Status</th></tr>
+            ${AppState.mahasiswaData
+              .map((m, i) => {
+                const isHadir = presensi[m.nim] === new Date().toLocaleDateString("id-ID");
+                return `<tr><td>${i + 1}</td><td>${m.nim || "-"}</td><td>${m.nama || "-"}</td><td>${m.kelas || "-"}</td><td>${isHadir ? "✓ Hadir" : "Belum"}</td></tr>`;
+              })
+              .join("")}
+          </table>
+          <div class="footer">Generated by Deep Ocean v7.0 · ${new Date().toLocaleString("id-ID")}</div>
+          </body></html>
+        `);
+        printWindow.document.close();
+        setTimeout(() => printWindow.print(), 500);
+        playSound("click");
+        showToast("🖨️ Membuka dialog print...");
+      }
+
+      // ================================================================
+      // BATCH GENERATE
+      // ================================================================
+      function toggleBatch() {
+        const panel = DOM.batchPanel;
+        panel.classList.toggle("show");
+        if (panel.classList.contains("show")) {
+          renderBatch();
+        }
+        playSound("click");
+      }
+
+      function renderBatch() {
+        if (!DOM.batchGrid) return;
+        if (AppState.mahasiswaData.length === 0) {
+          DOM.batchGrid.innerHTML =
+            '<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:11px;padding:20px;">Belum ada data mahasiswa</div>';
+          return;
+        }
+        DOM.batchGrid.innerHTML = AppState.mahasiswaData
+          .slice(0, 30)
+          .map((m) => {
+            const qr = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(JSON.stringify({ nim: m.nim, nama: m.nama, kelas: m.kelas }))}&color=0a1628&bgcolor=ffffff`;
+            return `
+              <div class="batch-item" onclick="downloadSingleBatch('${m.nim}','${m.nama}')">
+                <img src="${qr}" alt="${m.nim}" />
+                <div class="bname">${m.nama || m.nim}</div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function downloadSingleBatch(nim, nama) {
+        const m = AppState.mahasiswaData.find((x) => x.nim === nim);
+        if (!m) return;
+        const qr = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify({ nim: m.nim, nama: m.nama, kelas: m.kelas, jurusan: m.jurusan }))}&color=0a1628&bgcolor=ffffff`;
+        const link = document.createElement("a");
+        link.href = qr;
+        link.download = `qr-${m.nim}-${m.nama}.png`;
+        link.click();
+        playSound("click");
+        showToast(`📥 ${nama} diunduh`);
+      }
+
+      function downloadBatch() {
+        if (AppState.mahasiswaData.length === 0) {
+          showToast("❌ Tidak ada mahasiswa");
+          return;
+        }
+        showToast("⏳ Menyiapkan semua QR...");
+        // Download individually with delay
+        AppState.mahasiswaData.slice(0, 20).forEach((m, i) => {
+          setTimeout(() => {
+            const qr = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify({ nim: m.nim, nama: m.nama, kelas: m.kelas }))}&color=0a1628&bgcolor=ffffff`;
+            const link = document.createElement("a");
+            link.href = qr;
+            link.download = `qr-${m.nim}-${m.nama}.png`;
+            link.click();
+          }, i * 300);
+        });
+        setTimeout(() => {
+          showToast(`✅ ${Math.min(AppState.mahasiswaData.length, 20)} QR diunduh`);
+          playSound("success");
+        }, AppState.mahasiswaData.length * 300 + 500);
+      }
+
+      // ================================================================
+      // SETTINGS
+      // ================================================================
+      function showSettings() {
+        const settingsHTML = `
+          <div class="setting-item">
+            <label><i class="fas fa-bell"></i> Notifikasi Pengingat</label>
+            <div class="switch ${AppState.reminderEnabled ? "on" : ""}" onclick="toggleReminder(this)"></div>
+          </div>
+          <div class="setting-item">
+            <label><i class="fas fa-clock"></i> Waktu Pengingat</label>
+            <input type="time" value="${AppState.reminderTime}" onchange="setReminderTime(this.value)" />
+          </div>
+          <div class="setting-item">
+            <label><i class="fas fa-volume-up"></i> Suara Aplikasi</label>
+            <div class="switch ${AppState.soundEnabled ? "on" : ""}" onclick="toggleSoundSetting(this)"></div>
+          </div>
+          <div class="setting-item">
+            <label><i class="fas fa-sun"></i> Mode Terang</label>
+            <div class="switch ${AppState.lightMode ? "on" : ""}" onclick="toggleThemeSetting(this)"></div>
+          </div>
+          <div class="setting-item">
+            <label><i class="fas fa-info-circle"></i> Versi Aplikasi</label>
+            <span style="font-size:12px;color:var(--glow-cyan);font-weight:600;">Deep Ocean v7.0</span>
+          </div>
+        `;
+        DOM.modalTitle.innerHTML = '<i class="fas fa-cog"></i> Pengaturan';
+        DOM.modalBody.innerHTML = settingsHTML;
+        DOM.modalOverlay.classList.add("show");
+        playSound("click");
+      }
+
+      function toggleReminder(el) {
+        AppState.reminderEnabled = !AppState.reminderEnabled;
+        el.classList.toggle("on", AppState.reminderEnabled);
+        localStorage.setItem("reminderEnabled", AppState.reminderEnabled);
+        if (AppState.reminderEnabled) {
+          if ("Notification" in window) {
+            Notification.requestPermission().then((p) => {
+              if (p === "granted") showToast("🔔 Pengingat diaktifkan");
+              else {
+                AppState.reminderEnabled = false;
+                el.classList.remove("on");
+                showToast("❌ Izin notifikasi ditolak");
+              }
+            });
+          } else {
+            showToast("⚠️ Browser tidak mendukung notifikasi");
+          }
+        } else {
+          showToast("🔕 Pengingat dimatikan");
+        }
+        playSound("click");
+      }
+
+      function setReminderTime(time) {
+        AppState.reminderTime = time;
+        localStorage.setItem("reminderTime", time);
+        showToast(`⏰ Pengingat diatur: ${time}`);
+      }
+
+      function toggleSoundSetting(el) {
+        AppState.soundEnabled = !AppState.soundEnabled;
+        el.classList.toggle("on", AppState.soundEnabled);
+        document.getElementById("soundToggle").classList.toggle("muted", !AppState.soundEnabled);
+        playSound("click");
+      }
+
+      function toggleThemeSetting(el) {
+        toggleTheme();
+        el.classList.toggle("on", AppState.lightMode);
+      }
+
+      function checkReminder() {
+        if (!AppState.reminderEnabled) return;
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, "0");
+        const mm = String(now.getMinutes()).padStart(2, "0");
+        const time = hh + ":" + mm;
+        const lastNotif = localStorage.getItem("lastReminder");
+        const today = now.toLocaleDateString("id-ID");
+        if (time === AppState.reminderTime && lastNotif !== today) {
+          if (Notification.permission === "granted") {
+            new Notification("🌊 Presensi Kelas", {
+              body: "Waktunya presensi kelas! Buka aplikasi untuk scan QR.",
+              icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌊%3C/text%3E%3C/svg%3E",
+            });
+            localStorage.setItem("lastReminder", today);
+            showToast("🔔 Pengingat presensi!");
+          }
+        }
+      }
+      setInterval(checkReminder, 60000);
+
+      (function loadSettings() {
+        const re = localStorage.getItem("reminderEnabled");
+        if (re === "true") AppState.reminderEnabled = true;
+        const rt = localStorage.getItem("reminderTime");
+        if (rt) AppState.reminderTime = rt;
+      })();
+
+      // ================================================================
+      // CALENDAR
       // ================================================================
       function renderCalendar() {
         if (!DOM.calDays) return;
         const year = AppState.calCurrentYear;
         const month = AppState.calCurrentMonth;
-
         DOM.calTitle.textContent = `${MONTH_NAMES[month]} ${year}`;
-
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-
         const today = new Date();
-        const isTodayMonth =
-          today.getMonth() === month && today.getFullYear() === year;
+        const isTodayMonth = today.getMonth() === month && today.getFullYear() === year;
         const todayDate = today.getDate();
-
-        // History data
-        const history = JSON.parse(
-          localStorage.getItem("presensiHistory") || "{}",
-        );
+        const history = JSON.parse(localStorage.getItem("presensiHistory") || "{}");
 
         let html = "";
-        // Empty cells
-        for (let i = 0; i < firstDay; i++) {
-          html += `<div class="cal-day empty"></div>`;
-        }
-
-        // Days
+        for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
         for (let d = 1; d <= daysInMonth; d++) {
           const dateObj = new Date(year, month, d);
           const dayOfWeek = dateObj.getDay();
@@ -2597,37 +3018,21 @@
             AppState.calSelectedDate.getDate() === d &&
             AppState.calSelectedDate.getMonth() === month &&
             AppState.calSelectedDate.getFullYear() === year;
-
           let eventClass = "";
           if (history[dateKey]) {
             const h = history[dateKey];
             const pct = h.total > 0 ? h.count / h.total : 0;
-            if (pct >= 0.8) eventClass = "has-event full";
+            if (pct >= 0.8) eventClass = "has-event";
             else if (pct > 0) eventClass = "has-event partial";
           }
-
-          html += `
-          <div class="cal-day ${isToday ? "today" : ""} ${isWeekend ? "weekend" : ""} ${isSelected ? "selected" : ""} ${eventClass}" 
-               onclick="selectDate(${d})">
-            ${d}
-          </div>
-        `;
+          html += `<div class="cal-day ${isToday ? "today" : ""} ${isWeekend ? "weekend" : ""} ${isSelected ? "selected" : ""} ${eventClass}" onclick="selectDate(${d})">${d}</div>`;
         }
-
         DOM.calDays.innerHTML = html;
-
-        // Update detail panel
-        if (AppState.calSelectedDate) {
-          showDateDetail(AppState.calSelectedDate);
-        }
+        if (AppState.calSelectedDate) showDateDetail(AppState.calSelectedDate);
       }
 
       function selectDate(day) {
-        const date = new Date(
-          AppState.calCurrentYear,
-          AppState.calCurrentMonth,
-          day,
-        );
+        const date = new Date(AppState.calCurrentYear, AppState.calCurrentMonth, day);
         AppState.calSelectedDate = date;
         playSound("click");
         renderCalendar();
@@ -2636,49 +3041,24 @@
       function showDateDetail(date) {
         if (!DOM.calDetail) return;
         const dateKey = date.toLocaleDateString("id-ID");
-        const history = JSON.parse(
-          localStorage.getItem("presensiHistory") || "{}",
-        );
+        const history = JSON.parse(localStorage.getItem("presensiHistory") || "{}");
         const today = new Date();
         const isToday =
           date.getDate() === today.getDate() &&
           date.getMonth() === today.getMonth() &&
           date.getFullYear() === today.getFullYear();
-
         let html = `<div class="detail-date">📅 ${dateKey}${isToday ? " · Hari Ini" : ""}</div>`;
-
         const h = history[dateKey];
         if (h) {
           const pct = h.total > 0 ? Math.round((h.count / h.total) * 100) : 0;
-          html += `
-          <div class="detail-info">
+          html += `<div class="detail-info">
             <span class="detail-badge hadir">✓ ${h.count} hadir</span>
             <span class="detail-badge belum">✗ ${h.total - h.count} belum</span>
-            <span style="font-size:11px;opacity:0.7;">${pct}% kehadiran</span>
-          </div>
-        `;
-        } else if (isToday) {
-          // Compute from current presensi
-          const presensiData = JSON.parse(
-            localStorage.getItem("presensiHariIni") || "{}",
-          );
-          let hadir = 0;
-          AppState.mahasiswaData.forEach((m) => {
-            if (presensiData[m.nim] === dateKey) hadir++;
-          });
-          const total = AppState.mahasiswaData.length;
-          const pct = total > 0 ? Math.round((hadir / total) * 100) : 0;
-          html += `
-          <div class="detail-info">
-            <span class="detail-badge hadir">✓ ${hadir} hadir</span>
-            <span class="detail-badge belum">✗ ${total - hadir} belum</span>
-            <span style="font-size:11px;opacity:0.7;">${pct}% kehadiran</span>
-          </div>
-        `;
+            <span style="font-size:11px;opacity:0.7;">${pct}%</span>
+          </div>`;
         } else {
           html += `<div class="detail-info"><span class="detail-badge empty">Tidak ada data</span></div>`;
         }
-
         DOM.calDetail.innerHTML = html;
         DOM.calDetail.classList.add("show");
       }
@@ -2744,13 +3124,11 @@
 
       function applyFilters() {
         let data = AppState.mahasiswaData;
-
         if (AppState.currentFilter === "hadir") {
           data = data.filter((m) => checkPresensiHariIni(m.nim));
         } else if (AppState.currentFilter === "belum") {
           data = data.filter((m) => !checkPresensiHariIni(m.nim));
         }
-
         if (AppState.searchQuery) {
           data = data.filter(
             (m) =>
@@ -2759,7 +3137,6 @@
               (m.kelas || "").toLowerCase().includes(AppState.searchQuery),
           );
         }
-
         AppState.filteredData = data;
         renderFilteredTable(data);
       }
@@ -2768,8 +3145,7 @@
         if (!DOM.tableBody || !DOM.dataTable || !DOM.loadingData) return;
         DOM.tableBody.innerHTML = "";
         if (!data || data.length === 0) {
-          DOM.loadingData.innerHTML =
-            '<i class="fas fa-fish"></i> Tidak ada data cocok';
+          DOM.loadingData.innerHTML = '<i class="fas fa-fish"></i> Tidak ada data cocok';
           DOM.loadingData.style.display = "block";
           DOM.dataTable.style.display = "none";
           DOM.totalMahasiswa.textContent = "0 BARIS";
@@ -2782,11 +3158,7 @@
           <td><strong>${mhs.nim || "-"}</strong></td>
           <td>${mhs.nama || "-"}</td>
           <td>${mhs.kelas || "-"}</td>
-          <td>
-            <span class="${isHadir ? "status-hadir" : "status-belum"}">
-              ${isHadir ? "Hadir" : "Belum"}
-            </span>
-          </td>
+          <td><span class="${isHadir ? "status-hadir" : "status-belum"}">${isHadir ? "Hadir" : "Belum"}</span></td>
         `;
           DOM.tableBody.appendChild(row);
         });
@@ -2805,23 +3177,18 @@
           return;
         }
         const today = new Date().toLocaleDateString("id-ID");
-        const presensiData = JSON.parse(
-          localStorage.getItem("presensiHariIni") || "{}",
-        );
-
+        const presensiData = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
         let csv = "NIM,Nama,Kelas,Jurusan,Status,Tanggal\n";
         AppState.mahasiswaData.forEach((m) => {
           const isHadir = presensiData[m.nim] === today;
           csv += `"${m.nim || ""}","${m.nama || ""}","${m.kelas || ""}","${m.jurusan || ""}","${isHadir ? "Hadir" : "Belum"}","${today}"\n`;
         });
-
         const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = `presensi-${today.replace(/\//g, "-")}.csv`;
         link.click();
         URL.revokeObjectURL(link.href);
-
         playSound("success");
         showToast("✅ File CSV diunduh");
       }
@@ -2831,60 +3198,30 @@
       // ================================================================
       function showHistory() {
         DOM.modalTitle.innerHTML = '<i class="fas fa-history"></i> Riwayat 7 Hari';
-        const history = JSON.parse(
-          localStorage.getItem("presensiHistory") || "{}",
-        );
-
+        const history = JSON.parse(localStorage.getItem("presensiHistory") || "{}");
         const today = new Date().toLocaleDateString("id-ID");
-        const currentPresensi = JSON.parse(
-          localStorage.getItem("presensiHariIni") || "{}",
-        );
+        const currentPresensi = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
         let todayCount = 0;
         AppState.mahasiswaData.forEach((m) => {
           if (currentPresensi[m.nim] === today) todayCount++;
         });
         if (todayCount > 0 && !history[today]) {
-          history[today] = {
-            count: todayCount,
-            total: AppState.mahasiswaData.length,
-          };
+          history[today] = { count: todayCount, total: AppState.mahasiswaData.length };
         }
-
         const entries = Object.entries(history).sort((a, b) => {
-          return (
-            new Date(b[0].split("/").reverse().join("-")) -
-            new Date(a[0].split("/").reverse().join("-"))
-          );
+          return new Date(b[0].split("/").reverse().join("-")) - new Date(a[0].split("/").reverse().join("-"));
         });
-
         if (entries.length === 0) {
-          DOM.modalBody.innerHTML = `
-          <div style="text-align:center;padding:30px 20px;">
-            <i class="fas fa-history" style="font-size:40px;color:var(--glow-cyan);opacity:0.3;margin-bottom:16px;display:block;"></i>
-            <div style="font-family:var(--font-display);font-size:14px;color:var(--text-soft);">
-              Belum ada riwayat
-            </div>
-          </div>
-        `;
+          DOM.modalBody.innerHTML = `<div style="text-align:center;padding:30px;"><i class="fas fa-history" style="font-size:40px;color:var(--glow-cyan);opacity:0.3;display:block;margin-bottom:16px;"></i><div style="font-family:var(--font-display);font-size:14px;color:var(--text-soft);">Belum ada riwayat</div></div>`;
         } else {
           DOM.modalBody.innerHTML = entries
             .slice(0, 7)
             .map(([date, info]) => {
-              const pct =
-                info.total > 0 ? Math.round((info.count / info.total) * 100) : 0;
-              return `
-              <div class="history-item">
-                <div class="history-date">📅 ${date}</div>
-                <div class="history-count">
-                  <span class="badge">${info.count} hadir</span>
-                  <span style="opacity:0.6;">dari ${info.total} • ${pct}%</span>
-                </div>
-              </div>
-            `;
+              const pct = info.total > 0 ? Math.round((info.count / info.total) * 100) : 0;
+              return `<div class="history-item"><div class="history-date">📅 ${date}</div><div class="history-count"><span class="badge">${info.count} hadir</span><span style="opacity:0.6;">dari ${info.total} • ${pct}%</span></div></div>`;
             })
             .join("");
         }
-
         DOM.modalOverlay.classList.add("show");
         playSound("click");
       }
@@ -2897,21 +3234,14 @@
 
       function saveHistory() {
         const today = new Date().toLocaleDateString("id-ID");
-        const presensiData = JSON.parse(
-          localStorage.getItem("presensiHariIni") || "{}",
-        );
+        const presensiData = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
         let count = 0;
         AppState.mahasiswaData.forEach((m) => {
           if (presensiData[m.nim] === today) count++;
         });
         if (count > 0) {
-          const history = JSON.parse(
-            localStorage.getItem("presensiHistory") || "{}",
-          );
-          history[today] = {
-            count: count,
-            total: AppState.mahasiswaData.length,
-          };
+          const history = JSON.parse(localStorage.getItem("presensiHistory") || "{}");
+          history[today] = { count, total: AppState.mahasiswaData.length };
           localStorage.setItem("presensiHistory", JSON.stringify(history));
         }
       }
@@ -2945,7 +3275,6 @@
           p.style.left = Math.random() * 100 + "%";
           p.style.top = Math.random() * 100 + "%";
           p.style.background = colors[Math.floor(Math.random() * colors.length)];
-          p.style.boxShadow = `0 0 8px ${p.style.background}, 0 0 16px ${p.style.background}`;
           p.style.animationDuration = 8 + Math.random() * 12 + "s";
           p.style.animationDelay = Math.random() * 10 + "s";
           const size = 2 + Math.random() * 3 + "px";
@@ -2961,9 +3290,7 @@
       function updateClock() {
         if (!DOM.liveTime) return;
         const t = new Date().toLocaleTimeString("id-ID", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
+          hour: "2-digit", minute: "2-digit", second: "2-digit",
           timeZone: "Asia/Jakarta",
         });
         DOM.liveTime.textContent = t + " WIB";
@@ -2984,10 +3311,8 @@
       function showStatus(message, type = "info", duration = 4000) {
         if (!DOM.status) return;
         const iconMap = {
-          success: "fa-check-circle",
-          error: "fa-exclamation-circle",
-          warning: "fa-triangle-exclamation",
-          info: "fa-info-circle",
+          success: "fa-check-circle", error: "fa-exclamation-circle",
+          warning: "fa-triangle-exclamation", info: "fa-info-circle",
         };
         DOM.status.innerHTML = `<i class="fas ${iconMap[type] || iconMap.info}"></i> <span>${message}</span>`;
         DOM.status.className = type;
@@ -3003,37 +3328,21 @@
       function updateStats() {
         const total = AppState.mahasiswaData.length;
         let hadir = 0;
-        const presensiData = JSON.parse(
-          localStorage.getItem("presensiHariIni") || "{}",
-        );
+        const presensiData = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
         const today = new Date().toLocaleDateString("id-ID");
         AppState.mahasiswaData.forEach((m) => {
           if (presensiData[m.nim] === today) hadir++;
         });
-
         if (DOM.statTotal) DOM.statTotal.textContent = total;
         if (DOM.statHadir) DOM.statHadir.textContent = hadir;
         if (DOM.statBelum) DOM.statBelum.textContent = total - hadir;
-
-        const pct = total > 0 ? Math.round((hadir / total) * 100) : 0;
-        if (DOM.chartPct) DOM.chartPct.textContent = pct + "%";
-        if (DOM.chartFill) {
-          setTimeout(() => {
-            DOM.chartFill.style.width = pct + "%";
-          }, 100);
-        }
-        if (DOM.chartHadirTxt) DOM.chartHadirTxt.textContent = hadir + " hadir";
-        if (DOM.chartTotalTxt) DOM.chartTotalTxt.textContent = "dari " + total;
-
         if (total > 0) saveHistory();
-
-        // Refresh calendar to show today's data
         renderCalendar();
+        renderWeeklyChart();
+        renderLeaderboard();
+        updateKioskStats();
       }
 
-      // ================================================================
-      // CONNECTION
-      // ================================================================
       async function checkConnection() {
         setConnectionStatus("checking", "Menghubungkan");
         try {
@@ -3045,20 +3354,13 @@
             headers: { Accept: "application/json" },
           });
           clearTimeout(timeoutId);
-          if (response.ok) {
-            setConnectionStatus("online", "Terhubung");
-            return true;
-          } else throw new Error("No response");
-        } catch (e) {
-          setConnectionStatus("offline", "Terputus");
-          return false;
-        }
+          if (response.ok) { setConnectionStatus("online", "Terhubung"); return true; }
+          else throw new Error("No response");
+        } catch (e) { setConnectionStatus("offline", "Terputus"); return false; }
       }
 
       function checkPresensiHariIni(nim) {
-        const presensiData = JSON.parse(
-          localStorage.getItem("presensiHariIni") || "{}",
-        );
+        const presensiData = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
         const today = new Date().toLocaleDateString("id-ID");
         return presensiData[nim] === today;
       }
@@ -3070,9 +3372,7 @@
           const td = row.querySelector("td:first-child");
           if (td && td.textContent.trim() === nim) {
             const statusTd = row.querySelector("td:last-child");
-            if (statusTd) {
-              statusTd.innerHTML = `<span class="status-hadir"><i class="fas fa-check"></i> Hadir</span>`;
-            }
+            if (statusTd) statusTd.innerHTML = `<span class="status-hadir"><i class="fas fa-check"></i> Hadir</span>`;
           }
         });
         updateStats();
@@ -3092,9 +3392,7 @@
         if (!DOM.loadingData) return;
         DOM.loadingData.style.display = "block";
         DOM.dataTable.style.display = "none";
-        DOM.loadingData.innerHTML =
-          '<i class="fas fa-spinner fa-spin"></i> Menyelami data...';
-
+        DOM.loadingData.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyelami data...';
         try {
           const isOnline = await checkConnection();
           if (!isOnline) {
@@ -3108,23 +3406,15 @@
                 return;
               }
             }
-            DOM.loadingData.innerHTML = `
-            <i class="fas fa-wifi" style="color:var(--glow-pink);"></i>
-            Tidak ada koneksi<br>
-            <button onclick="loadDataMahasiswa()" style="margin-top:14px;padding:10px 22px;background:linear-gradient(135deg,var(--glow-cyan),var(--glow-blue));border:none;border-radius:12px;color:var(--deep-1);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">
-              Coba Lagi
-            </button>
-          `;
+            DOM.loadingData.innerHTML = `<i class="fas fa-wifi" style="color:var(--glow-pink);"></i> Tidak ada koneksi<br><button onclick="loadDataMahasiswa()" style="margin-top:14px;padding:10px 22px;background:linear-gradient(135deg,var(--glow-cyan),var(--glow-blue));border:none;border-radius:12px;color:var(--deep-1);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">Coba Lagi</button>`;
             return;
           }
-
           const response = await fetch(WEB_APP_URL + "?action=get_all", {
             method: "GET",
             headers: { Accept: "application/json" },
             signal: AbortSignal.timeout(15000),
           });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
           const data = await response.json();
           if (data && Array.isArray(data) && data.length > 0) {
             AppState.mahasiswaData = data;
@@ -3133,11 +3423,7 @@
             setConnectionStatus("online", "Terhubung");
             showStatus(`${data.length} data dimuat`, "success", 2500);
           } else {
-            DOM.loadingData.innerHTML = `
-            <i class="fas fa-fish" style="color:var(--glow-cyan);"></i>
-            Belum ada data<br><br>
-            <a href="${SHEET_URL}" target="_blank" style="padding:10px 22px;background:linear-gradient(135deg,var(--glow-cyan),var(--glow-blue));border:none;border-radius:12px;color:var(--deep-1);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;">Buka Sheet</a>
-          `;
+            DOM.loadingData.innerHTML = `<i class="fas fa-fish" style="color:var(--glow-cyan);"></i> Belum ada data<br><br><a href="${SHEET_URL}" target="_blank" style="padding:10px 22px;background:linear-gradient(135deg,var(--glow-cyan),var(--glow-blue));border-radius:12px;color:var(--deep-1);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;">Buka Sheet</a>`;
             DOM.totalMahasiswa.textContent = "0 BARIS";
           }
         } catch (error) {
@@ -3150,14 +3436,7 @@
               return;
             }
           }
-          DOM.loadingData.innerHTML = `
-          <i class="fas fa-exclamation-circle" style="color:var(--glow-pink);"></i>
-          Gagal memuat<br>
-          <span style="font-size:11px;opacity:0.7;">${error.message}</span><br><br>
-          <button onclick="loadDataMahasiswa()" style="padding:10px 22px;background:linear-gradient(135deg,var(--glow-cyan),var(--glow-blue));border:none;border-radius:12px;color:var(--deep-1);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">
-            Coba Lagi
-          </button>
-        `;
+          DOM.loadingData.innerHTML = `<i class="fas fa-exclamation-circle" style="color:var(--glow-pink);"></i> Gagal memuat<br><span style="font-size:11px;opacity:0.7;">${error.message}</span><br><br><button onclick="loadDataMahasiswa()" style="padding:10px 22px;background:linear-gradient(135deg,var(--glow-cyan),var(--glow-blue));border-radius:12px;color:var(--deep-1);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">Coba Lagi</button>`;
           setConnectionStatus("offline", "Terputus");
         }
       }
@@ -3187,32 +3466,16 @@
 
       function generateQRCode() {
         const nim = DOM.qrNimInput.value.trim();
-        if (!nim || nim.length < 3) {
-          showStatus("NIM minimal 3 angka", "error");
-          playSound("error");
-          return;
-        }
+        if (!nim || nim.length < 3) { showStatus("NIM minimal 3 angka", "error"); playSound("error"); return; }
         const mhs = AppState.mahasiswaData.find((m) => m.nim === nim);
-        if (!mhs) {
-          showStatus(`NIM ${nim} tidak terdaftar`, "error");
-          playSound("error");
-          return;
-        }
+        if (!mhs) { showStatus(`NIM ${nim} tidak terdaftar`, "error"); playSound("error"); return; }
         const qrData = {
-          nim: mhs.nim,
-          nama: mhs.nama,
-          kelas: mhs.kelas,
-          jurusan: mhs.jurusan,
-          link_sheet: SHEET_URL,
+          nim: mhs.nim, nama: mhs.nama, kelas: mhs.kelas,
+          jurusan: mhs.jurusan, link_sheet: SHEET_URL,
           timestamp: new Date().toISOString(),
         };
         DOM.qrResultImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=0a1628&bgcolor=ffffff`;
-        DOM.qrInfo.innerHTML = `
-        <strong>NIM</strong>${mhs.nim}<br>
-        <strong>Nama</strong>${mhs.nama}<br>
-        <strong>Kelas</strong>${mhs.kelas}<br>
-        <strong>Jurusan</strong>${mhs.jurusan}
-      `;
+        DOM.qrInfo.innerHTML = `<strong>NIM</strong>${mhs.nim}<br><strong>Nama</strong>${mhs.nama}<br><strong>Kelas</strong>${mhs.kelas}<br><strong>Jurusan</strong>${mhs.jurusan}`;
         DOM.qrPreview.classList.add("show");
         showStatus(`QR ${mhs.nama} siap`, "success");
         playSound("success");
@@ -3243,57 +3506,32 @@
       function startScanner() {
         if (AppState.scannerRunning) return;
         if (AppState.html5QrCode) {
-          try {
-            AppState.html5QrCode.clear();
-            AppState.html5QrCode = null;
-          } catch (e) {}
+          try { AppState.html5QrCode.clear(); AppState.html5QrCode = null; } catch (e) {}
         }
         const readerEl = document.getElementById("qr-reader");
         if (readerEl) readerEl.innerHTML = "";
         if (DOM.btnStartScan) {
           DOM.btnStartScan.classList.add("stop");
-          DOM.btnStartScan.innerHTML =
-            '<i class="fas fa-stop"></i> <span>Berhenti</span>';
+          DOM.btnStartScan.innerHTML = '<i class="fas fa-stop"></i> <span>Berhenti</span>';
         }
-
         try {
           AppState.html5QrCode = new Html5Qrcode("qr-reader", { verbose: false });
-          const config = {
-            fps: 10,
-            qrbox: { width: 240, height: 240 },
-            aspectRatio: 1.0,
-          };
-
+          const config = { fps: 10, qrbox: { width: 240, height: 240 }, aspectRatio: 1.0 };
           AppState.html5QrCode
-            .start(
-              { facingMode: "environment" },
-              config,
-              onScanSuccess,
-              onScanError,
-            )
+            .start({ facingMode: "environment" }, config, onScanSuccess, onScanError)
             .then(() => {
               AppState.scannerRunning = true;
-              if (DOM.scanStatus)
-                DOM.scanStatus.innerHTML =
-                  '<i class="fas fa-water"></i> Memindai...';
+              if (DOM.scanStatus) DOM.scanStatus.innerHTML = '<i class="fas fa-water"></i> Memindai...';
               showStatus("Kamera aktif", "info", 2500);
             })
             .catch(() => {
               AppState.html5QrCode
-                .start(
-                  { facingMode: "user" },
-                  config,
-                  onScanSuccess,
-                  onScanError,
-                )
+                .start({ facingMode: "user" }, config, onScanSuccess, onScanError)
                 .then(() => {
                   AppState.scannerRunning = true;
                   showStatus("Kamera depan aktif", "info", 2500);
                 })
-                .catch(() => {
-                  showStatus("Gagal mengakses kamera", "error");
-                  resetScannerButton();
-                });
+                .catch(() => { showStatus("Gagal mengakses kamera", "error"); resetScannerButton(); });
             });
         } catch (e) {
           showStatus("Pemindai gagal dimuat", "error");
@@ -3305,26 +3543,19 @@
 
       function stopScanner() {
         if (AppState.html5QrCode && AppState.scannerRunning) {
-          AppState.html5QrCode
-            .stop()
-            .then(() => {
-              AppState.html5QrCode.clear();
-              AppState.html5QrCode = null;
-              AppState.scannerRunning = false;
-              resetScannerButton();
-            })
-            .catch(() => {});
-        } else {
-          AppState.scannerRunning = false;
-          resetScannerButton();
-        }
+          AppState.html5QrCode.stop().then(() => {
+            AppState.html5QrCode.clear();
+            AppState.html5QrCode = null;
+            AppState.scannerRunning = false;
+            resetScannerButton();
+          }).catch(() => {});
+        } else { AppState.scannerRunning = false; resetScannerButton(); }
       }
 
       function resetScannerButton() {
         if (!DOM.btnStartScan) return;
         DOM.btnStartScan.classList.remove("stop");
-        DOM.btnStartScan.innerHTML =
-          '<i class="fas fa-play"></i> <span>Mulai Pindai</span>';
+        DOM.btnStartScan.innerHTML = '<i class="fas fa-play"></i> <span>Mulai Pindai</span>';
       }
 
       function onScanSuccess(decodedText) {
@@ -3333,13 +3564,10 @@
         playSound("scan");
         if (navigator.vibrate) navigator.vibrate(100);
         if (AppState.html5QrCode && AppState.scannerRunning) {
-          AppState.html5QrCode
-            .stop()
-            .then(() => {
-              AppState.scannerRunning = false;
-              resetScannerButton();
-            })
-            .catch(() => {});
+          AppState.html5QrCode.stop().then(() => {
+            AppState.scannerRunning = false;
+            resetScannerButton();
+          }).catch(() => {});
         }
         processPresensi(decodedText);
       }
@@ -3351,9 +3579,7 @@
           try {
             const data = JSON.parse(qrData);
             nim = data.nim || "";
-          } catch (e) {
-            nim = qrData.trim();
-          }
+          } catch (e) { nim = qrData.trim(); }
           if (!nim || nim.length < 3) {
             showStatus("NIM tidak valid", "error");
             playSound("error");
@@ -3370,9 +3596,7 @@
             return;
           }
           const today = new Date().toLocaleDateString("id-ID");
-          const presensiData = JSON.parse(
-            localStorage.getItem("presensiHariIni") || "{}",
-          );
+          const presensiData = JSON.parse(localStorage.getItem("presensiHariIni") || "{}");
           if (presensiData[nim] === today) {
             showStatus(`${mhs.nama} sudah presensi`, "warning");
             playSound("warning");
@@ -3380,36 +3604,24 @@
             setTimeout(startScanner, 2000);
             return;
           }
-
           await fetch(WEB_APP_URL, {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              action: "presensi",
-              nim: nim,
-              nama: mhs.nama,
-              kelas: mhs.kelas,
-              jurusan: mhs.jurusan,
-              mataKuliah: "Presensi Kelas",
-              status: "Hadir",
-              waktu: new Date().toLocaleString("id-ID", {
-                timeZone: "Asia/Jakarta",
-              }),
+              action: "presensi", nim, nama: mhs.nama, kelas: mhs.kelas,
+              jurusan: mhs.jurusan, mataKuliah: "Presensi Kelas", status: "Hadir",
+              waktu: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }),
             }),
           });
-
           presensiData[nim] = today;
           localStorage.setItem("presensiHariIni", JSON.stringify(presensiData));
-
           showStatus(`${mhs.nama} hadir!`, "success");
-          if (DOM.scanStatus)
-            DOM.scanStatus.innerHTML = '<i class="fas fa-check"></i> Hadir';
+          if (DOM.scanStatus) DOM.scanStatus.innerHTML = '<i class="fas fa-check"></i> Hadir';
           if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Hadir";
           playSound("success");
           showToast(`💖 ${mhs.nama} hadir!`);
           if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-
           updateStatusInTable(nim);
           updateStats();
           setTimeout(loadDataMahasiswa, 500);
@@ -3419,9 +3631,7 @@
         } finally {
           setTimeout(() => {
             AppState.isProcessing = false;
-            if (DOM.scanStatus)
-              DOM.scanStatus.innerHTML =
-                '<i class="fas fa-water"></i> Arahkan ke QR Code';
+            if (DOM.scanStatus) DOM.scanStatus.innerHTML = '<i class="fas fa-water"></i> Arahkan ke QR Code';
             if (!AppState.scannerRunning) startScanner();
           }, 3000);
         }
@@ -3434,12 +3644,9 @@
         playSound("click");
         try {
           if (AppState.html5QrCode && AppState.html5QrCode._videoElement) {
-            const track =
-              AppState.html5QrCode._videoElement.srcObject?.getVideoTracks()[0];
+            const track = AppState.html5QrCode._videoElement.srcObject?.getVideoTracks()[0];
             if (track && track.getCapabilities?.().torch) {
-              track.applyConstraints({
-                advanced: [{ torch: AppState.flashOn }],
-              });
+              track.applyConstraints({ advanced: [{ torch: AppState.flashOn }] });
             }
           }
         } catch (e) {}
@@ -3451,9 +3658,7 @@
             showStatus("Browser tidak mendukung kamera", "error");
             return false;
           }
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment" },
-          });
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
           stream.getTracks().forEach((t) => t.stop());
           return true;
         } catch (e) {
@@ -3463,7 +3668,7 @@
       }
 
       // ================================================================
-      // KEYBOARD SHORTCUTS
+      // KEYBOARD
       // ================================================================
       document.addEventListener("keydown", (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === "f") {
@@ -3472,18 +3677,15 @@
         }
         if (e.key === "Escape") {
           DOM.modalOverlay.classList.remove("show");
+          if (AppState.kioskMode) toggleKiosk();
         }
         if (e.code === "Space" && document.activeElement.tagName !== "INPUT") {
           e.preventDefault();
           toggleScanner();
         }
-        // Arrow keys untuk navigasi kalender
         if (document.activeElement.tagName !== "INPUT") {
-          if (e.key === "ArrowLeft") {
-            prevMonth();
-          } else if (e.key === "ArrowRight") {
-            nextMonth();
-          }
+          if (e.key === "ArrowLeft") prevMonth();
+          else if (e.key === "ArrowRight") nextMonth();
         }
       });
 
@@ -3492,11 +3694,11 @@
       // ================================================================
       async function init() {
         console.log(
-          "%c🌊 Presensi Kelas · Deep Ocean v6.0 🌊",
+          "%c🌊 Presensi Kelas · Deep Ocean v7.0 🌊",
           "color:#4dd9ff;background:#0a1628;font-size:14px;font-weight:bold;padding:12px 24px;font-family:'Cinzel',serif;letter-spacing:2px;border:2px solid #4dd9ff;",
         );
         console.log(
-          "%c✦ Fitur: Suara · Tema · Export CSV · Riwayat · Filter · Search · Chart · 📅 KALENDER ✦",
+          "%c✦ v7.0: Share · Kiosk · Leaderboard · Weekly Chart · Reminder · Accent · Print · Batch QR ✦",
           "color:#00ffc6;background:#0a1628;font-size:11px;padding:6px 12px;",
         );
         createBubbles();
@@ -3504,17 +3706,20 @@
         generateQR();
         updateClock();
         renderCalendar();
+        renderWeeklyChart();
+        renderLeaderboard();
         if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Menunggu scan";
 
         await checkConnection();
         await loadDataMahasiswa();
         setInterval(loadDataMahasiswa, 30000);
+        setInterval(updateKioskStats, 2000);
 
         const camReady = await checkCameraPermission();
         if (camReady) setTimeout(startScanner, 800);
 
         setTimeout(() => {
-          showToast("🌊 Deep Ocean v6.0 · Kalender ditambahkan!");
+          showToast("🌊 Deep Ocean v7.0 · 8 fitur baru ditambahkan!");
         }, 1000);
       }
 
@@ -3522,13 +3727,10 @@
 
       window.addEventListener("beforeunload", () => {
         if (AppState.html5QrCode && AppState.scannerRunning) {
-          AppState.html5QrCode
-            .stop()
-            .then(() => {
-              AppState.html5QrCode.clear();
-              AppState.html5QrCode = null;
-            })
-            .catch(() => {});
+          AppState.html5QrCode.stop().then(() => {
+            AppState.html5QrCode.clear();
+            AppState.html5QrCode = null;
+          }).catch(() => {});
         }
       });
     </script>
