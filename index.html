@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Presensi Kelas · Deep Ocean v5</title>
+    <title>Presensi Kelas · Deep Ocean v6</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -53,7 +53,6 @@
         --shadow-glow: 0 0 40px rgba(77, 217, 255, 0.2);
       }
 
-      /* LIGHT MODE */
       body.light-mode {
         --deep-1: #e8f4fc;
         --deep-2: #d4eaf5;
@@ -113,7 +112,6 @@
             var(--deep-3) 70%,
             #060e1c 100%
           );
-        transition: background 0.5s;
       }
 
       body.light-mode .ocean-bg {
@@ -123,15 +121,9 @@
             rgba(91, 141, 239, 0.25) 0%,
             transparent 60%
           ),
-          radial-gradient(
-            ellipse 50% 30% at 20% 100%,
-            rgba(0, 200, 160, 0.15) 0%,
-            transparent 60%
-          ),
           linear-gradient(180deg, #e8f4fc 0%, #d4eaf5 50%, #c0dff0 100%);
       }
 
-      /* Light rays */
       .light-rays {
         position: fixed;
         inset: 0;
@@ -155,48 +147,17 @@
         animation: raySway 8s ease-in-out infinite;
       }
 
-      .ray-1 {
-        left: 15%;
-        animation-delay: 0s;
-        opacity: 0.6;
-      }
-      .ray-2 {
-        left: 35%;
-        animation-delay: -2s;
-        opacity: 0.4;
-        width: 1px;
-      }
-      .ray-3 {
-        left: 55%;
-        animation-delay: -4s;
-        opacity: 0.5;
-        width: 3px;
-      }
-      .ray-4 {
-        left: 75%;
-        animation-delay: -6s;
-        opacity: 0.35;
-        width: 1px;
-      }
-      .ray-5 {
-        left: 90%;
-        animation-delay: -3s;
-        opacity: 0.45;
-      }
+      .ray-1 { left: 15%; opacity: 0.6; }
+      .ray-2 { left: 35%; animation-delay: -2s; opacity: 0.4; width: 1px; }
+      .ray-3 { left: 55%; animation-delay: -4s; opacity: 0.5; width: 3px; }
+      .ray-4 { left: 75%; animation-delay: -6s; opacity: 0.35; width: 1px; }
+      .ray-5 { left: 90%; animation-delay: -3s; opacity: 0.45; }
 
       @keyframes raySway {
-        0%,
-        100% {
-          transform: translateX(0) skewX(-2deg);
-          opacity: 0.3;
-        }
-        50% {
-          transform: translateX(20px) skewX(2deg);
-          opacity: 0.7;
-        }
+        0%, 100% { transform: translateX(0) skewX(-2deg); opacity: 0.3; }
+        50% { transform: translateX(20px) skewX(2deg); opacity: 0.7; }
       }
 
-      /* Bubbles */
       .bubbles {
         position: fixed;
         inset: 0;
@@ -224,27 +185,13 @@
       }
 
       @keyframes bubbleRise {
-        0% {
-          transform: translateY(0) translateX(0) scale(0.5);
-          opacity: 0;
-        }
-        10% {
-          opacity: 1;
-          transform: translateY(-10vh) translateX(5px) scale(1);
-        }
-        50% {
-          transform: translateY(-50vh) translateX(-10px) scale(1);
-        }
-        90% {
-          opacity: 0.8;
-        }
-        100% {
-          transform: translateY(-110vh) translateX(15px) scale(1.1);
-          opacity: 0;
-        }
+        0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+        10% { opacity: 1; transform: translateY(-10vh) translateX(5px) scale(1); }
+        50% { transform: translateY(-50vh) translateX(-10px) scale(1); }
+        90% { opacity: 0.8; }
+        100% { transform: translateY(-110vh) translateX(15px) scale(1.1); opacity: 0; }
       }
 
-      /* Fish */
       .fish {
         position: fixed;
         z-index: 2;
@@ -256,44 +203,20 @@
         text-shadow: 0 0 15px var(--glow-cyan);
       }
 
-      .fish-1 {
-        top: 25%;
-        left: -60px;
-        animation: swimRight 35s linear infinite;
-      }
-      .fish-2 {
-        top: 65%;
-        left: -80px;
-        font-size: 16px;
-        animation: swimRight 45s linear infinite 8s;
-        opacity: 0.12;
-      }
-      .fish-3 {
-        top: 45%;
-        right: -60px;
-        font-size: 18px;
-        animation: swimLeft 40s linear infinite 5s;
-      }
+      .fish-1 { top: 25%; left: -60px; animation: swimRight 35s linear infinite; }
+      .fish-2 { top: 65%; left: -80px; font-size: 16px; animation: swimRight 45s linear infinite 8s; opacity: 0.12; }
+      .fish-3 { top: 45%; right: -60px; font-size: 18px; animation: swimLeft 40s linear infinite 5s; }
 
       @keyframes swimRight {
-        0% {
-          transform: translateX(0) scaleX(1);
-        }
-        100% {
-          transform: translateX(calc(100vw + 200px)) scaleX(1);
-        }
+        0% { transform: translateX(0) scaleX(1); }
+        100% { transform: translateX(calc(100vw + 200px)) scaleX(1); }
       }
 
       @keyframes swimLeft {
-        0% {
-          transform: translateX(0) scaleX(-1);
-        }
-        100% {
-          transform: translateX(calc(-100vw - 200px)) scaleX(-1);
-        }
+        0% { transform: translateX(0) scaleX(-1); }
+        100% { transform: translateX(calc(-100vw - 200px)) scaleX(-1); }
       }
 
-      /* Plankton */
       .plankton {
         position: fixed;
         inset: 0;
@@ -308,31 +231,18 @@
         height: 3px;
         border-radius: 50%;
         background: var(--glow-cyan);
-        box-shadow:
-          0 0 8px var(--glow-cyan),
-          0 0 16px var(--glow-cyan);
+        box-shadow: 0 0 8px var(--glow-cyan), 0 0 16px var(--glow-cyan);
         animation: planktonDrift ease-in-out infinite;
       }
 
       @keyframes planktonDrift {
-        0%,
-        100% {
-          transform: translate(0, 0);
-          opacity: 0;
-        }
-        25% {
-          opacity: 1;
-        }
-        50% {
-          transform: translate(30px, -40px);
-          opacity: 0.6;
-        }
-        75% {
-          opacity: 1;
-        }
+        0%, 100% { transform: translate(0, 0); opacity: 0; }
+        25% { opacity: 1; }
+        50% { transform: translate(30px, -40px); opacity: 0.6; }
+        75% { opacity: 1; }
       }
 
-      /* ==================== TOGGLE CONTROLS (TOP RIGHT) ==================== */
+      /* ==================== TOGGLE CONTROLS ==================== */
       .toggle-controls {
         position: fixed;
         top: 20px;
@@ -362,43 +272,16 @@
       .toggle-btn:hover {
         transform: translateY(-3px) scale(1.05);
         background: rgba(77, 217, 255, 0.15);
-        box-shadow:
-          0 8px 25px rgba(77, 217, 255, 0.3),
-          0 0 20px rgba(77, 217, 255, 0.2);
+        box-shadow: 0 8px 25px rgba(77, 217, 255, 0.3);
       }
 
-      .toggle-btn.active {
-        background: linear-gradient(
-          135deg,
-          var(--glow-cyan),
-          var(--glow-teal)
-        );
-        color: var(--deep-1);
-        border-color: transparent;
-      }
-
-      .toggle-btn .sound-off {
-        display: none;
-      }
-
-      .toggle-btn.muted .sound-on {
-        display: none;
-      }
-      .toggle-btn.muted .sound-off {
-        display: block;
-      }
+      .toggle-btn .sound-off { display: none; }
+      .toggle-btn.muted .sound-on { display: none; }
+      .toggle-btn.muted .sound-off { display: block; }
 
       @media (max-width: 480px) {
-        .toggle-controls {
-          top: 12px;
-          right: 12px;
-          gap: 6px;
-        }
-        .toggle-btn {
-          width: 38px;
-          height: 38px;
-          font-size: 14px;
-        }
+        .toggle-controls { top: 12px; right: 12px; gap: 6px; }
+        .toggle-btn { width: 38px; height: 38px; font-size: 14px; }
       }
 
       /* ==================== MAIN AQUARIUM ==================== */
@@ -424,7 +307,6 @@
           0 0 60px rgba(77, 217, 255, 0.15);
         animation: aquariumFloat 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         overflow: hidden;
-        transition: background 0.5s, border-color 0.5s;
       }
 
       body.light-mode .aquarium {
@@ -436,16 +318,8 @@
       }
 
       @keyframes aquariumFloat {
-        from {
-          opacity: 0;
-          transform: translateY(40px) scale(0.95);
-          filter: blur(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-          filter: blur(0);
-        }
+        from { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(10px); }
+        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
       }
 
       .water-surface {
@@ -458,19 +332,13 @@
           rgba(167, 139, 250, 0.4) 80%,
           transparent 100%
         );
-        position: relative;
         box-shadow: 0 0 30px rgba(77, 217, 255, 0.4);
         animation: surfaceShimmer 4s ease-in-out infinite;
       }
 
       @keyframes surfaceShimmer {
-        0%,
-        100% {
-          opacity: 0.6;
-        }
-        50% {
-          opacity: 1;
-        }
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
       }
 
       /* ==================== HEADER ==================== */
@@ -489,25 +357,14 @@
         transform: translateX(-50%);
         width: 200px;
         height: 200px;
-        background: radial-gradient(
-          circle,
-          rgba(77, 217, 255, 0.15) 0%,
-          transparent 60%
-        );
+        background: radial-gradient(circle, rgba(77, 217, 255, 0.15) 0%, transparent 60%);
         pointer-events: none;
         animation: headerGlow 4s ease-in-out infinite;
       }
 
       @keyframes headerGlow {
-        0%,
-        100% {
-          transform: translateX(-50%) scale(1);
-          opacity: 0.6;
-        }
-        50% {
-          transform: translateX(-50%) scale(1.2);
-          opacity: 1;
-        }
+        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+        50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
       }
 
       .header-badge {
@@ -530,14 +387,10 @@
         box-shadow: 0 0 20px rgba(77, 217, 255, 0.2);
       }
 
-      .header-badge i {
-        animation: bubbleRotate 3s linear infinite;
-      }
+      .header-badge i { animation: bubbleRotate 3s linear infinite; }
 
       @keyframes bubbleRotate {
-        to {
-          transform: rotate(360deg);
-        }
+        to { transform: rotate(360deg); }
       }
 
       h1 {
@@ -550,23 +403,11 @@
         margin-bottom: 8px;
         position: relative;
         z-index: 2;
-        text-shadow:
-          0 0 30px rgba(77, 217, 255, 0.5),
-          0 2px 10px rgba(0, 0, 0, 0.5);
-        transition: color 0.5s;
-      }
-
-      body.light-mode h1 {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-shadow: 0 0 30px rgba(77, 217, 255, 0.5);
       }
 
       h1 .accent {
-        background: linear-gradient(
-          135deg,
-          var(--glow-cyan) 0%,
-          var(--glow-teal) 50%,
-          var(--glow-purple) 100%
-        );
+        background: linear-gradient(135deg, var(--glow-cyan) 0%, var(--glow-teal) 50%, var(--glow-purple) 100%);
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -575,13 +416,8 @@
       }
 
       @keyframes gradientWave {
-        0%,
-        100% {
-          background-position: 0% center;
-        }
-        50% {
-          background-position: 100% center;
-        }
+        0%, 100% { background-position: 0% center; }
+        50% { background-position: 100% center; }
       }
 
       .subtitle {
@@ -603,16 +439,11 @@
         content: "";
         width: 24px;
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--glow-cyan),
-          transparent
-        );
+        background: linear-gradient(90deg, transparent, var(--glow-cyan), transparent);
       }
 
       .clock-strip {
-        display: flex;
+        display: inline-flex;
         justify-content: center;
         align-items: center;
         gap: 12px;
@@ -628,7 +459,6 @@
         color: var(--glow-cyan);
         position: relative;
         z-index: 2;
-        display: inline-flex;
       }
 
       .clock-strip .pulse-orb {
@@ -636,22 +466,13 @@
         height: 8px;
         border-radius: 50%;
         background: var(--glow-teal);
-        box-shadow:
-          0 0 10px var(--glow-teal),
-          0 0 20px var(--glow-teal);
+        box-shadow: 0 0 10px var(--glow-teal), 0 0 20px var(--glow-teal);
         animation: orbPulse 2s ease-in-out infinite;
       }
 
       @keyframes orbPulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
-        50% {
-          transform: scale(0.6);
-          opacity: 0.5;
-        }
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(0.6); opacity: 0.5; }
       }
 
       /* ==================== CONTENT ==================== */
@@ -680,9 +501,7 @@
         height: 8px;
         border-radius: 50%;
         background: var(--glow-teal);
-        box-shadow:
-          0 0 10px var(--glow-teal),
-          0 0 20px var(--glow-teal);
+        box-shadow: 0 0 10px var(--glow-teal), 0 0 20px var(--glow-teal);
         flex-shrink: 0;
       }
 
@@ -690,11 +509,7 @@
         content: "";
         flex: 1;
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          rgba(77, 217, 255, 0.4),
-          transparent
-        );
+        background: linear-gradient(90deg, rgba(77, 217, 255, 0.4), transparent);
       }
 
       /* ==================== STATS ==================== */
@@ -725,12 +540,7 @@
         transform: translateX(-50%);
         width: 60%;
         height: 2px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--glow-cyan),
-          transparent
-        );
+        background: linear-gradient(90deg, transparent, var(--glow-cyan), transparent);
         box-shadow: 0 0 10px var(--glow-cyan);
       }
 
@@ -742,11 +552,7 @@
         transform: translateX(-50%);
         width: 4px;
         height: 20px;
-        background: linear-gradient(
-          180deg,
-          rgba(77, 217, 255, 0.6),
-          transparent
-        );
+        background: linear-gradient(180deg, rgba(77, 217, 255, 0.6), transparent);
         filter: blur(1px);
       }
 
@@ -754,37 +560,19 @@
         transform: translateY(-4px);
         background: rgba(77, 217, 255, 0.12);
         border-color: var(--glow-cyan);
-        box-shadow:
-          0 10px 30px rgba(77, 217, 255, 0.2),
-          0 0 30px rgba(77, 217, 255, 0.15);
+        box-shadow: 0 10px 30px rgba(77, 217, 255, 0.2);
       }
 
       .stat-card .emoji {
         font-size: 22px;
         display: block;
         margin-bottom: 6px;
-        filter: drop-shadow(0 0 8px currentColor);
         animation: bob 3s ease-in-out infinite;
       }
 
-      .stat-card:nth-child(1) .emoji {
-        animation-delay: 0s;
-      }
-      .stat-card:nth-child(2) .emoji {
-        animation-delay: 0.5s;
-      }
-      .stat-card:nth-child(3) .emoji {
-        animation-delay: 1s;
-      }
-
       @keyframes bob {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-4px);
-        }
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
       }
 
       .stat-card .num {
@@ -797,12 +585,8 @@
         text-shadow: 0 0 20px currentColor;
       }
 
-      .stat-card.hadir .num {
-        color: var(--glow-teal);
-      }
-      .stat-card.belum .num {
-        color: var(--glow-pink);
-      }
+      .stat-card.hadir .num { color: var(--glow-teal); }
+      .stat-card.belum .num { color: var(--glow-pink); }
 
       .stat-card .lbl {
         font-family: var(--font-body);
@@ -821,7 +605,6 @@
         padding: 18px 20px;
         margin-bottom: 22px;
         position: relative;
-        backdrop-filter: blur(10px);
       }
 
       .chart-panel::before {
@@ -831,12 +614,7 @@
         left: 24px;
         right: 24px;
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--glow-teal),
-          transparent
-        );
+        background: linear-gradient(90deg, transparent, var(--glow-teal), transparent);
       }
 
       .chart-head {
@@ -868,24 +646,16 @@
         background: rgba(10, 22, 40, 0.6);
         border-radius: 5px;
         overflow: hidden;
-        position: relative;
         box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
       }
 
       .chart-fill {
         height: 100%;
         width: 0%;
-        background: linear-gradient(
-          90deg,
-          var(--glow-teal) 0%,
-          var(--glow-cyan) 50%,
-          var(--glow-purple) 100%
-        );
+        background: linear-gradient(90deg, var(--glow-teal) 0%, var(--glow-cyan) 50%, var(--glow-purple) 100%);
         border-radius: 5px;
         transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow:
-          0 0 15px rgba(0, 255, 198, 0.5),
-          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 15px rgba(0, 255, 198, 0.5);
         position: relative;
         overflow: hidden;
       }
@@ -894,22 +664,13 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.4),
-          transparent
-        );
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
         animation: shimmerBar 2.5s ease-in-out infinite;
       }
 
       @keyframes shimmerBar {
-        0% {
-          transform: translateX(-100%);
-        }
-        100% {
-          transform: translateX(100%);
-        }
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
       }
 
       .chart-sub {
@@ -922,131 +683,310 @@
         letter-spacing: 1px;
       }
 
-      /* ==================== FILTER TABS ==================== */
-      .filter-tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 16px;
-        overflow-x: auto;
-        padding-bottom: 6px;
-        scrollbar-width: thin;
-      }
-
-      .filter-tabs::-webkit-scrollbar {
-        height: 3px;
-      }
-      .filter-tabs::-webkit-scrollbar-thumb {
-        background: rgba(77, 217, 255, 0.3);
-        border-radius: 2px;
-      }
-
-      .filter-tab {
-        padding: 8px 16px;
-        background: rgba(77, 217, 255, 0.06);
+      /* ==================== CALENDAR ==================== */
+      .calendar-panel {
+        background: rgba(77, 217, 255, 0.05);
         border: 1px solid rgba(77, 217, 255, 0.2);
         border-radius: 20px;
-        color: var(--text-soft);
-        font-family: var(--font-body);
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all 0.3s;
-      }
-
-      .filter-tab:hover {
-        background: rgba(77, 217, 255, 0.12);
-        color: var(--text-main);
-      }
-
-      .filter-tab.active {
-        background: linear-gradient(
-          135deg,
-          var(--glow-cyan),
-          var(--glow-blue)
-        );
-        color: var(--deep-1);
-        border-color: transparent;
-        box-shadow: 0 4px 15px rgba(77, 217, 255, 0.4);
-      }
-
-      /* ==================== SEARCH BAR ==================== */
-      .search-wrap {
+        padding: 20px;
+        margin-bottom: 22px;
         position: relative;
+        backdrop-filter: blur(10px);
+      }
+
+      .calendar-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 30px;
+        right: 30px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--glow-purple), transparent);
+        box-shadow: 0 0 10px var(--glow-purple);
+      }
+
+      .cal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 16px;
       }
 
-      .search-wrap input {
-        width: 100%;
-        padding: 12px 16px 12px 42px;
-        background: rgba(10, 22, 40, 0.6);
-        border: 1px solid rgba(77, 217, 255, 0.25);
-        border-radius: 14px;
-        color: var(--text-main);
-        font-family: var(--font-body);
-        font-size: 13px;
-        transition: all 0.3s;
-      }
-
-      .search-wrap input::placeholder {
-        color: var(--text-dim);
-        font-style: italic;
-      }
-
-      .search-wrap input:focus {
-        outline: none;
-        border-color: var(--glow-cyan);
-        box-shadow:
-          0 0 0 3px rgba(77, 217, 255, 0.15),
-          0 0 20px rgba(77, 217, 255, 0.3);
-      }
-
-      .search-wrap .search-icon {
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
+      .cal-title {
+        font-family: var(--font-display);
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 2px;
         color: var(--glow-cyan);
-        font-size: 14px;
-        pointer-events: none;
+        text-transform: uppercase;
+        text-shadow: 0 0 15px rgba(77, 217, 255, 0.4);
       }
 
-      .search-wrap .clear-btn {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent;
-        border: none;
-        color: var(--text-dim);
-        cursor: pointer;
-        font-size: 14px;
-        padding: 6px;
-        display: none;
+      .cal-nav {
+        display: flex;
+        gap: 6px;
+      }
+
+      .cal-nav-btn {
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
-        transition: all 0.2s;
+        background: rgba(77, 217, 255, 0.08);
+        border: 1px solid rgba(77, 217, 255, 0.25);
+        color: var(--glow-cyan);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        font-size: 12px;
       }
 
-      .search-wrap .clear-btn.visible {
+      .cal-nav-btn:hover {
+        background: rgba(77, 217, 255, 0.2);
+        border-color: var(--glow-cyan);
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(77, 217, 255, 0.4);
+      }
+
+      .cal-nav-btn:active {
+        transform: scale(0.95);
+      }
+
+      .cal-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 8px;
+      }
+
+      .cal-weekday {
+        text-align: center;
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        padding: 6px 0;
+      }
+
+      .cal-weekday.weekend {
+        color: var(--glow-pink);
+      }
+
+      .cal-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+      }
+
+      .cal-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-family: var(--font-body);
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-soft);
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        background: rgba(77, 217, 255, 0.03);
+        border: 1px solid transparent;
+        user-select: none;
+      }
+
+      .cal-day:hover:not(.empty) {
+        background: rgba(77, 217, 255, 0.15);
+        border-color: var(--glow-cyan);
+        transform: scale(1.08);
+        z-index: 2;
+        color: var(--text-main);
+      }
+
+      .cal-day.empty {
+        cursor: default;
+        background: transparent;
+        opacity: 0.2;
+      }
+
+      .cal-day.today {
+        background: rgba(255, 217, 102, 0.15);
+        border: 2px solid var(--glow-gold);
+        color: var(--glow-gold);
+        font-weight: 700;
+        box-shadow: 0 0 15px rgba(255, 217, 102, 0.4);
+      }
+
+      .cal-day.has-event {
+        position: relative;
+      }
+
+      .cal-day.has-event::after {
+        content: "";
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--glow-teal);
+        box-shadow: 0 0 8px var(--glow-teal);
+      }
+
+      .cal-day.has-event.partial::after {
+        background: var(--glow-gold);
+        box-shadow: 0 0 8px var(--glow-gold);
+      }
+
+      .cal-day.has-event.full::after {
+        background: var(--glow-teal);
+        box-shadow: 0 0 8px var(--glow-teal);
+        width: 8px;
+        height: 8px;
+        bottom: 2px;
+      }
+
+      .cal-day.selected {
+        background: linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
+        color: var(--deep-1);
+        font-weight: 700;
+        box-shadow: 0 0 20px rgba(77, 217, 255, 0.6);
+        transform: scale(1.05);
+        border-color: transparent;
+      }
+
+      .cal-day.selected::after {
+        background: var(--deep-1);
+        box-shadow: none;
+      }
+
+      .cal-day.weekend {
+        color: var(--glow-pink);
+      }
+
+      .cal-day.weekend.today {
+        color: var(--glow-gold);
+      }
+
+      .cal-legend {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(77, 217, 255, 0.1);
+        flex-wrap: wrap;
+      }
+
+      .cal-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-body);
+        font-size: 10px;
+        color: var(--text-soft);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .cal-legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      .cal-legend-dot.full {
+        background: var(--glow-teal);
+        box-shadow: 0 0 8px var(--glow-teal);
+      }
+
+      .cal-legend-dot.partial {
+        background: var(--glow-gold);
+        box-shadow: 0 0 8px var(--glow-gold);
+      }
+
+      .cal-legend-dot.today {
+        background: var(--glow-gold);
+        border: 1.5px solid var(--glow-gold);
+        box-shadow: 0 0 8px var(--glow-gold);
+      }
+
+      /* Detail panel for selected date */
+      .cal-detail {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: rgba(10, 22, 40, 0.6);
+        border-left: 3px solid var(--glow-cyan);
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 12px;
+        color: var(--text-soft);
+        display: none;
+        animation: softSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .cal-detail.show {
         display: block;
       }
 
-      .search-wrap .clear-btn:hover {
+      @keyframes softSlide {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .cal-detail .detail-date {
+        font-family: var(--font-display);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--glow-cyan);
+        letter-spacing: 1.5px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+      }
+
+      .cal-detail .detail-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .cal-detail .detail-badge {
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .cal-detail .detail-badge.hadir {
+        background: rgba(0, 255, 198, 0.15);
+        color: var(--glow-teal);
+        border: 1px solid rgba(0, 255, 198, 0.4);
+      }
+
+      .cal-detail .detail-badge.belum {
+        background: rgba(255, 122, 198, 0.15);
         color: var(--glow-pink);
-        background: rgba(255, 122, 198, 0.1);
+        border: 1px solid rgba(255, 122, 198, 0.4);
+      }
+
+      .cal-detail .detail-badge.empty {
+        background: rgba(90, 123, 168, 0.15);
+        color: var(--text-dim);
+        border: 1px solid rgba(90, 123, 168, 0.3);
       }
 
       /* ==================== QR BUBBLE ==================== */
       .qr-bubble {
         text-align: center;
         padding: 30px 20px;
-        background: radial-gradient(
-          ellipse at center,
-          rgba(77, 217, 255, 0.1) 0%,
-          transparent 70%
-        );
+        background: radial-gradient(ellipse at center, rgba(77, 217, 255, 0.1) 0%, transparent 70%);
         border-radius: 24px;
         margin-bottom: 24px;
         position: relative;
@@ -1081,9 +1021,7 @@
       }
 
       @keyframes spinRing {
-        to {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
+        to { transform: translate(-50%, -50%) rotate(360deg); }
       }
 
       #qrImage {
@@ -1094,10 +1032,7 @@
         background: #fff;
         padding: 12px;
         border-radius: 20px;
-        box-shadow:
-          0 0 40px rgba(77, 217, 255, 0.4),
-          0 0 80px rgba(77, 217, 255, 0.15),
-          0 10px 30px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 40px rgba(77, 217, 255, 0.4), 0 10px 30px rgba(0, 0, 0, 0.4);
         position: relative;
         z-index: 2;
         transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1153,8 +1088,6 @@
         align-items: center;
         gap: 8px;
         text-decoration: none;
-        position: relative;
-        overflow: hidden;
         backdrop-filter: blur(8px);
       }
 
@@ -1170,14 +1103,10 @@
         border-color: var(--glow-cyan);
         color: var(--text-main);
         transform: translateY(-3px);
-        box-shadow:
-          0 10px 30px rgba(77, 217, 255, 0.25),
-          0 0 30px rgba(77, 217, 255, 0.15);
+        box-shadow: 0 10px 30px rgba(77, 217, 255, 0.25);
       }
 
-      .bubble-btn:hover i {
-        transform: scale(1.15);
-      }
+      .bubble-btn:hover i { transform: scale(1.15); }
 
       /* ==================== QUICK ACTIONS ==================== */
       .quick-actions {
@@ -1216,15 +1145,10 @@
         border-color: var(--glow-cyan);
         color: var(--text-main);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(77, 217, 255, 0.2);
       }
 
-      .quick-btn.export i {
-        color: var(--glow-teal);
-      }
-      .quick-btn.history i {
-        color: var(--glow-gold);
-      }
+      .quick-btn.export i { color: var(--glow-teal); }
+      .quick-btn.history i { color: var(--glow-gold); }
 
       /* ==================== GENERATE ==================== */
       .gen-panel {
@@ -1234,7 +1158,6 @@
         padding: 20px;
         margin-bottom: 26px;
         position: relative;
-        backdrop-filter: blur(8px);
       }
 
       .gen-panel::before {
@@ -1244,12 +1167,7 @@
         left: 30px;
         right: 30px;
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--glow-teal),
-          transparent
-        );
+        background: linear-gradient(90deg, transparent, var(--glow-teal), transparent);
         box-shadow: 0 0 10px var(--glow-teal);
       }
 
@@ -1266,9 +1184,7 @@
         gap: 8px;
       }
 
-      .gen-label i {
-        animation: bubbleRotate 4s linear infinite;
-      }
+      .gen-label i { animation: bubbleRotate 4s linear infinite; }
 
       .input-row {
         display: flex;
@@ -1284,8 +1200,6 @@
         color: var(--text-main);
         font-family: var(--font-body);
         font-size: 13px;
-        font-weight: 400;
-        letter-spacing: 0.5px;
         transition: all 0.3s;
       }
 
@@ -1298,18 +1212,12 @@
         outline: none;
         border-color: var(--glow-cyan);
         background: rgba(10, 22, 40, 0.85);
-        box-shadow:
-          0 0 0 3px rgba(77, 217, 255, 0.15),
-          0 0 20px rgba(77, 217, 255, 0.3);
+        box-shadow: 0 0 0 3px rgba(77, 217, 255, 0.15);
       }
 
       .input-row button {
         padding: 13px 22px;
-        background: linear-gradient(
-          135deg,
-          var(--glow-cyan) 0%,
-          var(--glow-blue) 100%
-        );
+        background: linear-gradient(135deg, var(--glow-cyan) 0%, var(--glow-blue) 100%);
         border: none;
         border-radius: 14px;
         color: var(--deep-1);
@@ -1341,7 +1249,6 @@
         border: 1px solid rgba(77, 217, 255, 0.3);
         border-radius: 16px;
         text-align: center;
-        position: relative;
       }
 
       .qr-preview.show {
@@ -1350,16 +1257,8 @@
       }
 
       @keyframes bubblePop {
-        0% {
-          opacity: 0;
-          transform: scale(0.6);
-          filter: blur(8px);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1);
-          filter: blur(0);
-        }
+        0% { opacity: 0; transform: scale(0.6); filter: blur(8px); }
+        100% { opacity: 1; transform: scale(1); filter: blur(0); }
       }
 
       .qr-preview img {
@@ -1415,11 +1314,7 @@
       }
 
       .qr-actions button:first-child {
-        background: linear-gradient(
-          135deg,
-          var(--glow-teal),
-          var(--glow-cyan)
-        );
+        background: linear-gradient(135deg, var(--glow-teal), var(--glow-cyan));
         color: var(--deep-1);
         box-shadow: 0 4px 15px rgba(0, 255, 198, 0.3);
       }
@@ -1432,7 +1327,6 @@
 
       .qr-actions button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(77, 217, 255, 0.3);
       }
 
       /* ==================== CONNECTION ==================== */
@@ -1463,25 +1357,19 @@
 
       .dot.online {
         background: var(--glow-teal);
-        box-shadow:
-          0 0 10px var(--glow-teal),
-          0 0 20px var(--glow-teal);
+        box-shadow: 0 0 10px var(--glow-teal), 0 0 20px var(--glow-teal);
         animation: orbPulse 2s ease-in-out infinite;
       }
 
       .dot.offline {
         background: var(--glow-pink);
-        box-shadow:
-          0 0 10px var(--glow-pink),
-          0 0 20px var(--glow-pink);
+        box-shadow: 0 0 10px var(--glow-pink), 0 0 20px var(--glow-pink);
         animation: orbPulse 1s ease-in-out infinite;
       }
 
       .dot.checking {
         background: var(--glow-gold);
-        box-shadow:
-          0 0 10px var(--glow-gold),
-          0 0 20px var(--glow-gold);
+        box-shadow: 0 0 10px var(--glow-gold), 0 0 20px var(--glow-gold);
         animation: orbPulse 0.6s ease-in-out infinite;
       }
 
@@ -1497,7 +1385,6 @@
         font-weight: 500;
         letter-spacing: 1px;
         margin-bottom: 20px;
-        backdrop-filter: blur(10px);
         animation: bubblePop 0.4s ease;
         border: 1px solid;
       }
@@ -1507,7 +1394,6 @@
         background: rgba(0, 255, 198, 0.1);
         color: var(--glow-teal);
         border-color: rgba(0, 255, 198, 0.4);
-        box-shadow: 0 0 30px rgba(0, 255, 198, 0.15);
       }
       #status.error {
         display: flex;
@@ -1569,17 +1455,9 @@
         filter: contrast(1.1) saturate(1.15) hue-rotate(-10deg);
       }
 
-      #qr-reader > div:not(:first-child) {
-        display: none !important;
-      }
-      #qr-reader > div:first-child {
-        width: 100% !important;
-        height: auto !important;
-      }
-      #qr-reader > div:first-child > div:first-child {
-        width: 100% !important;
-        height: auto !important;
-      }
+      #qr-reader > div:not(:first-child) { display: none !important; }
+      #qr-reader > div:first-child { width: 100% !important; height: auto !important; }
+      #qr-reader > div:first-child > div:first-child { width: 100% !important; height: auto !important; }
 
       .scan-overlay {
         position: absolute;
@@ -1604,73 +1482,29 @@
         width: 34px;
         height: 34px;
         border: 3px solid var(--glow-cyan);
-        box-shadow:
-          0 0 15px var(--glow-cyan),
-          inset 0 0 8px rgba(77, 217, 255, 0.4);
+        box-shadow: 0 0 15px var(--glow-cyan);
         border-radius: 8px;
       }
 
-      .scan-corner-tl {
-        top: -2px;
-        left: -2px;
-        border-right: none;
-        border-bottom: none;
-      }
-      .scan-corner-tr {
-        top: -2px;
-        right: -2px;
-        border-left: none;
-        border-bottom: none;
-        border-color: var(--glow-teal);
-        box-shadow: 0 0 15px var(--glow-teal);
-      }
-      .scan-corner-bl {
-        bottom: -2px;
-        left: -2px;
-        border-right: none;
-        border-top: none;
-        border-color: var(--glow-purple);
-        box-shadow: 0 0 15px var(--glow-purple);
-      }
-      .scan-corner-br {
-        bottom: -2px;
-        right: -2px;
-        border-left: none;
-        border-top: none;
-        border-color: var(--glow-pink);
-        box-shadow: 0 0 15px var(--glow-pink);
-      }
+      .scan-corner-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+      .scan-corner-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; border-color: var(--glow-teal); box-shadow: 0 0 15px var(--glow-teal); }
+      .scan-corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; border-color: var(--glow-purple); box-shadow: 0 0 15px var(--glow-purple); }
+      .scan-corner-br { bottom: -2px; right: -2px; border-left: none; border-top: none; border-color: var(--glow-pink); box-shadow: 0 0 15px var(--glow-pink); }
 
       .scan-beam {
         position: absolute;
         left: 8%;
         right: 8%;
         height: 2px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--glow-cyan),
-          var(--glow-teal),
-          transparent
-        );
-        box-shadow:
-          0 0 15px var(--glow-cyan),
-          0 0 30px var(--glow-teal);
+        background: linear-gradient(90deg, transparent, var(--glow-cyan), var(--glow-teal), transparent);
+        box-shadow: 0 0 15px var(--glow-cyan), 0 0 30px var(--glow-teal);
         animation: scanWave 2.4s ease-in-out infinite alternate;
       }
 
       @keyframes scanWave {
-        0% {
-          top: 12%;
-          opacity: 0.4;
-        }
-        50% {
-          opacity: 1;
-        }
-        100% {
-          top: 88%;
-          opacity: 0.4;
-        }
+        0% { top: 12%; opacity: 0.4; }
+        50% { opacity: 1; }
+        100% { top: 88%; opacity: 0.4; }
       }
 
       .scan-hint {
@@ -1696,9 +1530,7 @@
         gap: 8px;
       }
 
-      .scan-hint i {
-        animation: bob 1.8s ease-in-out infinite;
-      }
+      .scan-hint i { animation: bob 1.8s ease-in-out infinite; }
 
       /* ==================== SCANNER CONTROLS ==================== */
       .scan-controls {
@@ -1726,12 +1558,7 @@
       }
 
       .btn-scan-ocean {
-        background: linear-gradient(
-          135deg,
-          var(--glow-cyan) 0%,
-          var(--glow-blue) 50%,
-          var(--glow-purple) 100%
-        );
+        background: linear-gradient(135deg, var(--glow-cyan) 0%, var(--glow-blue) 50%, var(--glow-purple) 100%);
         background-size: 200% 200%;
         color: var(--deep-1);
         box-shadow: 0 8px 25px rgba(77, 217, 255, 0.4);
@@ -1739,13 +1566,8 @@
       }
 
       @keyframes gradientShift {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
       }
 
       .btn-scan-ocean:hover {
@@ -1754,11 +1576,7 @@
       }
 
       .btn-scan-ocean.stop {
-        background: linear-gradient(
-          135deg,
-          var(--glow-pink) 0%,
-          #ff5a7a 100%
-        );
+        background: linear-gradient(135deg, var(--glow-pink) 0%, #ff5a7a 100%);
         animation: none;
       }
 
@@ -1769,11 +1587,7 @@
       }
 
       .btn-flash-ocean.active {
-        background: linear-gradient(
-          135deg,
-          var(--glow-gold) 0%,
-          var(--glow-orange) 100%
-        );
+        background: linear-gradient(135deg, var(--glow-gold) 0%, var(--glow-orange) 100%);
         color: var(--deep-1);
         box-shadow: 0 0 30px rgba(255, 217, 102, 0.6);
       }
@@ -1785,16 +1599,11 @@
         border-radius: 20px;
         overflow: hidden;
         margin-bottom: 22px;
-        backdrop-filter: blur(8px);
       }
 
       .data-head {
         padding: 14px 20px;
-        background: linear-gradient(
-          90deg,
-          rgba(77, 217, 255, 0.1) 0%,
-          rgba(167, 139, 250, 0.08) 100%
-        );
+        background: linear-gradient(90deg, rgba(77, 217, 255, 0.1) 0%, rgba(167, 139, 250, 0.08) 100%);
         border-bottom: 1px solid rgba(77, 217, 255, 0.15);
         display: flex;
         justify-content: space-between;
@@ -1824,17 +1633,10 @@
         overflow-y: auto;
       }
 
-      .table-wrap::-webkit-scrollbar {
-        width: 6px;
-      }
-      .table-wrap::-webkit-scrollbar-track {
-        background: transparent;
-      }
+      .table-wrap::-webkit-scrollbar { width: 6px; }
+      .table-wrap::-webkit-scrollbar-track { background: transparent; }
       .table-wrap::-webkit-scrollbar-thumb {
-        background: linear-gradient(
-          var(--glow-cyan),
-          var(--glow-purple)
-        );
+        background: linear-gradient(var(--glow-cyan), var(--glow-purple));
         border-radius: 3px;
       }
 
@@ -1897,7 +1699,6 @@
         font-weight: 600;
         letter-spacing: 1.5px;
         text-transform: uppercase;
-        box-shadow: 0 0 15px rgba(0, 255, 198, 0.15);
       }
 
       .status-belum {
@@ -1926,9 +1727,106 @@
         letter-spacing: 1px;
       }
 
-      .loading-text i {
+      .loading-text i { color: var(--glow-cyan); margin-right: 10px; }
+
+      /* ==================== SEARCH ==================== */
+      .search-wrap {
+        position: relative;
+        margin-bottom: 16px;
+      }
+
+      .search-wrap input {
+        width: 100%;
+        padding: 12px 16px 12px 42px;
+        background: rgba(10, 22, 40, 0.6);
+        border: 1px solid rgba(77, 217, 255, 0.25);
+        border-radius: 14px;
+        color: var(--text-main);
+        font-family: var(--font-body);
+        font-size: 13px;
+        transition: all 0.3s;
+      }
+
+      .search-wrap input::placeholder {
+        color: var(--text-dim);
+        font-style: italic;
+      }
+
+      .search-wrap input:focus {
+        outline: none;
+        border-color: var(--glow-cyan);
+        box-shadow: 0 0 0 3px rgba(77, 217, 255, 0.15);
+      }
+
+      .search-wrap .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
         color: var(--glow-cyan);
-        margin-right: 10px;
+        font-size: 14px;
+        pointer-events: none;
+      }
+
+      .search-wrap .clear-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        cursor: pointer;
+        font-size: 14px;
+        padding: 6px;
+        display: none;
+        border-radius: 50%;
+      }
+
+      .search-wrap .clear-btn.visible { display: block; }
+      .search-wrap .clear-btn:hover { color: var(--glow-pink); }
+
+      /* ==================== FILTER TABS ==================== */
+      .filter-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+      }
+
+      .filter-tabs::-webkit-scrollbar { height: 3px; }
+      .filter-tabs::-webkit-scrollbar-thumb {
+        background: rgba(77, 217, 255, 0.3);
+        border-radius: 2px;
+      }
+
+      .filter-tab {
+        padding: 8px 16px;
+        background: rgba(77, 217, 255, 0.06);
+        border: 1px solid rgba(77, 217, 255, 0.2);
+        border-radius: 20px;
+        color: var(--text-soft);
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.3s;
+      }
+
+      .filter-tab:hover {
+        background: rgba(77, 217, 255, 0.12);
+        color: var(--text-main);
+      }
+
+      .filter-tab.active {
+        background: linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
+        color: var(--deep-1);
+        border-color: transparent;
+        box-shadow: 0 4px 15px rgba(77, 217, 255, 0.4);
       }
 
       /* ==================== MODAL ==================== */
@@ -1945,48 +1843,30 @@
         animation: fadeIn 0.3s;
       }
 
-      .modal-overlay.show {
-        display: flex;
-      }
+      .modal-overlay.show { display: flex; }
 
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
 
       .modal {
-        background: linear-gradient(
-          180deg,
-          rgba(13, 31, 58, 0.98),
-          rgba(10, 22, 40, 0.98)
-        );
+        background: linear-gradient(180deg, rgba(13, 31, 58, 0.98), rgba(10, 22, 40, 0.98));
         border: 1px solid rgba(77, 217, 255, 0.3);
         border-radius: 24px;
         max-width: 440px;
         width: 100%;
         max-height: 80vh;
         overflow: hidden;
-        box-shadow:
-          0 30px 80px rgba(0, 0, 0, 0.6),
-          0 0 60px rgba(77, 217, 255, 0.2);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(77, 217, 255, 0.2);
         animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         display: flex;
         flex-direction: column;
       }
 
       @keyframes modalPop {
-        from {
-          opacity: 0;
-          transform: scale(0.85) translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
+        from { opacity: 0; transform: scale(0.85) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
       }
 
       .modal-head {
@@ -2007,10 +1887,6 @@
         display: flex;
         align-items: center;
         gap: 10px;
-      }
-
-      .modal-title i {
-        color: var(--glow-teal);
       }
 
       .modal-close {
@@ -2041,15 +1917,12 @@
         flex: 1;
       }
 
-      .modal-body::-webkit-scrollbar {
-        width: 6px;
-      }
+      .modal-body::-webkit-scrollbar { width: 6px; }
       .modal-body::-webkit-scrollbar-thumb {
         background: rgba(77, 217, 255, 0.3);
         border-radius: 3px;
       }
 
-      /* History list */
       .history-item {
         padding: 14px 16px;
         background: rgba(77, 217, 255, 0.05);
@@ -2155,115 +2028,42 @@
 
       /* ==================== MOBILE ==================== */
       @media (max-width: 480px) {
-        body {
-          padding: 20px 10px 60px;
-        }
-
-        .aquarium {
-          border-radius: 24px;
-        }
-
-        .header {
-          padding: 30px 20px 24px;
-        }
-
-        h1 {
-          font-size: 26px;
-        }
-
-        .subtitle {
-          font-size: 10px;
-          letter-spacing: 2px;
-        }
-
-        .content {
-          padding: 24px 18px 28px;
-        }
-
-        .stat-card .num {
-          font-size: 24px;
-        }
-
-        .stat-card .emoji {
-          font-size: 18px;
-        }
-
-        .stat-card .lbl {
-          font-size: 8px;
-        }
-
-        .chart-head .chart-pct {
-          font-size: 20px;
-        }
-
-        #qrImage {
-          width: 155px;
-          height: 155px;
-        }
-
-        .qr-bubble::before {
-          width: 210px;
-          height: 210px;
-        }
-        .qr-bubble::after {
-          width: 260px;
-          height: 260px;
-        }
-
-        .bubble-btn {
-          font-size: 9px;
-          padding: 12px 6px;
-        }
-
-        .bubble-btn i {
-          font-size: 14px;
-        }
-
-        .quick-btn {
-          font-size: 9px;
-          padding: 10px;
-        }
-
-        .input-row {
-          flex-direction: column;
-        }
-
-        .input-row button {
-          width: 100%;
-          justify-content: center;
-        }
-
-        .data-shell table {
-          font-size: 11px;
-        }
-        .data-shell th,
-        .data-shell td {
-          padding: 10px 8px;
-        }
-
-        .filter-tab {
-          padding: 7px 12px;
-          font-size: 9px;
-        }
+        body { padding: 20px 10px 60px; }
+        .aquarium { border-radius: 24px; }
+        .header { padding: 30px 20px 24px; }
+        h1 { font-size: 26px; }
+        .subtitle { font-size: 10px; letter-spacing: 2px; }
+        .content { padding: 24px 18px 28px; }
+        .stat-card .num { font-size: 24px; }
+        .stat-card .emoji { font-size: 18px; }
+        .stat-card .lbl { font-size: 8px; }
+        .chart-head .chart-pct { font-size: 20px; }
+        #qrImage { width: 155px; height: 155px; }
+        .qr-bubble::before { width: 210px; height: 210px; }
+        .qr-bubble::after { width: 260px; height: 260px; }
+        .bubble-btn { font-size: 9px; padding: 12px 6px; }
+        .bubble-btn i { font-size: 14px; }
+        .quick-btn { font-size: 9px; padding: 10px; }
+        .input-row { flex-direction: column; }
+        .input-row button { width: 100%; justify-content: center; }
+        .data-shell table { font-size: 11px; }
+        .data-shell th, .data-shell td { padding: 10px 8px; }
+        .filter-tab { padding: 7px 12px; font-size: 9px; }
+        .calendar-panel { padding: 16px; }
+        .cal-title { font-size: 13px; }
+        .cal-day { font-size: 11px; border-radius: 8px; }
+        .cal-weekday { font-size: 9px; }
       }
 
       @media (max-width: 360px) {
-        h1 {
-          font-size: 22px;
-        }
-        #qrImage {
-          width: 135px;
-          height: 135px;
-        }
-        .stat-card .num {
-          font-size: 20px;
-        }
+        h1 { font-size: 22px; }
+        #qrImage { width: 135px; height: 135px; }
+        .stat-card .num { font-size: 20px; }
+        .cal-day { font-size: 10px; }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
+        *, *::before, *::after {
           animation-duration: 0.01ms !important;
           transition-duration: 0.01ms !important;
         }
@@ -2295,21 +2095,11 @@
 
     <!-- TOGGLE CONTROLS -->
     <div class="toggle-controls">
-      <button
-        class="toggle-btn"
-        id="soundToggle"
-        onclick="toggleSound()"
-        title="Suara"
-      >
+      <button class="toggle-btn" id="soundToggle" onclick="toggleSound()" title="Suara">
         <i class="fas fa-volume-up sound-on"></i>
         <i class="fas fa-volume-mute sound-off"></i>
       </button>
-      <button
-        class="toggle-btn"
-        id="themeToggle"
-        onclick="toggleTheme()"
-        title="Tema"
-      >
+      <button class="toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Tema">
         <i class="fas fa-moon"></i>
       </button>
     </div>
@@ -2322,7 +2112,7 @@
       <div class="header">
         <div class="header-badge">
           <i class="fas fa-water"></i>
-          Deep Ocean · v5.0
+          Deep Ocean · v6.0
         </div>
         <h1>
           Presensi <span class="accent">Kelas</span>
@@ -2373,6 +2163,51 @@
           </div>
         </div>
 
+        <!-- 📅 CALENDAR -->
+        <div class="sec-title">Kalender</div>
+        <div class="calendar-panel">
+          <div class="cal-header">
+            <div class="cal-title" id="calTitle">— 2025 —</div>
+            <div class="cal-nav">
+              <button class="cal-nav-btn" onclick="prevMonth()" title="Bulan lalu">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="cal-nav-btn" onclick="goToday()" title="Hari ini">
+                <i class="fas fa-crosshairs"></i>
+              </button>
+              <button class="cal-nav-btn" onclick="nextMonth()" title="Bulan depan">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="cal-weekdays">
+            <div class="cal-weekday">S</div>
+            <div class="cal-weekday">S</div>
+            <div class="cal-weekday">R</div>
+            <div class="cal-weekday">K</div>
+            <div class="cal-weekday">J</div>
+            <div class="cal-weekday weekend">S</div>
+            <div class="cal-weekday weekend">M</div>
+          </div>
+
+          <div class="cal-days" id="calDays"></div>
+
+          <div class="cal-detail" id="calDetail"></div>
+
+          <div class="cal-legend">
+            <div class="cal-legend-item">
+              <span class="cal-legend-dot today"></span> Hari Ini
+            </div>
+            <div class="cal-legend-item">
+              <span class="cal-legend-dot full"></span> Hadir Penuh
+            </div>
+            <div class="cal-legend-item">
+              <span class="cal-legend-dot partial"></span> Hadir Sebagian
+            </div>
+          </div>
+        </div>
+
         <!-- QR -->
         <div class="sec-title">Kode QR</div>
         <div class="qr-bubble">
@@ -2393,11 +2228,7 @@
             <i class="fas fa-download"></i>
             <span>QR</span>
           </button>
-          <a
-            href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=0#gid=0"
-            target="_blank"
-            class="bubble-btn"
-          >
+          <a href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=0#gid=0" target="_blank" class="bubble-btn">
             <i class="fas fa-external-link-alt"></i>
             <span>Sheet</span>
           </a>
@@ -2421,12 +2252,7 @@
             <i class="fas fa-fish"></i> Buat QR mahasiswa
           </div>
           <div class="input-row">
-            <input
-              type="text"
-              id="qrNimInput"
-              placeholder="Masukkan NIM mahasiswa..."
-              maxlength="10"
-            />
+            <input type="text" id="qrNimInput" placeholder="Masukkan NIM mahasiswa..." maxlength="10" />
             <button onclick="generateQRCode()">
               <i class="fas fa-water"></i> Buat
             </button>
@@ -2474,11 +2300,7 @@
         </div>
 
         <div class="scan-controls">
-          <button
-            class="btn-scan-ocean"
-            id="btnStartScan"
-            onclick="toggleScanner()"
-          >
+          <button class="btn-scan-ocean" id="btnStartScan" onclick="toggleScanner()">
             <i class="fas fa-play"></i>
             <span>Mulai Pindai</span>
           </button>
@@ -2493,12 +2315,7 @@
         <!-- SEARCH -->
         <div class="search-wrap">
           <i class="fas fa-search search-icon"></i>
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Cari nama atau NIM..."
-            oninput="handleSearch(this.value)"
-          />
+          <input type="text" id="searchInput" placeholder="Cari nama atau NIM..." oninput="handleSearch(this.value)" />
           <button class="clear-btn" id="clearSearch" onclick="clearSearch()">
             <i class="fas fa-times"></i>
           </button>
@@ -2506,15 +2323,9 @@
 
         <!-- FILTER TABS -->
         <div class="filter-tabs" id="filterTabs">
-          <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">
-            Semua
-          </button>
-          <button class="filter-tab" data-filter="hadir" onclick="setFilter('hadir')">
-            Hadir
-          </button>
-          <button class="filter-tab" data-filter="belum" onclick="setFilter('belum')">
-            Belum
-          </button>
+          <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">Semua</button>
+          <button class="filter-tab" data-filter="hadir" onclick="setFilter('hadir')">Hadir</button>
+          <button class="filter-tab" data-filter="belum" onclick="setFilter('belum')">Belum</button>
         </div>
 
         <div class="data-shell">
@@ -2544,10 +2355,7 @@
       <!-- FOOTER -->
       <div class="footer">
         <i class="fas fa-anchor"></i> Terhubung dengan
-        <a
-          href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675"
-          target="_blank"
-        >
+        <a href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675" target="_blank">
           Google Sheets
         </a>
         <br />
@@ -2594,7 +2402,16 @@
         lightMode: false,
         currentFilter: "all",
         searchQuery: "",
+        // Calendar state
+        calCurrentMonth: new Date().getMonth(),
+        calCurrentYear: new Date().getFullYear(),
+        calSelectedDate: null,
       };
+
+      const MONTH_NAMES = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+      ];
 
       const DOM = {
         status: document.getElementById("status"),
@@ -2627,18 +2444,20 @@
         modalTitle: document.getElementById("modalTitle"),
         modalBody: document.getElementById("modalBody"),
         toast: document.getElementById("toast"),
+        calTitle: document.getElementById("calTitle"),
+        calDays: document.getElementById("calDays"),
+        calDetail: document.getElementById("calDetail"),
       };
 
       // ================================================================
-      // SOUND EFFECTS
+      // SOUND
       // ================================================================
       let audioCtx = null;
 
       function initAudio() {
         if (!audioCtx) {
           try {
-            audioCtx = new (window.AudioContext ||
-              window.webkitAudioContext)();
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
           } catch (e) {}
         }
       }
@@ -2655,7 +2474,6 @@
           gain.connect(audioCtx.destination);
 
           if (type === "success") {
-            // Naik - seperti gelembung
             osc.type = "sine";
             osc.frequency.setValueAtTime(523, now);
             osc.frequency.exponentialRampToValueAtTime(1046, now + 0.3);
@@ -2686,14 +2504,6 @@
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
             osc.start(now);
             osc.stop(now + 0.08);
-          } else if (type === "warning") {
-            osc.type = "triangle";
-            osc.frequency.setValueAtTime(440, now);
-            osc.frequency.setValueAtTime(330, now + 0.15);
-            gain.gain.setValueAtTime(0.12, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-            osc.start(now);
-            osc.stop(now + 0.35);
           }
         } catch (e) {}
       }
@@ -2703,13 +2513,11 @@
         const btn = document.getElementById("soundToggle");
         btn.classList.toggle("muted", !AppState.soundEnabled);
         playSound("click");
-        showToast(
-          AppState.soundEnabled ? "🔊 Suara aktif" : "🔇 Suara dimatikan",
-        );
+        showToast(AppState.soundEnabled ? "🔊 Suara aktif" : "🔇 Suara mati");
       }
 
       // ================================================================
-      // THEME TOGGLE
+      // THEME
       // ================================================================
       function toggleTheme() {
         AppState.lightMode = !AppState.lightMode;
@@ -2722,7 +2530,6 @@
         playSound("click");
       }
 
-      // Load theme preference
       (function loadTheme() {
         const saved = localStorage.getItem("theme");
         if (saved === "light") {
@@ -2747,6 +2554,167 @@
         toastTimeout = setTimeout(() => {
           DOM.toast.classList.remove("show");
         }, duration);
+      }
+
+      // ================================================================
+      // 📅 CALENDAR
+      // ================================================================
+      function renderCalendar() {
+        if (!DOM.calDays) return;
+        const year = AppState.calCurrentYear;
+        const month = AppState.calCurrentMonth;
+
+        DOM.calTitle.textContent = `${MONTH_NAMES[month]} ${year}`;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const today = new Date();
+        const isTodayMonth =
+          today.getMonth() === month && today.getFullYear() === year;
+        const todayDate = today.getDate();
+
+        // History data
+        const history = JSON.parse(
+          localStorage.getItem("presensiHistory") || "{}",
+        );
+
+        let html = "";
+        // Empty cells
+        for (let i = 0; i < firstDay; i++) {
+          html += `<div class="cal-day empty"></div>`;
+        }
+
+        // Days
+        for (let d = 1; d <= daysInMonth; d++) {
+          const dateObj = new Date(year, month, d);
+          const dayOfWeek = dateObj.getDay();
+          const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+          const dateKey = dateObj.toLocaleDateString("id-ID");
+          const isToday = isTodayMonth && d === todayDate;
+          const isSelected =
+            AppState.calSelectedDate &&
+            AppState.calSelectedDate.getDate() === d &&
+            AppState.calSelectedDate.getMonth() === month &&
+            AppState.calSelectedDate.getFullYear() === year;
+
+          let eventClass = "";
+          if (history[dateKey]) {
+            const h = history[dateKey];
+            const pct = h.total > 0 ? h.count / h.total : 0;
+            if (pct >= 0.8) eventClass = "has-event full";
+            else if (pct > 0) eventClass = "has-event partial";
+          }
+
+          html += `
+          <div class="cal-day ${isToday ? "today" : ""} ${isWeekend ? "weekend" : ""} ${isSelected ? "selected" : ""} ${eventClass}" 
+               onclick="selectDate(${d})">
+            ${d}
+          </div>
+        `;
+        }
+
+        DOM.calDays.innerHTML = html;
+
+        // Update detail panel
+        if (AppState.calSelectedDate) {
+          showDateDetail(AppState.calSelectedDate);
+        }
+      }
+
+      function selectDate(day) {
+        const date = new Date(
+          AppState.calCurrentYear,
+          AppState.calCurrentMonth,
+          day,
+        );
+        AppState.calSelectedDate = date;
+        playSound("click");
+        renderCalendar();
+      }
+
+      function showDateDetail(date) {
+        if (!DOM.calDetail) return;
+        const dateKey = date.toLocaleDateString("id-ID");
+        const history = JSON.parse(
+          localStorage.getItem("presensiHistory") || "{}",
+        );
+        const today = new Date();
+        const isToday =
+          date.getDate() === today.getDate() &&
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear();
+
+        let html = `<div class="detail-date">📅 ${dateKey}${isToday ? " · Hari Ini" : ""}</div>`;
+
+        const h = history[dateKey];
+        if (h) {
+          const pct = h.total > 0 ? Math.round((h.count / h.total) * 100) : 0;
+          html += `
+          <div class="detail-info">
+            <span class="detail-badge hadir">✓ ${h.count} hadir</span>
+            <span class="detail-badge belum">✗ ${h.total - h.count} belum</span>
+            <span style="font-size:11px;opacity:0.7;">${pct}% kehadiran</span>
+          </div>
+        `;
+        } else if (isToday) {
+          // Compute from current presensi
+          const presensiData = JSON.parse(
+            localStorage.getItem("presensiHariIni") || "{}",
+          );
+          let hadir = 0;
+          AppState.mahasiswaData.forEach((m) => {
+            if (presensiData[m.nim] === dateKey) hadir++;
+          });
+          const total = AppState.mahasiswaData.length;
+          const pct = total > 0 ? Math.round((hadir / total) * 100) : 0;
+          html += `
+          <div class="detail-info">
+            <span class="detail-badge hadir">✓ ${hadir} hadir</span>
+            <span class="detail-badge belum">✗ ${total - hadir} belum</span>
+            <span style="font-size:11px;opacity:0.7;">${pct}% kehadiran</span>
+          </div>
+        `;
+        } else {
+          html += `<div class="detail-info"><span class="detail-badge empty">Tidak ada data</span></div>`;
+        }
+
+        DOM.calDetail.innerHTML = html;
+        DOM.calDetail.classList.add("show");
+      }
+
+      function prevMonth() {
+        AppState.calCurrentMonth--;
+        if (AppState.calCurrentMonth < 0) {
+          AppState.calCurrentMonth = 11;
+          AppState.calCurrentYear--;
+        }
+        AppState.calSelectedDate = null;
+        DOM.calDetail.classList.remove("show");
+        playSound("click");
+        renderCalendar();
+      }
+
+      function nextMonth() {
+        AppState.calCurrentMonth++;
+        if (AppState.calCurrentMonth > 11) {
+          AppState.calCurrentMonth = 0;
+          AppState.calCurrentYear++;
+        }
+        AppState.calSelectedDate = null;
+        DOM.calDetail.classList.remove("show");
+        playSound("click");
+        renderCalendar();
+      }
+
+      function goToday() {
+        const now = new Date();
+        AppState.calCurrentMonth = now.getMonth();
+        AppState.calCurrentYear = now.getFullYear();
+        AppState.calSelectedDate = now;
+        playSound("click");
+        renderCalendar();
+        showToast("📅 Menuju hari ini");
       }
 
       // ================================================================
@@ -2777,14 +2745,12 @@
       function applyFilters() {
         let data = AppState.mahasiswaData;
 
-        // Filter by status
         if (AppState.currentFilter === "hadir") {
           data = data.filter((m) => checkPresensiHariIni(m.nim));
         } else if (AppState.currentFilter === "belum") {
           data = data.filter((m) => !checkPresensiHariIni(m.nim));
         }
 
-        // Search
         if (AppState.searchQuery) {
           data = data.filter(
             (m) =>
@@ -2834,7 +2800,7 @@
       // ================================================================
       function exportCSV() {
         if (AppState.mahasiswaData.length === 0) {
-          showToast("❌ Tidak ada data untuk diexport");
+          showToast("❌ Tidak ada data");
           playSound("error");
           return;
         }
@@ -2857,20 +2823,18 @@
         URL.revokeObjectURL(link.href);
 
         playSound("success");
-        showToast("✅ File CSV berhasil diunduh");
+        showToast("✅ File CSV diunduh");
       }
 
       // ================================================================
       // HISTORY MODAL
       // ================================================================
       function showHistory() {
-        DOM.modalTitle.innerHTML =
-          '<i class="fas fa-history"></i> Riwayat 7 Hari';
+        DOM.modalTitle.innerHTML = '<i class="fas fa-history"></i> Riwayat 7 Hari';
         const history = JSON.parse(
           localStorage.getItem("presensiHistory") || "{}",
         );
 
-        // Build history from current data too
         const today = new Date().toLocaleDateString("id-ID");
         const currentPresensi = JSON.parse(
           localStorage.getItem("presensiHariIni") || "{}",
@@ -2887,16 +2851,18 @@
         }
 
         const entries = Object.entries(history).sort((a, b) => {
-          return new Date(b[0].split("/").reverse().join("-")) -
-            new Date(a[0].split("/").reverse().join("-"));
+          return (
+            new Date(b[0].split("/").reverse().join("-")) -
+            new Date(a[0].split("/").reverse().join("-"))
+          );
         });
 
         if (entries.length === 0) {
           DOM.modalBody.innerHTML = `
           <div style="text-align:center;padding:30px 20px;">
             <i class="fas fa-history" style="font-size:40px;color:var(--glow-cyan);opacity:0.3;margin-bottom:16px;display:block;"></i>
-            <div style="font-family:var(--font-display);font-size:14px;color:var(--text-soft);letter-spacing:1.5px;">
-              Belum ada riwayat presensi
+            <div style="font-family:var(--font-display);font-size:14px;color:var(--text-soft);">
+              Belum ada riwayat
             </div>
           </div>
         `;
@@ -2905,9 +2871,7 @@
             .slice(0, 7)
             .map(([date, info]) => {
               const pct =
-                info.total > 0
-                  ? Math.round((info.count / info.total) * 100)
-                  : 0;
+                info.total > 0 ? Math.round((info.count / info.total) * 100) : 0;
               return `
               <div class="history-item">
                 <div class="history-date">📅 ${date}</div>
@@ -2931,7 +2895,6 @@
         playSound("click");
       }
 
-      // Save today's history when page loads
       function saveHistory() {
         const today = new Date().toLocaleDateString("id-ID");
         const presensiData = JSON.parse(
@@ -3052,7 +3015,6 @@
         if (DOM.statHadir) DOM.statHadir.textContent = hadir;
         if (DOM.statBelum) DOM.statBelum.textContent = total - hadir;
 
-        // Update chart
         const pct = total > 0 ? Math.round((hadir / total) * 100) : 0;
         if (DOM.chartPct) DOM.chartPct.textContent = pct + "%";
         if (DOM.chartFill) {
@@ -3061,11 +3023,12 @@
           }, 100);
         }
         if (DOM.chartHadirTxt) DOM.chartHadirTxt.textContent = hadir + " hadir";
-        if (DOM.chartTotalTxt)
-          DOM.chartTotalTxt.textContent = "dari " + total;
+        if (DOM.chartTotalTxt) DOM.chartTotalTxt.textContent = "dari " + total;
 
-        // Save history
         if (total > 0) saveHistory();
+
+        // Refresh calendar to show today's data
+        renderCalendar();
       }
 
       // ================================================================
@@ -3115,9 +3078,6 @@
         updateStats();
       }
 
-      // ================================================================
-      // RENDER TABLE
-      // ================================================================
       function renderDataTable(data) {
         if (!DOM.tableBody || !DOM.dataTable || !DOM.loadingData) return;
         AppState.filteredData = data;
@@ -3203,7 +3163,7 @@
       }
 
       // ================================================================
-      // QR MAIN
+      // QR
       // ================================================================
       function generateQR() {
         if (!DOM.qrImage) return;
@@ -3225,9 +3185,6 @@
         playSound("click");
       }
 
-      // ================================================================
-      // QR MAHASISWA
-      // ================================================================
       function generateQRCode() {
         const nim = DOM.qrNimInput.value.trim();
         if (!nim || nim.length < 3) {
@@ -3374,7 +3331,6 @@
         if (AppState.isProcessing) return;
         AppState.isProcessing = true;
         playSound("scan");
-        // Vibrate on mobile
         if (navigator.vibrate) navigator.vibrate(100);
         if (AppState.html5QrCode && AppState.scannerRunning) {
           AppState.html5QrCode
@@ -3510,22 +3466,24 @@
       // KEYBOARD SHORTCUTS
       // ================================================================
       document.addEventListener("keydown", (e) => {
-        // Ctrl+F untuk focus search
         if ((e.ctrlKey || e.metaKey) && e.key === "f") {
           e.preventDefault();
           DOM.searchInput.focus();
         }
-        // Esc untuk close modal
         if (e.key === "Escape") {
           DOM.modalOverlay.classList.remove("show");
         }
-        // Space untuk toggle scan (jika tidak di input)
-        if (
-          e.code === "Space" &&
-          document.activeElement.tagName !== "INPUT"
-        ) {
+        if (e.code === "Space" && document.activeElement.tagName !== "INPUT") {
           e.preventDefault();
           toggleScanner();
+        }
+        // Arrow keys untuk navigasi kalender
+        if (document.activeElement.tagName !== "INPUT") {
+          if (e.key === "ArrowLeft") {
+            prevMonth();
+          } else if (e.key === "ArrowRight") {
+            nextMonth();
+          }
         }
       });
 
@@ -3534,18 +3492,18 @@
       // ================================================================
       async function init() {
         console.log(
-          "%c🌊 Presensi Kelas · Deep Ocean v5.0 🌊",
+          "%c🌊 Presensi Kelas · Deep Ocean v6.0 🌊",
           "color:#4dd9ff;background:#0a1628;font-size:14px;font-weight:bold;padding:12px 24px;font-family:'Cinzel',serif;letter-spacing:2px;border:2px solid #4dd9ff;",
         );
         console.log(
-          "%c✦ Fitur baru: Suara · Tema · Export CSV · Riwayat · Filter · Pencarian · Chart ✦",
-          "color:#00ffc6;background:#0a1628;font-size:11px;padding:6px 12px;font-family:'DM Sans',sans-serif;",
+          "%c✦ Fitur: Suara · Tema · Export CSV · Riwayat · Filter · Search · Chart · 📅 KALENDER ✦",
+          "color:#00ffc6;background:#0a1628;font-size:11px;padding:6px 12px;",
         );
         createBubbles();
         createPlankton();
         generateQR();
         updateClock();
-        updateStats();
+        renderCalendar();
         if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Menunggu scan";
 
         await checkConnection();
@@ -3556,7 +3514,7 @@
         if (camReady) setTimeout(startScanner, 800);
 
         setTimeout(() => {
-          showToast("🌊 Selamat datang di Deep Ocean v5.0");
+          showToast("🌊 Deep Ocean v6.0 · Kalender ditambahkan!");
         }, 1000);
       }
 
