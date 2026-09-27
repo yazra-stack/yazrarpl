@@ -6,13 +6,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Presensi Kelas · Neo Cyber</title>
+    <title>Presensi Kelas · Holo Terminal</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
@@ -25,20 +25,31 @@
       }
 
       :root {
-        --bg: #f0f0e8;
-        --ink: #0a0a0a;
-        --neon-lime: #c6ff00;
-        --neon-pink: #ff2e88;
-        --neon-cyan: #00e5ff;
-        --neon-purple: #8a2be2;
-        --neon-orange: #ff6b00;
-        --paper: #fffdf5;
-        --grid: #d4d4c8;
+        --hologram-1: #00d4ff;
+        --hologram-2: #7b2ff7;
+        --hologram-3: #f107a3;
+        --hologram-4: #00ffa3;
 
-        --shadow-hard: 6px 6px 0 var(--ink);
-        --shadow-hard-sm: 4px 4px 0 var(--ink);
-        --shadow-hard-lg: 10px 10px 0 var(--ink);
-        --border: 3px solid var(--ink);
+        --bg-deep: #050318;
+        --bg-mid: #0a0620;
+        --bg-panel: rgba(20, 15, 50, 0.45);
+        --bg-panel-2: rgba(15, 10, 40, 0.6);
+
+        --border-holo: rgba(0, 212, 255, 0.35);
+        --border-holo-2: rgba(123, 47, 247, 0.35);
+
+        --text-bright: #e6f7ff;
+        --text-soft: #94a3d4;
+        --text-muted: #5a6590;
+
+        --success: #00ffa3;
+        --danger: #ff2d75;
+        --warn: #ffb800;
+
+        --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.5);
+        --glow-purple: 0 0 20px rgba(123, 47, 247, 0.5);
+        --glow-pink: 0 0 20px rgba(241, 7, 163, 0.4);
+        --glow-green: 0 0 20px rgba(0, 255, 163, 0.4);
       }
 
       html {
@@ -46,530 +57,623 @@
       }
 
       body {
-        font-family: "Space Grotesk", sans-serif;
-        background: var(--bg);
-        color: var(--ink);
+        font-family: "Rajdhani", sans-serif;
+        background: var(--bg-deep);
+        color: var(--text-bright);
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        padding: 24px 14px 60px;
+        padding: 20px 14px 60px;
         overflow-x: hidden;
         position: relative;
-        background-image:
-          linear-gradient(var(--grid) 1px, transparent 1px),
-          linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-        background-size: 28px 28px;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* ==================== DECORATIVE MARQUEE ==================== */
-      .marquee-top,
-      .marquee-bottom {
+      /* ==================== HOLOGRAPHIC BACKGROUND ==================== */
+      .holo-bg {
         position: fixed;
-        left: 0;
-        width: 100%;
-        background: var(--ink);
-        color: var(--neon-lime);
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 800;
-        font-size: 11px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        overflow: hidden;
-        white-space: nowrap;
-        z-index: 200;
-        padding: 8px 0;
-      }
-
-      .marquee-top {
-        top: 0;
-        border-bottom: 3px solid var(--neon-lime);
-      }
-
-      .marquee-bottom {
-        bottom: 0;
-        border-top: 3px solid var(--neon-pink);
-        color: var(--neon-pink);
-      }
-
-      .marquee-content {
-        display: inline-block;
-        animation: scroll 22s linear infinite;
-      }
-
-      .marquee-bottom .marquee-content {
-        animation: scrollReverse 22s linear infinite;
-      }
-
-      @keyframes scroll {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(-50%);
-        }
-      }
-
-      @keyframes scrollReverse {
-        from {
-          transform: translateX(-50%);
-        }
-        to {
-          transform: translateX(0);
-        }
-      }
-
-      /* ==================== FLOATING BADGES ==================== */
-      .float-badge {
-        position: fixed;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 800;
-        font-size: 10px;
-        padding: 6px 12px;
-        border: var(--border);
-        background: var(--neon-lime);
-        color: var(--ink);
-        z-index: 50;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        box-shadow: var(--shadow-hard-sm);
+        inset: 0;
+        z-index: 0;
         pointer-events: none;
+        overflow: hidden;
       }
 
-      .fb-1 {
-        top: 60px;
-        left: 10px;
-        transform: rotate(-8deg);
-        animation: bob 4s ease-in-out infinite;
-      }
-      .fb-2 {
-        top: 120px;
-        right: 10px;
-        transform: rotate(6deg);
-        background: var(--neon-pink);
-        color: #fff;
-        animation: bob 4s ease-in-out infinite 0.5s;
-      }
-      .fb-3 {
-        bottom: 90px;
-        right: 20px;
-        transform: rotate(-5deg);
-        background: var(--neon-cyan);
-        animation: bob 4s ease-in-out infinite 1s;
+      .holo-bg::before {
+        content: "";
+        position: absolute;
+        inset: -30%;
+        background:
+          conic-gradient(
+            from 0deg at 20% 30%,
+            rgba(0, 212, 255, 0.25) 0deg,
+            transparent 90deg
+          ),
+          conic-gradient(
+            from 180deg at 80% 70%,
+            rgba(123, 47, 247, 0.3) 0deg,
+            transparent 90deg
+          ),
+          conic-gradient(
+            from 90deg at 70% 20%,
+            rgba(241, 7, 163, 0.2) 0deg,
+            transparent 90deg
+          ),
+          conic-gradient(
+            from 270deg at 30% 80%,
+            rgba(0, 255, 163, 0.2) 0deg,
+            transparent 90deg
+          );
+        filter: blur(60px);
+        animation: rotateBg 40s linear infinite;
       }
 
-      @keyframes bob {
-        0%,
+      @keyframes rotateBg {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Grid overlay */
+      .holo-grid {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(0, 212, 255, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 212, 255, 0.06) 1px, transparent 1px);
+        background-size: 40px 40px;
+        mask-image: radial-gradient(ellipse at center, #000 20%, transparent 80%);
+      }
+
+      /* Scanline effect */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 212, 255, 0.03) 2px,
+          rgba(0, 212, 255, 0.03) 4px
+        );
+        opacity: 0.6;
+      }
+
+      /* Vertical scan sweep */
+      .sweep {
+        position: fixed;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(0, 212, 255, 0.08) 50%,
+          transparent 100%
+        );
+        height: 200px;
+        animation: sweepDown 8s linear infinite;
+      }
+
+      @keyframes sweepDown {
+        0% {
+          transform: translateY(-200px);
+        }
         100% {
-          translate: 0 0;
-        }
-        50% {
-          translate: 0 -8px;
+          transform: translateY(100vh);
         }
       }
 
-      @media (max-width: 720px) {
-        .float-badge {
-          display: none;
-        }
-      }
-
-      /* ==================== MAIN CONTAINER ==================== */
+      /* ==================== MAIN CONTAINER (watch frame) ==================== */
       .container {
         position: relative;
         z-index: 10;
-        max-width: 560px;
+        max-width: 500px;
         width: 100%;
-        background: var(--paper);
-        border: var(--border);
-        box-shadow: var(--shadow-hard-lg);
-        padding: 0;
-        animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        margin-top: 30px;
-        margin-bottom: 30px;
+        background: linear-gradient(
+          160deg,
+          rgba(20, 15, 50, 0.7) 0%,
+          rgba(10, 6, 32, 0.85) 100%
+        );
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 40px;
+        padding: 20px;
+        border: 1.5px solid var(--border-holo);
+        box-shadow:
+          0 0 60px rgba(0, 212, 255, 0.15),
+          0 0 120px rgba(123, 47, 247, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          inset 0 -1px 0 rgba(0, 212, 255, 0.1);
+        animation: containerEnter 1s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      @keyframes rise {
+      @keyframes containerEnter {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(40px) scale(0.94);
+          filter: blur(10px);
         }
         to {
           opacity: 1;
-          transform: translateY(0);
+          transform: translateY(0) scale(1);
+          filter: blur(0);
         }
       }
 
-      /* ==================== HEADER ==================== */
-      .header {
-        background: var(--ink);
-        color: var(--paper);
-        padding: 24px 24px 22px;
-        border-bottom: var(--border);
+      /* Outer ring decor */
+      .container::before {
+        content: "";
+        position: absolute;
+        inset: -12px;
+        border-radius: 52px;
+        border: 1px dashed rgba(0, 212, 255, 0.2);
+        pointer-events: none;
+        animation: spinSlow 60s linear infinite;
+      }
+
+      .container::after {
+        content: "";
+        position: absolute;
+        inset: -22px;
+        border-radius: 62px;
+        border: 1px dotted rgba(123, 47, 247, 0.15);
+        pointer-events: none;
+        animation: spinSlow 90s linear infinite reverse;
+      }
+
+      @keyframes spinSlow {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ==================== INNER PANEL ==================== */
+      .panel {
+        position: relative;
+        background: var(--bg-panel);
+        border-radius: 30px;
+        padding: 22px 20px 24px;
+        border: 1px solid rgba(0, 212, 255, 0.15);
+        box-shadow: inset 0 0 40px rgba(0, 212, 255, 0.05);
+        overflow: hidden;
+      }
+
+      .panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--hologram-1),
+          transparent
+        );
+      }
+
+      /* ==================== TOP HUD ==================== */
+      .hud {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 4px 18px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--hologram-1);
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .hud-left,
+      .hud-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .hud-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 10px var(--success);
+        animation: pulseDot 2s ease-in-out infinite;
+      }
+
+      @keyframes pulseDot {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.7);
+        }
+      }
+
+      /* ==================== TITLE ==================== */
+      .title-block {
+        text-align: center;
+        padding: 8px 0 22px;
+      }
+
+      .title-badge {
+        display: inline-block;
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        letter-spacing: 3px;
+        font-weight: 700;
+        padding: 4px 14px;
+        border-radius: 20px;
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid rgba(0, 212, 255, 0.4);
+        color: var(--hologram-1);
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        box-shadow: var(--glow-cyan);
+      }
+
+      h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 32px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        line-height: 1;
+        text-transform: uppercase;
+        background: linear-gradient(
+          180deg,
+          #fff 0%,
+          var(--hologram-1) 50%,
+          var(--hologram-2) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        font-size: 12px;
+        color: var(--text-soft);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+
+      /* ==================== CIRCULAR STATS ==================== */
+      .stats-ring-wrap {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 22px;
+        padding: 6px 0;
+      }
+
+      .ring-stat {
+        position: relative;
+        width: 88px;
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ring-stat svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+      }
+
+      .ring-stat svg circle {
+        fill: none;
+        stroke-width: 5;
+        stroke-linecap: round;
+      }
+
+      .ring-bg {
+        stroke: rgba(255, 255, 255, 0.06);
+      }
+
+      .ring-fill-cyan {
+        stroke: var(--hologram-1);
+        filter: drop-shadow(0 0 6px var(--hologram-1));
+        stroke-dasharray: 251;
+        transition: stroke-dashoffset 1s ease;
+      }
+
+      .ring-fill-green {
+        stroke: var(--success);
+        filter: drop-shadow(0 0 6px var(--success));
+        stroke-dasharray: 251;
+        transition: stroke-dashoffset 1s ease;
+      }
+
+      .ring-fill-pink {
+        stroke: var(--hologram-3);
+        filter: drop-shadow(0 0 6px var(--hologram-3));
+        stroke-dasharray: 251;
+        transition: stroke-dashoffset 1s ease;
+      }
+
+      .ring-stat .ring-inner {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+      }
+
+      .ring-stat .val {
+        font-family: "Orbitron", sans-serif;
+        font-size: 22px;
+        font-weight: 900;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 0 0 12px rgba(0, 212, 255, 0.8);
+      }
+
+      .ring-stat .lbl {
+        font-family: "Orbitron", sans-serif;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--text-soft);
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
+
+      /* ==================== QR BLOCK ==================== */
+      .qr-holo {
+        position: relative;
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 24px 16px;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(0, 212, 255, 0.08) 0%,
+          transparent 70%
+        );
+        border-radius: 24px;
+      }
+
+      .qr-holo::before,
+      .qr-holo::after {
+        content: "";
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border: 2px solid var(--hologram-1);
+        filter: drop-shadow(0 0 8px var(--hologram-1));
+      }
+
+      .qr-holo::before {
+        top: 0;
+        left: 0;
+        border-right: none;
+        border-bottom: none;
+        border-radius: 8px 0 0 0;
+      }
+
+      .qr-holo::after {
+        bottom: 0;
+        right: 0;
+        border-left: none;
+        border-top: none;
+        border-radius: 0 0 8px 0;
+      }
+
+      .qr-corners-tr,
+      .qr-corners-bl {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border: 2px solid var(--hologram-3);
+        filter: drop-shadow(0 0 8px var(--hologram-3));
+        pointer-events: none;
+      }
+
+      .qr-corners-tr {
+        top: 0;
+        right: 0;
+        border-left: none;
+        border-bottom: none;
+        border-radius: 0 8px 0 0;
+      }
+
+      .qr-corners-bl {
+        bottom: 0;
+        left: 0;
+        border-right: none;
+        border-top: none;
+        border-radius: 0 0 0 8px;
+      }
+
+      #qrImage {
+        width: 180px;
+        height: 180px;
+        display: block;
+        margin: 0 auto;
+        border-radius: 16px;
+        background: #fff;
+        padding: 10px;
+        box-shadow:
+          0 0 40px rgba(0, 212, 255, 0.3),
+          0 0 80px rgba(123, 47, 247, 0.15);
+        position: relative;
+        z-index: 2;
+        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      #qrImage:hover {
+        transform: scale(1.05) rotate(1deg);
+      }
+
+      .qr-holo-caption {
+        margin-top: 14px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: var(--hologram-1);
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        background: rgba(0, 212, 255, 0.08);
+      }
+
+      .qr-holo-caption i {
+        animation: pulseDot 2s ease-in-out infinite;
+      }
+
+      /* ==================== ACTION BUTTONS ==================== */
+      .action-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 22px;
+      }
+
+      .act-btn {
+        padding: 14px 8px;
+        border-radius: 18px;
+        background: var(--bg-panel-2);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        color: var(--text-bright);
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
         position: relative;
         overflow: hidden;
       }
 
-      .header::before {
+      .act-btn i {
+        font-size: 18px;
+        color: var(--hologram-1);
+        transition: all 0.3s;
+        filter: drop-shadow(0 0 8px var(--hologram-1));
+      }
+
+      .act-btn:hover {
+        background: rgba(0, 212, 255, 0.12);
+        border-color: var(--hologram-1);
+        box-shadow:
+          0 0 20px rgba(0, 212, 255, 0.3),
+          inset 0 0 20px rgba(0, 212, 255, 0.05);
+        transform: translateY(-3px);
+      }
+
+      .act-btn:hover i {
+        transform: scale(1.15);
+      }
+
+      .act-btn.pink {
+        border-color: rgba(241, 7, 163, 0.3);
+      }
+      .act-btn.pink i {
+        color: var(--hologram-3);
+        filter: drop-shadow(0 0 8px var(--hologram-3));
+      }
+      .act-btn.pink:hover {
+        background: rgba(241, 7, 163, 0.12);
+        border-color: var(--hologram-3);
+        box-shadow: 0 0 20px rgba(241, 7, 163, 0.3);
+      }
+
+      .act-btn.purple {
+        border-color: rgba(123, 47, 247, 0.3);
+      }
+      .act-btn.purple i {
+        color: var(--hologram-2);
+        filter: drop-shadow(0 0 8px var(--hologram-2));
+      }
+      .act-btn.purple:hover {
+        background: rgba(123, 47, 247, 0.12);
+        border-color: var(--hologram-2);
+        box-shadow: 0 0 20px rgba(123, 47, 247, 0.3);
+      }
+
+      /* ==================== SECTION TITLES ==================== */
+      .sec-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: var(--hologram-1);
+        text-transform: uppercase;
+        margin: 6px 0 14px;
+      }
+
+      .sec-title::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--hologram-1);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--hologram-1);
+      }
+
+      .sec-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          rgba(0, 212, 255, 0.3),
+          transparent
+        );
+      }
+
+      /* ==================== GENERATE ==================== */
+      .gen-panel {
+        background: var(--bg-panel-2);
+        border-radius: 20px;
+        padding: 16px;
+        border: 1px solid rgba(123, 47, 247, 0.2);
+        margin-bottom: 22px;
+        position: relative;
+      }
+
+      .gen-panel::before {
         content: "";
         position: absolute;
-        top: -40px;
-        right: -40px;
-        width: 140px;
-        height: 140px;
-        background: var(--neon-lime);
-        border-radius: 50%;
-        opacity: 0.15;
-        filter: blur(2px);
-      }
-
-      .header-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 2;
-      }
-
-      .header-tag {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        padding: 5px 10px;
-        background: var(--neon-lime);
-        color: var(--ink);
-        border: 2px solid var(--paper);
-        text-transform: uppercase;
-      }
-
-      .header-status {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
-        color: var(--neon-lime);
-        letter-spacing: 1px;
-      }
-
-      .header-status .blink {
-        width: 8px;
-        height: 8px;
-        background: var(--neon-lime);
-        animation: blink 1.2s steps(2) infinite;
-      }
-
-      @keyframes blink {
-        0%,
-        50% {
-          opacity: 1;
-        }
-        51%,
-        100% {
-          opacity: 0;
-        }
-      }
-
-      h1 {
-        font-size: 38px;
-        font-weight: 700;
-        line-height: 0.95;
-        letter-spacing: -2px;
-        text-transform: uppercase;
-        position: relative;
-        z-index: 2;
-        margin-bottom: 12px;
-      }
-
-      h1 .line-2 {
-        display: block;
-        color: var(--neon-lime);
-      }
-
-      h1 .line-2::after {
-        content: "_";
-        color: var(--neon-pink);
-        animation: blink 1s steps(2) infinite;
-      }
-
-      .subtitle {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        color: #999;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        font-weight: 500;
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .subtitle .arrow {
-        color: var(--neon-lime);
-        font-weight: 800;
-      }
-
-      /* ==================== LIVE CLOCK BAR ==================== */
-      .clock-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 24px;
-        background: var(--neon-lime);
-        border-bottom: var(--border);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-      }
-
-      .clock-bar .time {
-        font-size: 14px;
-      }
-
-      /* ==================== CONTENT ==================== */
-      .content {
-        padding: 22px 22px 26px;
-      }
-
-      /* ==================== SECTION LABELS ==================== */
-      .sec-label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 12px;
-        color: var(--ink);
-      }
-
-      .sec-label::before {
-        content: "";
-        width: 10px;
-        height: 10px;
-        background: var(--ink);
-      }
-
-      .sec-label .num {
-        background: var(--ink);
-        color: var(--paper);
-        padding: 2px 7px;
-        font-size: 10px;
-      }
-
-      /* ==================== STATS ==================== */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 22px;
-      }
-
-      .stat-box {
-        border: var(--border);
-        background: var(--paper);
-        padding: 14px 10px;
-        text-align: center;
-        box-shadow: var(--shadow-hard-sm);
-        transition: all 0.15s;
-        position: relative;
-      }
-
-      .stat-box:nth-child(1) {
-        background: var(--neon-lime);
-      }
-      .stat-box:nth-child(2) {
-        background: var(--neon-cyan);
-      }
-      .stat-box:nth-child(3) {
-        background: var(--neon-pink);
-        color: var(--paper);
-      }
-
-      .stat-box:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 7px 7px 0 var(--ink);
-      }
-
-      .stat-box .val {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 26px;
-        font-weight: 800;
-        line-height: 1;
-        margin-bottom: 4px;
-      }
-
-      .stat-box .lbl {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 9px;
-        font-weight: 800;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-      }
-
-      /* ==================== QR CARD ==================== */
-      .qr-block {
-        border: var(--border);
-        background: var(--paper);
-        box-shadow: var(--shadow-hard);
-        margin-bottom: 22px;
-        position: relative;
-      }
-
-      .qr-block .qr-block-head {
-        background: var(--ink);
-        color: var(--paper);
-        padding: 8px 14px;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .qr-block .qr-block-head .dots {
-        display: flex;
-        gap: 5px;
-      }
-
-      .qr-block .qr-block-head .dots i {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: var(--neon-lime);
-        display: inline-block;
-      }
-
-      .qr-block .qr-block-head .dots i:nth-child(2) {
-        background: var(--neon-cyan);
-      }
-      .qr-block .qr-block-head .dots i:nth-child(3) {
-        background: var(--neon-pink);
-      }
-
-      .qr-block-body {
-        padding: 22px;
-        text-align: center;
-      }
-
-      #qrImage {
-        width: 190px;
-        height: 190px;
-        display: block;
-        margin: 0 auto 16px;
-        border: var(--border);
-        background: #fff;
-        padding: 10px;
-        box-shadow: var(--shadow-hard-sm);
-        transition: transform 0.2s;
-        image-rendering: pixelated;
-      }
-
-      #qrImage:hover {
-        transform: rotate(-2deg) scale(1.03);
-      }
-
-      .qr-caption {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        background: var(--neon-lime);
-        display: inline-block;
-        padding: 6px 14px;
-        border: 2px solid var(--ink);
-      }
-
-      /* ==================== BUTTONS ==================== */
-      .btn-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 22px;
-      }
-
-      .btn {
-        padding: 14px 10px;
-        border: var(--border);
-        background: var(--paper);
-        color: var(--ink);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        cursor: pointer;
-        box-shadow: var(--shadow-hard-sm);
-        transition: all 0.15s;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        text-decoration: none;
-        position: relative;
-      }
-
-      .btn:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0 var(--ink);
-      }
-
-      .btn:active {
-        transform: translate(2px, 2px);
-        box-shadow: 2px 2px 0 var(--ink);
-      }
-
-      .btn-primary {
-        background: var(--neon-lime);
-      }
-
-      .btn-cyan {
-        background: var(--neon-cyan);
-      }
-
-      .btn-pink {
-        background: var(--neon-pink);
-        color: var(--paper);
-      }
-
-      /* ==================== GENERATE SECTION ==================== */
-      .gen-block {
-        border: var(--border);
-        background: var(--paper);
-        box-shadow: var(--shadow-hard);
-        margin-bottom: 22px;
-      }
-
-      .gen-head {
-        background: var(--neon-purple);
-        color: var(--paper);
-        padding: 10px 14px;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        border-bottom: var(--border);
-      }
-
-      .gen-body {
-        padding: 16px;
+        top: 0;
+        left: 20px;
+        right: 20px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--hologram-2),
+          transparent
+        );
+        border-radius: 2px;
       }
 
       .input-row {
@@ -579,278 +683,289 @@
 
       .input-row input {
         flex: 1;
-        padding: 12px 14px;
-        border: var(--border);
-        background: var(--paper);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--ink);
-        box-shadow: inset 3px 3px 0 rgba(10, 10, 10, 0.08);
+        padding: 12px 16px;
+        border-radius: 14px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(0, 212, 255, 0.25);
+        color: var(--text-bright);
+        font-family: "Rajdhani", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: all 0.3s;
       }
 
       .input-row input::placeholder {
-        color: #999;
+        color: var(--text-muted);
         font-weight: 500;
+        letter-spacing: 1px;
       }
 
       .input-row input:focus {
         outline: none;
-        background: var(--neon-lime);
-        box-shadow: inset 3px 3px 0 rgba(10, 10, 10, 0.15);
+        border-color: var(--hologram-1);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        background: rgba(0, 0, 0, 0.5);
       }
 
       .input-row button {
-        padding: 12px 18px;
-        border: var(--border);
-        background: var(--ink);
-        color: var(--neon-lime);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 800;
+        padding: 12px 20px;
+        border-radius: 14px;
+        background: linear-gradient(
+          135deg,
+          var(--hologram-1),
+          var(--hologram-2)
+        );
+        color: #fff;
+        border: none;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        letter-spacing: 1px;
         cursor: pointer;
-        box-shadow: var(--shadow-hard-sm);
-        transition: all 0.15s;
+        transition: all 0.3s;
+        box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         white-space: nowrap;
       }
 
       .input-row button:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0 var(--neon-pink);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 212, 255, 0.6);
       }
 
       /* ==================== QR PREVIEW ==================== */
       .qr-preview {
-        margin-top: 14px;
-        border: var(--border);
-        background: var(--neon-cyan);
-        padding: 18px;
-        text-align: center;
         display: none;
-        box-shadow: var(--shadow-hard-sm);
+        margin-top: 14px;
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(0, 212, 255, 0.05);
+        border: 1px solid rgba(0, 212, 255, 0.25);
+        text-align: center;
       }
 
       .qr-preview.show {
         display: block !important;
-        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: holoIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      @keyframes popIn {
+      @keyframes holoIn {
         from {
           opacity: 0;
-          transform: scale(0.85);
+          transform: scale(0.9);
+          filter: blur(6px);
         }
         to {
           opacity: 1;
           transform: scale(1);
+          filter: blur(0);
         }
       }
 
       .qr-preview img {
-        max-width: 165px;
-        border: var(--border);
+        max-width: 160px;
+        border-radius: 12px;
         background: #fff;
         padding: 8px;
         margin-bottom: 12px;
+        box-shadow: var(--glow-cyan);
       }
 
       .qr-preview .qr-info {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 700;
-        line-height: 1.7;
+        font-size: 12px;
+        line-height: 1.9;
         text-align: left;
-        background: var(--paper);
         padding: 12px;
-        border: 2px solid var(--ink);
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        border-left: 3px solid var(--hologram-1);
+        color: var(--text-soft);
         margin-bottom: 12px;
+        letter-spacing: 0.5px;
       }
 
       .qr-preview .qr-info strong {
-        background: var(--ink);
-        color: var(--neon-lime);
-        padding: 1px 5px;
-        margin-right: 4px;
+        color: var(--hologram-1);
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        display: inline-block;
+        min-width: 60px;
       }
 
       .qr-actions {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
       }
 
       .qr-actions button {
-        flex: 1;
         padding: 10px;
-        border: var(--border);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
+        border-radius: 12px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
-        letter-spacing: 1px;
         cursor: pointer;
-        box-shadow: var(--shadow-hard-sm);
-        transition: all 0.15s;
+        transition: all 0.3s;
+        border: none;
       }
 
       .qr-actions button:first-child {
-        background: var(--neon-lime);
-        color: var(--ink);
+        background: linear-gradient(135deg, var(--success), var(--hologram-1));
+        color: #050318;
+        box-shadow: var(--glow-green);
       }
 
       .qr-actions button:last-child {
-        background: var(--neon-pink);
-        color: var(--paper);
+        background: transparent;
+        color: var(--hologram-3);
+        border: 1px solid var(--hologram-3);
       }
 
-      .qr-actions button:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 5px 5px 0 var(--ink);
+      .qr-actions button:last-child:hover {
+        background: rgba(241, 7, 163, 0.15);
+        box-shadow: var(--glow-pink);
       }
 
-      /* ==================== CONNECTION STATUS ==================== */
-      .conn-status {
-        border: var(--border);
-        background: var(--paper);
-        padding: 10px 16px;
+      /* ==================== CONNECTION ==================== */
+      .conn-pill {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 800;
+        padding: 10px 18px;
+        border-radius: 24px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(0, 212, 255, 0.15);
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--text-soft);
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 18px;
-        box-shadow: var(--shadow-hard-sm);
+        margin-bottom: 16px;
+        transition: all 0.3s;
+      }
+
+      .conn-pill:hover {
+        border-color: rgba(0, 212, 255, 0.4);
+        box-shadow: var(--glow-cyan);
       }
 
       .dot {
-        width: 10px;
-        height: 10px;
-        border: 2px solid var(--ink);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
         display: inline-block;
       }
 
       .dot.online {
-        background: var(--neon-lime);
-        animation: blink 1.5s steps(2) infinite;
+        background: var(--success);
+        box-shadow: 0 0 12px var(--success);
+        animation: pulseDot 2s ease-in-out infinite;
       }
       .dot.offline {
-        background: var(--neon-pink);
-        animation: blink 0.6s steps(2) infinite;
+        background: var(--danger);
+        box-shadow: 0 0 12px var(--danger);
+        animation: pulseDot 1s ease-in-out infinite;
       }
       .dot.checking {
-        background: var(--neon-orange);
-        animation: blink 0.4s steps(2) infinite;
+        background: var(--warn);
+        box-shadow: 0 0 12px var(--warn);
+        animation: pulseDot 0.6s ease-in-out infinite;
       }
 
       /* ==================== STATUS MESSAGE ==================== */
       #status {
         display: none;
-        padding: 14px 16px;
-        border: var(--border);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 12px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 18px;
         align-items: center;
-        gap: 10px;
-        box-shadow: var(--shadow-hard-sm);
-        animation: slideDown 0.3s ease;
-      }
-
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        gap: 12px;
+        padding: 14px 18px;
+        border-radius: 16px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        animation: holoIn 0.4s ease;
       }
 
       #status.success {
-        background: var(--neon-lime);
-        color: var(--ink);
         display: flex;
+        background: rgba(0, 255, 163, 0.12);
+        color: var(--success);
+        border: 1px solid rgba(0, 255, 163, 0.4);
+        box-shadow: 0 0 30px rgba(0, 255, 163, 0.15);
       }
       #status.error {
-        background: var(--neon-pink);
-        color: var(--paper);
         display: flex;
+        background: rgba(255, 45, 117, 0.12);
+        color: var(--danger);
+        border: 1px solid rgba(255, 45, 117, 0.4);
+        box-shadow: 0 0 30px rgba(255, 45, 117, 0.15);
       }
       #status.warning {
-        background: var(--neon-orange);
-        color: var(--ink);
         display: flex;
+        background: rgba(255, 184, 0, 0.12);
+        color: var(--warn);
+        border: 1px solid rgba(255, 184, 0, 0.4);
       }
       #status.info {
-        background: var(--neon-cyan);
-        color: var(--ink);
         display: flex;
-      }
-
-      /* ==================== DIVIDER ==================== */
-      .divider-tag {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 4px 0 16px;
-      }
-
-      .divider-tag::before,
-      .divider-tag::after {
-        content: "";
-        flex: 1;
-        height: 3px;
-        background: var(--ink);
-      }
-
-      .divider-tag span {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        background: var(--ink);
-        color: var(--neon-lime);
-        padding: 5px 12px;
+        background: rgba(0, 212, 255, 0.12);
+        color: var(--hologram-1);
+        border: 1px solid rgba(0, 212, 255, 0.4);
       }
 
       /* ==================== SCANNER ==================== */
-      .scanner-frame {
-        border: var(--border);
-        box-shadow: var(--shadow-hard);
-        background: #000;
+      .scanner-wrap {
         position: relative;
-        overflow: hidden;
+        border-radius: 22px;
+        padding: 8px;
+        background: linear-gradient(
+          135deg,
+          var(--hologram-1),
+          var(--hologram-2),
+          var(--hologram-3),
+          var(--hologram-1)
+        );
+        background-size: 300% 300%;
+        animation: holoBorder 6s linear infinite;
         margin-bottom: 12px;
       }
 
-      .scanner-frame .scanner-head {
-        background: var(--ink);
-        color: var(--neon-lime);
-        padding: 8px 14px;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        display: flex;
-        justify-content: space-between;
+      @keyframes holoBorder {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .scanner-inner {
+        background: #000;
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+        min-height: 260px;
       }
 
       #qr-reader {
         width: 100% !important;
         min-height: 260px;
         background: #000;
-        position: relative;
       }
 
       #qr-reader video {
@@ -858,7 +973,7 @@
         height: auto !important;
         border-radius: 0 !important;
         display: block !important;
-        filter: contrast(1.05) saturate(1.1);
+        filter: contrast(1.1) saturate(1.15) hue-rotate(5deg);
       }
 
       #qr-reader > div:not(:first-child) {
@@ -873,292 +988,380 @@
         height: auto !important;
       }
 
-      .scanner-overlay {
+      .scan-overlay {
         position: absolute;
         inset: 0;
         pointer-events: none;
         z-index: 10;
       }
 
-      .scan-frame {
+      .scan-target {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 62%;
-        height: 46%;
-        border: 3px dashed var(--neon-lime);
-        box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.72);
+        width: 60%;
+        height: 60%;
+        border-radius: 12px;
+        box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.7);
       }
 
-      .scan-line {
+      /* Hologram corners */
+      .scan-target::before,
+      .scan-target::after,
+      .scan-corner-tl,
+      .scan-corner-br {
+        content: "";
         position: absolute;
-        left: 4%;
-        right: 4%;
-        height: 3px;
-        background: var(--neon-pink);
-        box-shadow: 0 0 20px var(--neon-pink);
-        animation: scanY 2s ease-in-out infinite alternate;
+        width: 26px;
+        height: 26px;
+        border: 3px solid var(--hologram-1);
+        filter: drop-shadow(0 0 10px var(--hologram-1));
+        border-radius: 4px;
       }
 
-      @keyframes scanY {
+      .scan-target::before {
+        top: -2px;
+        left: -2px;
+        border-right: none;
+        border-bottom: none;
+      }
+      .scan-target::after {
+        top: -2px;
+        right: -2px;
+        border-left: none;
+        border-bottom: none;
+        border-color: var(--hologram-3);
+        filter: drop-shadow(0 0 10px var(--hologram-3));
+      }
+      .scan-corner-tl {
+        bottom: -2px;
+        left: -2px;
+        border-right: none;
+        border-top: none;
+        border-color: var(--hologram-2);
+        filter: drop-shadow(0 0 10px var(--hologram-2));
+      }
+      .scan-corner-br {
+        bottom: -2px;
+        right: -2px;
+        border-left: none;
+        border-top: none;
+        border-color: var(--success);
+        filter: drop-shadow(0 0 10px var(--success));
+      }
+
+      .scan-beam {
+        position: absolute;
+        left: 6%;
+        right: 6%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--hologram-1),
+          transparent
+        );
+        box-shadow:
+          0 0 12px var(--hologram-1),
+          0 0 24px var(--hologram-1);
+        animation: beamMove 2.2s ease-in-out infinite alternate;
+      }
+
+      @keyframes beamMove {
         0% {
-          top: 14%;
+          top: 15%;
         }
         100% {
-          top: 84%;
+          top: 85%;
         }
       }
 
       .scan-hint {
         position: absolute;
-        bottom: 14px;
+        bottom: 12px;
         left: 50%;
         transform: translateX(-50%);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        font-weight: 800;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: rgba(5, 3, 24, 0.9);
+        border: 1px solid rgba(0, 212, 255, 0.4);
+        color: var(--hologram-1);
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        letter-spacing: 1.5px;
-        background: var(--neon-lime);
-        color: var(--ink);
-        padding: 7px 16px;
-        border: 2px solid var(--ink);
         white-space: nowrap;
         z-index: 15;
+        box-shadow: var(--glow-cyan);
       }
 
       /* ==================== SCANNER CONTROLS ==================== */
-      .scan-controls {
+      .scan-ctrls {
         display: grid;
         grid-template-columns: 2fr 1fr;
-        gap: 8px;
+        gap: 10px;
         margin-bottom: 22px;
       }
 
-      .scan-controls button {
+      .scan-ctrls button {
         padding: 14px;
-        border: var(--border);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 12px;
-        font-weight: 800;
+        border-radius: 16px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        letter-spacing: 1px;
         cursor: pointer;
-        box-shadow: var(--shadow-hard-sm);
-        transition: all 0.15s;
+        transition: all 0.3s;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-      }
-
-      .scan-controls button:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0 var(--ink);
+        border: none;
       }
 
       .btn-scan {
-        background: var(--neon-lime);
-        color: var(--ink);
+        background: linear-gradient(
+          135deg,
+          var(--hologram-1),
+          var(--hologram-2)
+        );
+        color: #fff;
+        box-shadow: 0 6px 25px rgba(0, 212, 255, 0.4);
+      }
+
+      .btn-scan:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 35px rgba(0, 212, 255, 0.6);
       }
 
       .btn-scan.stop {
-        background: var(--neon-pink);
-        color: var(--paper);
+        background: linear-gradient(
+          135deg,
+          var(--danger),
+          var(--hologram-3)
+        );
+        box-shadow: 0 6px 25px rgba(255, 45, 117, 0.4);
       }
 
       .btn-flash {
-        background: var(--paper);
-        color: var(--ink);
+        background: rgba(0, 212, 255, 0.08);
+        color: var(--hologram-1);
+        border: 1px solid rgba(0, 212, 255, 0.35) !important;
+      }
+
+      .btn-flash:hover {
+        background: rgba(0, 212, 255, 0.15);
+        box-shadow: var(--glow-cyan);
       }
 
       .btn-flash.active {
-        background: var(--neon-orange);
-        color: var(--ink);
+        background: linear-gradient(
+          135deg,
+          var(--warn),
+          var(--hologram-3)
+        );
+        color: #050318;
+        box-shadow: 0 0 30px rgba(255, 184, 0, 0.6);
       }
 
       /* ==================== DATA TABLE ==================== */
-      .data-block {
-        border: var(--border);
-        background: var(--paper);
-        box-shadow: var(--shadow-hard);
+      .data-panel {
+        background: var(--bg-panel-2);
+        border-radius: 22px;
+        border: 1px solid rgba(0, 212, 255, 0.18);
         overflow: hidden;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
       }
 
       .data-head {
-        background: var(--ink);
-        color: var(--paper);
-        padding: 10px 16px;
+        padding: 12px 18px;
+        background: rgba(0, 212, 255, 0.06);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.15);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
-        font-weight: 800;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--hologram-1);
         text-transform: uppercase;
-        letter-spacing: 1.5px;
-        border-bottom: var(--border);
       }
 
       .data-head .count-tag {
-        background: var(--neon-lime);
-        color: var(--ink);
-        padding: 3px 9px;
-        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 12px;
+        background: rgba(0, 212, 255, 0.15);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        font-size: 9px;
       }
 
       .table-wrap {
-        max-height: 240px;
+        max-height: 220px;
         overflow-y: auto;
       }
 
       .table-wrap::-webkit-scrollbar {
-        width: 10px;
+        width: 6px;
       }
       .table-wrap::-webkit-scrollbar-track {
-        background: var(--bg);
-        border-left: 2px solid var(--ink);
+        background: transparent;
       }
       .table-wrap::-webkit-scrollbar-thumb {
-        background: var(--ink);
+        background: linear-gradient(
+          var(--hologram-1),
+          var(--hologram-2)
+        );
+        border-radius: 3px;
       }
 
-      .data-block table {
+      .data-panel table {
         width: 100%;
         border-collapse: collapse;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 11px;
+        font-size: 12px;
       }
 
-      .data-block th {
+      .data-panel th {
         padding: 10px 12px;
         text-align: left;
-        background: var(--neon-cyan);
-        color: var(--ink);
-        font-weight: 800;
+        font-family: "Orbitron", sans-serif;
         font-size: 9px;
-        text-transform: uppercase;
+        font-weight: 700;
         letter-spacing: 1.5px;
-        border-bottom: var(--border);
-        border-right: 2px solid var(--ink);
+        color: var(--hologram-1);
+        text-transform: uppercase;
+        background: rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.15);
         position: sticky;
         top: 0;
         z-index: 2;
       }
 
-      .data-block th:last-child {
-        border-right: none;
-      }
-
-      .data-block td {
+      .data-panel td {
         padding: 10px 12px;
-        border-bottom: 2px solid var(--ink);
-        border-right: 2px solid var(--ink);
-        color: var(--ink);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.06);
+        color: var(--text-soft);
         font-weight: 500;
+        transition: all 0.2s;
       }
 
-      .data-block td:last-child {
-        border-right: none;
+      .data-panel tr:hover td {
+        background: rgba(0, 212, 255, 0.06);
+        color: var(--text-bright);
       }
 
-      .data-block tr:last-child td {
-        border-bottom: none;
-      }
-
-      .data-block tr:hover td {
-        background: var(--neon-lime);
-      }
-
-      .status-hadir {
-        background: var(--ink);
-        color: var(--neon-lime);
-        padding: 2px 7px;
-        font-weight: 800;
-        font-size: 10px;
+      .data-panel td strong {
+        color: var(--hologram-1);
+        font-family: "Orbitron", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
         letter-spacing: 0.5px;
       }
 
+      .status-hadir {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 10px;
+        background: rgba(0, 255, 163, 0.15);
+        color: var(--success);
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: 1px solid rgba(0, 255, 163, 0.3);
+      }
+
       .status-belum {
-        background: var(--bg);
-        color: var(--ink);
-        padding: 2px 7px;
-        font-weight: 800;
-        font-size: 10px;
-        border: 1px dashed var(--ink);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 10px;
+        background: rgba(90, 101, 144, 0.15);
+        color: var(--text-muted);
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border: 1px dashed rgba(90, 101, 144, 0.3);
       }
 
       .loading-text {
-        padding: 30px 18px;
+        padding: 30px 20px;
         text-align: center;
-        font-family: "JetBrains Mono", monospace;
         font-size: 12px;
-        font-weight: 700;
+        color: var(--text-soft);
+        letter-spacing: 1.5px;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        font-family: "Orbitron", sans-serif;
       }
 
       /* ==================== FOOTER ==================== */
-      .footer {
-        border-top: var(--border);
-        background: var(--ink);
-        color: #888;
-        padding: 16px 20px;
+      .footer-holo {
+        padding-top: 18px;
+        margin-top: 6px;
+        border-top: 1px solid rgba(0, 212, 255, 0.12);
         text-align: center;
-        font-family: "JetBrains Mono", monospace;
         font-size: 10px;
-        letter-spacing: 1.5px;
+        letter-spacing: 2px;
+        color: var(--text-muted);
         text-transform: uppercase;
+        font-family: "Orbitron", sans-serif;
+        font-weight: 500;
+        line-height: 2;
       }
 
-      .footer a {
-        color: var(--neon-lime);
+      .footer-holo a {
+        color: var(--hologram-1);
         text-decoration: none;
-        font-weight: 800;
-        border-bottom: 1px dashed var(--neon-lime);
+        font-weight: 700;
+        border-bottom: 1px dashed var(--hologram-1);
+        transition: all 0.3s;
       }
 
-      .footer a:hover {
-        background: var(--neon-lime);
-        color: var(--ink);
+      .footer-holo a:hover {
+        color: #fff;
+        text-shadow: 0 0 15px var(--hologram-1);
       }
 
       /* ==================== MOBILE ==================== */
       @media (max-width: 480px) {
         body {
-          padding: 16px 10px 60px;
+          padding: 12px 10px 50px;
         }
 
         .container {
-          margin-top: 26px;
-          margin-bottom: 26px;
+          border-radius: 34px;
+          padding: 16px;
+        }
+
+        .panel {
+          border-radius: 24px;
+          padding: 18px 14px 20px;
         }
 
         h1 {
-          font-size: 30px;
-          letter-spacing: -1.5px;
+          font-size: 24px;
         }
 
-        .content {
-          padding: 18px 16px 22px;
+        .subtitle {
+          font-size: 10px;
         }
 
-        .header {
-          padding: 20px 18px 18px;
+        .ring-stat {
+          width: 78px;
+          height: 78px;
         }
 
-        .clock-bar {
-          padding: 9px 18px;
-        }
-
-        .stat-box .val {
-          font-size: 20px;
-        }
-
-        .stat-box .lbl {
-          font-size: 8px;
+        .ring-stat .val {
+          font-size: 18px;
         }
 
         #qrImage {
@@ -1166,12 +1369,13 @@
           height: 155px;
         }
 
-        .btn-row {
-          grid-template-columns: 1fr 1fr;
+        .act-btn {
+          font-size: 8px;
+          padding: 12px 6px;
         }
 
-        .btn-row .btn:nth-child(3) {
-          grid-column: 1 / -1;
+        .act-btn i {
+          font-size: 16px;
         }
 
         .input-row {
@@ -1182,22 +1386,30 @@
           width: 100%;
         }
 
-        .data-block table {
-          font-size: 10px;
+        .data-panel table {
+          font-size: 11px;
         }
-        .data-block th,
-        .data-block td {
-          padding: 8px 7px;
+
+        .data-panel th,
+        .data-panel td {
+          padding: 8px 8px;
         }
       }
 
       @media (max-width: 360px) {
         h1 {
-          font-size: 24px;
+          font-size: 20px;
         }
         #qrImage {
           width: 135px;
           height: 135px;
+        }
+        .ring-stat {
+          width: 70px;
+          height: 70px;
+        }
+        .ring-stat .val {
+          font-size: 16px;
         }
       }
 
@@ -1209,145 +1421,154 @@
           transition-duration: 0.01ms !important;
         }
       }
+
+      ::selection {
+        background: rgba(0, 212, 255, 0.3);
+        color: var(--text-bright);
+      }
     </style>
   </head>
   <body>
-    <!-- MARQUEE TOP -->
-    <div class="marquee-top">
-      <div class="marquee-content" id="marqueeTop">
-        ★ PRESENSI KELAS ★ SCAN QR ★ REAL-TIME ★ ATTENDANCE SYSTEM ★ SCAN QR
-        ★ PRESENSI KELAS ★ SCAN QR ★ REAL-TIME ★ ATTENDANCE SYSTEM ★ SCAN QR
-        ★ PRESENSI KELAS ★ SCAN QR ★ REAL-TIME ★ ATTENDANCE SYSTEM ★ SCAN QR
-        ★ PRESENSI KELAS ★ SCAN QR ★ REAL-TIME ★ ATTENDANCE SYSTEM ★ SCAN QR
-      </div>
-    </div>
-
-    <!-- FLOATING BADGES -->
-    <div class="float-badge fb-1">◆ SYS.ONLINE</div>
-    <div class="float-badge fb-2">■ REC</div>
-    <div class="float-badge fb-3">▲ v2.0</div>
+    <!-- HOLOGRAPHIC LAYERS -->
+    <div class="holo-bg"></div>
+    <div class="holo-grid"></div>
+    <div class="scanlines"></div>
+    <div class="sweep"></div>
 
     <!-- MAIN CONTAINER -->
     <div class="container">
-      <!-- HEADER -->
-      <div class="header">
-        <div class="header-top">
-          <div class="header-tag">SYS//PRESENSI</div>
-          <div class="header-status">
-            <span class="blink"></span>
-            LIVE
+      <div class="panel">
+        <!-- HUD TOP -->
+        <div class="hud">
+          <div class="hud-left">
+            <span class="hud-dot"></span>
+            <span>SYS.ACTIVE</span>
           </div>
-        </div>
-        <h1>
-          Presensi
-          <span class="line-2">Kelas</span>
-        </h1>
-        <p class="subtitle">
-          <span class="arrow">&gt;</span>
-          Scan QR Code untuk Absensi Real-time
-        </p>
-      </div>
-
-      <!-- CLOCK BAR -->
-      <div class="clock-bar">
-        <span>◆ WAKTU SEKARANG</span>
-        <span class="time" id="liveTime">--:--:--</span>
-      </div>
-
-      <!-- CONTENT -->
-      <div class="content">
-        <!-- STATS -->
-        <div class="sec-label">
-          <span class="num">01</span> Statistik Kehadiran
-        </div>
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="val" id="statTotal">0</div>
-            <div class="lbl">Total</div>
-          </div>
-          <div class="stat-box">
-            <div class="val" id="statHadir">0</div>
-            <div class="lbl">Hadir</div>
-          </div>
-          <div class="stat-box">
-            <div class="val" id="statBelum">0</div>
-            <div class="lbl">Belum</div>
+          <div class="hud-right">
+            <span id="liveTime">--:--:--</span>
           </div>
         </div>
 
-        <!-- QR CARD -->
-        <div class="sec-label">
-          <span class="num">02</span> QR Code Presensi
+        <!-- TITLE -->
+        <div class="title-block">
+          <div class="title-badge">◈ Holo Terminal v3.0</div>
+          <h1>Presensi Kelas</h1>
+          <div class="subtitle">Scan QR untuk absensi real-time</div>
         </div>
-        <div class="qr-block">
-          <div class="qr-block-head">
-            <span>◆ QR_MAIN.EXE</span>
-            <div class="dots">
-              <i></i><i></i><i></i>
+
+        <!-- CIRCULAR STATS -->
+        <div class="stats-ring-wrap">
+          <div class="ring-stat">
+            <svg viewBox="0 0 88 88">
+              <circle class="ring-bg" cx="44" cy="44" r="40"></circle>
+              <circle
+                class="ring-fill-cyan"
+                cx="44"
+                cy="44"
+                r="40"
+                id="ringTotal"
+              ></circle>
+            </svg>
+            <div class="ring-inner">
+              <div class="val" id="statTotal">0</div>
+              <div class="lbl">Total</div>
             </div>
           </div>
-          <div class="qr-block-body">
-            <img id="qrImage" src="" alt="QR Code Presensi" />
-            <div class="qr-caption">
-              <i class="fas fa-qrcode"></i> Scan untuk hadir
+          <div class="ring-stat">
+            <svg viewBox="0 0 88 88">
+              <circle class="ring-bg" cx="44" cy="44" r="40"></circle>
+              <circle
+                class="ring-fill-green"
+                cx="44"
+                cy="44"
+                r="40"
+                id="ringHadir"
+              ></circle>
+            </svg>
+            <div class="ring-inner">
+              <div class="val" id="statHadir" style="text-shadow: 0 0 12px rgba(0,255,163,0.8);">0</div>
+              <div class="lbl">Hadir</div>
+            </div>
+          </div>
+          <div class="ring-stat">
+            <svg viewBox="0 0 88 88">
+              <circle class="ring-bg" cx="44" cy="44" r="40"></circle>
+              <circle
+                class="ring-fill-pink"
+                cx="44"
+                cy="44"
+                r="40"
+                id="ringBelum"
+              ></circle>
+            </svg>
+            <div class="ring-inner">
+              <div class="val" id="statBelum" style="text-shadow: 0 0 12px rgba(241,7,163,0.8);">0</div>
+              <div class="lbl">Belum</div>
             </div>
           </div>
         </div>
 
-        <!-- BUTTONS -->
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="loadDataMahasiswa()">
-            <i class="fas fa-sync-alt"></i> Refresh
+        <!-- QR HOLOGRAM -->
+        <div class="sec-title">◈ QR Code Presensi</div>
+        <div class="qr-holo">
+          <div class="qr-corners-tr"></div>
+          <div class="qr-corners-bl"></div>
+          <img id="qrImage" src="" alt="QR Code" />
+          <div class="qr-holo-caption">
+            <i class="fas fa-circle"></i> Scan untuk hadir
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="action-row">
+          <button class="act-btn" onclick="loadDataMahasiswa()">
+            <i class="fas fa-sync-alt"></i>
+            <span>Refresh</span>
           </button>
-          <button class="btn btn-cyan" onclick="downloadQR()">
-            <i class="fas fa-download"></i> QR
+          <button class="act-btn purple" onclick="downloadQR()">
+            <i class="fas fa-download"></i>
+            <span>QR</span>
           </button>
           <a
             href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=0#gid=0"
             target="_blank"
-            class="btn btn-pink"
+            class="act-btn pink"
           >
-            <i class="fas fa-external-link-alt"></i> Sheet
+            <i class="fas fa-external-link-alt"></i>
+            <span>Sheet</span>
           </a>
         </div>
 
         <!-- GENERATE -->
-        <div class="sec-label">
-          <span class="num">03</span> Generate QR Mahasiswa
-        </div>
-        <div class="gen-block">
-          <div class="gen-head">
-            <i class="fas fa-qrcode"></i> GENERATOR_QR
+        <div class="sec-title">◈ Generate QR Mahasiswa</div>
+        <div class="gen-panel">
+          <div class="input-row">
+            <input
+              type="text"
+              id="qrNimInput"
+              placeholder="Masukkan NIM..."
+              maxlength="10"
+            />
+            <button onclick="generateQRCode()">
+              <i class="fas fa-bolt"></i> Generate
+            </button>
           </div>
-          <div class="gen-body">
-            <div class="input-row">
-              <input
-                type="text"
-                id="qrNimInput"
-                placeholder="MASUKKAN NIM..."
-                maxlength="10"
-              />
-              <button onclick="generateQRCode()">
-                <i class="fas fa-bolt"></i> Generate
+          <div class="qr-preview" id="qrPreview">
+            <img id="qrResultImage" src="" alt="QR" />
+            <div class="qr-info" id="qrInfo"></div>
+            <div class="qr-actions">
+              <button onclick="downloadQRCode()">
+                <i class="fas fa-download"></i> Download
               </button>
-            </div>
-            <div class="qr-preview" id="qrPreview">
-              <img id="qrResultImage" src="" alt="QR Code" />
-              <div class="qr-info" id="qrInfo"></div>
-              <div class="qr-actions">
-                <button onclick="downloadQRCode()">
-                  <i class="fas fa-download"></i> Download
-                </button>
-                <button onclick="closeQRPreview()">
-                  <i class="fas fa-times"></i> Tutup
-                </button>
-              </div>
+              <button onclick="closeQRPreview()">
+                <i class="fas fa-times"></i> Tutup
+              </button>
             </div>
           </div>
         </div>
 
         <!-- CONNECTION -->
-        <div class="conn-status">
+        <div class="conn-pill">
           <span class="dot checking" id="statusDot"></span>
           <span id="statusLabel">Mengecek koneksi...</span>
         </div>
@@ -1355,46 +1576,38 @@
         <div id="status"></div>
 
         <!-- SCANNER -->
-        <div class="sec-label">
-          <span class="num">04</span> Scanner QR Code
-        </div>
-        <div class="divider-tag">
-          <span>◆ CAMERA FEED ◆</span>
-        </div>
-
-        <div class="scanner-frame">
-          <div class="scanner-head">
-            <span>◉ CAM_01 // QR_SCANNER</span>
-            <span id="scanHeadStatus">IDLE</span>
-          </div>
-          <div id="qr-reader"></div>
-          <div class="scanner-overlay">
-            <div class="scan-frame">
-              <div class="scan-line"></div>
-            </div>
-            <div class="scan-hint" id="scanStatusText">
-              <i class="fas fa-qrcode"></i> Arahkan ke QR Code
+        <div class="sec-title">◈ Scanner QR Code</div>
+        <div class="scanner-wrap">
+          <div class="scanner-inner">
+            <div id="qr-reader"></div>
+            <div class="scan-overlay">
+              <div class="scan-target">
+                <div class="scan-beam"></div>
+                <div class="scan-corner-tl"></div>
+                <div class="scan-corner-br"></div>
+              </div>
+              <div class="scan-hint" id="scanStatusText">
+                <i class="fas fa-qrcode"></i> Arahkan ke QR Code
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="scan-controls">
+        <div class="scan-ctrls">
           <button class="btn-scan" id="btnStartScan" onclick="toggleScanner()">
             <i class="fas fa-play"></i>
-            <span id="btnScanLabel">Mulai Scan</span>
+            <span>Mulai Scan</span>
           </button>
           <button class="btn-flash" id="btnFlash" onclick="toggleFlash()">
-            <i class="fas fa-bolt"></i> Flash
+            <i class="fas fa-bolt"></i>
           </button>
         </div>
 
         <!-- DATA TABLE -->
-        <div class="sec-label">
-          <span class="num">05</span> Daftar Mahasiswa
-        </div>
-        <div class="data-block">
+        <div class="sec-title">◈ Daftar Mahasiswa</div>
+        <div class="data-panel">
           <div class="data-head">
-            <span>◆ DATABASE.MAHASISWA</span>
+            <span>◈ Database</span>
             <span class="count-tag" id="totalMahasiswa">0 ROWS</span>
           </div>
           <div class="table-wrap" id="tableWrapper">
@@ -1407,7 +1620,6 @@
                   <th>NIM</th>
                   <th>Nama</th>
                   <th>Kelas</th>
-                  <th>Jurusan</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -1415,29 +1627,21 @@
             </table>
           </div>
         </div>
-      </div>
 
-      <!-- FOOTER -->
-      <div class="footer">
-        <i class="fas fa-shield-alt"></i> Terhubung dengan
-        <a
-          href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675"
-          target="_blank"
-        >
-          Google Sheets
-        </a>
-        <br />
-        STATUS: <span id="presensiStatus">Menunggu scan</span>
-      </div>
-    </div>
-
-    <!-- MARQUEE BOTTOM -->
-    <div class="marquee-bottom">
-      <div class="marquee-content">
-        ■ SYSTEM ACTIVE ■ SCAN READY ■ DATABASE SYNCED ■ ONLINE ■ SYSTEM ACTIVE
-        ■ SCAN READY ■ DATABASE SYNCED ■ ONLINE ■ SYSTEM ACTIVE ■ SCAN READY ■
-        DATABASE SYNCED ■ ONLINE ■ SYSTEM ACTIVE ■ SCAN READY ■ DATABASE SYNCED
-        ■ ONLINE
+        <!-- FOOTER -->
+        <div class="footer-holo">
+          <i class="fas fa-shield-alt"></i> Terhubung dengan
+          <a
+            href="https://docs.google.com/spreadsheets/d/1PXOSZAXZNg7hvX-33DglZlM3saj4yclUhiYepiFNYhI/edit?gid=646034675#gid=646034675"
+            target="_blank"
+          >
+            Google Sheets
+          </a>
+          <br />
+          <span style="font-size: 9px; opacity: 0.7">
+            ◈ Status: <span id="presensiStatus">Menunggu scan</span>
+          </span>
+        </div>
       </div>
     </div>
 
@@ -1457,14 +1661,12 @@
         html5QrCode: null,
         mahasiswaData: [],
         isOffline: false,
-        debugMode: true,
         isOnline: false,
       };
 
       const DOM = {
         status: document.getElementById("status"),
         scanStatus: document.getElementById("scanStatusText"),
-        scanHeadStatus: document.getElementById("scanHeadStatus"),
         presensiStatus: document.getElementById("presensiStatus"),
         btnStartScan: document.getElementById("btnStartScan"),
         btnFlash: document.getElementById("btnFlash"),
@@ -1483,19 +1685,21 @@
         statTotal: document.getElementById("statTotal"),
         statHadir: document.getElementById("statHadir"),
         statBelum: document.getElementById("statBelum"),
+        ringTotal: document.getElementById("ringTotal"),
+        ringHadir: document.getElementById("ringHadir"),
+        ringBelum: document.getElementById("ringBelum"),
       };
 
       // CLOCK
       function updateClock() {
         if (!DOM.liveTime) return;
-        const now = new Date();
-        const t = now.toLocaleTimeString("id-ID", {
+        const t = new Date().toLocaleTimeString("id-ID", {
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
           timeZone: "Asia/Jakarta",
         });
-        DOM.liveTime.textContent = t + " WIB";
+        DOM.liveTime.textContent = t;
       }
       setInterval(updateClock, 1000);
       updateClock();
@@ -1516,7 +1720,7 @@
           warning: "fa-triangle-exclamation",
           info: "fa-info-circle",
         };
-        DOM.status.innerHTML = `<i class="fas ${iconMap[type] || iconMap.info}"></i> ${message}`;
+        DOM.status.innerHTML = `<i class="fas ${iconMap[type] || iconMap.info}"></i> <span>${message}</span>`;
         DOM.status.className = type;
         DOM.status.style.display = "flex";
         clearTimeout(DOM.status._hideTimeout);
@@ -1537,9 +1741,26 @@
         AppState.mahasiswaData.forEach((m) => {
           if (presensiData[m.nim] === today) hadir++;
         });
+        const belum = total - hadir;
+
         if (DOM.statTotal) DOM.statTotal.textContent = total;
         if (DOM.statHadir) DOM.statHadir.textContent = hadir;
-        if (DOM.statBelum) DOM.statBelum.textContent = total - hadir;
+        if (DOM.statBelum) DOM.statBelum.textContent = belum;
+
+        // Update ring progress
+        const circumference = 251;
+        if (DOM.ringTotal) {
+          DOM.ringTotal.style.strokeDashoffset =
+            total > 0 ? 0 : circumference;
+        }
+        if (DOM.ringHadir) {
+          const pct = total > 0 ? hadir / total : 0;
+          DOM.ringHadir.style.strokeDashoffset = circumference * (1 - pct);
+        }
+        if (DOM.ringBelum) {
+          const pct = total > 0 ? belum / total : 0;
+          DOM.ringBelum.style.strokeDashoffset = circumference * (1 - pct);
+        }
       }
 
       // CONNECTION
@@ -1555,11 +1776,11 @@
           });
           clearTimeout(timeoutId);
           if (response.ok) {
-            setConnectionStatus("online", "✅ Terhubung ke server");
+            setConnectionStatus("online", "Terhubung ke server");
             return true;
           } else throw new Error("No response");
         } catch (e) {
-          setConnectionStatus("offline", "📴 Offline");
+          setConnectionStatus("offline", "Offline");
           return false;
         }
       }
@@ -1580,7 +1801,7 @@
           if (td && td.textContent.trim() === nim) {
             const statusTd = row.querySelector("td:last-child");
             if (statusTd) {
-              statusTd.innerHTML = `<span class="status-hadir"><i class="fas fa-check"></i> HADIR</span>`;
+              statusTd.innerHTML = `<span class="status-hadir"><i class="fas fa-check"></i> Hadir</span>`;
             }
           }
         });
@@ -1605,10 +1826,9 @@
           <td><strong>${mhs.nim || "-"}</strong></td>
           <td>${mhs.nama || "-"}</td>
           <td>${mhs.kelas || "-"}</td>
-          <td>${mhs.jurusan || "-"}</td>
           <td>
             <span class="${isHadir ? "status-hadir" : "status-belum"}">
-              ${isHadir ? "HADIR" : "BELUM"}
+              ${isHadir ? "Hadir" : "Belum"}
             </span>
           </td>
         `;
@@ -1637,18 +1857,14 @@
                 AppState.mahasiswaData = parsed;
                 renderDataTable(parsed);
                 DOM.totalMahasiswa.textContent = parsed.length + " ROWS";
-                showStatus(
-                  `📂 ${parsed.length} data dari cache`,
-                  "warning",
-                  3000,
-                );
+                showStatus(`${parsed.length} data dari cache`, "warning", 3000);
                 return;
               }
             }
             DOM.loadingData.innerHTML = `
-            <i class="fas fa-wifi" style="font-size:24px;display:block;margin-bottom:12px;"></i>
-            <strong>Tidak Ada Koneksi</strong><br><br>
-            <button onclick="loadDataMahasiswa()" style="padding:8px 20px;border:3px solid #0a0a0a;background:#c6ff00;font-weight:800;cursor:pointer;font-family:inherit;">
+            <i class="fas fa-wifi" style="font-size:24px;display:block;margin-bottom:12px;color:var(--danger);"></i>
+            <strong style="color:var(--danger);">Tidak Ada Koneksi</strong><br><br>
+            <button onclick="loadDataMahasiswa()" style="padding:10px 20px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--hologram-1),var(--hologram-2));color:#fff;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:1px;">
               <i class="fas fa-sync-alt"></i> COBA LAGI
             </button>
           `;
@@ -1668,13 +1884,13 @@
             localStorage.setItem("mahasiswaData", JSON.stringify(data));
             renderDataTable(data);
             DOM.totalMahasiswa.textContent = data.length + " ROWS";
-            setConnectionStatus("online", "✅ Online");
-            showStatus(`✅ ${data.length} data dimuat`, "success", 2500);
+            setConnectionStatus("online", "Online • Synced");
+            showStatus(`${data.length} data dimuat`, "success", 2500);
           } else {
             DOM.loadingData.innerHTML = `
-            <i class="fas fa-info-circle" style="font-size:24px;display:block;margin-bottom:12px;"></i>
+            <i class="fas fa-info-circle" style="font-size:24px;display:block;margin-bottom:12px;color:var(--hologram-1);"></i>
             <strong>Belum ada data</strong><br><br>
-            <a href="${SHEET_URL}" target="_blank" style="padding:8px 20px;border:3px solid #0a0a0a;background:#c6ff00;font-weight:800;text-decoration:none;color:#0a0a0a;display:inline-block;">BUKA SHEET</a>
+            <a href="${SHEET_URL}" target="_blank" style="padding:10px 20px;border-radius:12px;background:linear-gradient(135deg,var(--hologram-1),var(--hologram-2));color:#fff;font-weight:700;text-decoration:none;display:inline-block;letter-spacing:1px;">BUKA SHEET</a>
           `;
             DOM.totalMahasiswa.textContent = "0 ROWS";
           }
@@ -1690,14 +1906,14 @@
             }
           }
           DOM.loadingData.innerHTML = `
-          <i class="fas fa-exclamation-circle" style="font-size:24px;display:block;margin-bottom:12px;"></i>
-          <strong>GAGAL MEMUAT</strong><br><br>
+          <i class="fas fa-exclamation-circle" style="font-size:24px;display:block;margin-bottom:12px;color:var(--danger);"></i>
+          <strong style="color:var(--danger);">GAGAL MEMUAT</strong><br><br>
           <span style="font-size:10px;">${error.message}</span><br><br>
-          <button onclick="loadDataMahasiswa()" style="padding:8px 20px;border:3px solid #0a0a0a;background:#c6ff00;font-weight:800;cursor:pointer;font-family:inherit;">
+          <button onclick="loadDataMahasiswa()" style="padding:10px 20px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--hologram-1),var(--hologram-2));color:#fff;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:1px;">
             <i class="fas fa-sync-alt"></i> COBA LAGI
           </button>
         `;
-          setConnectionStatus("offline", "❌ Gagal");
+          setConnectionStatus("offline", "Gagal");
         }
       }
 
@@ -1710,7 +1926,7 @@
           link_sheet: SHEET_URL,
           timestamp: new Date().toISOString(),
         };
-        DOM.qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=0a0a0a&bgcolor=ffffff`;
+        DOM.qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=050318&bgcolor=ffffff`;
       }
 
       function downloadQR() {
@@ -1721,16 +1937,16 @@
         link.click();
       }
 
-      // QR PER MAHASISWA
+      // QR MAHASISWA
       function generateQRCode() {
         const nim = DOM.qrNimInput.value.trim();
         if (!nim || nim.length < 3) {
-          showStatus("❌ NIM minimal 3 karakter", "error");
+          showStatus("NIM minimal 3 karakter", "error");
           return;
         }
         const mhs = AppState.mahasiswaData.find((m) => m.nim === nim);
         if (!mhs) {
-          showStatus(`❌ NIM ${nim} tidak terdaftar!`, "error");
+          showStatus(`NIM ${nim} tidak terdaftar!`, "error");
           return;
         }
         const qrData = {
@@ -1741,7 +1957,7 @@
           link_sheet: SHEET_URL,
           timestamp: new Date().toISOString(),
         };
-        DOM.qrResultImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+        DOM.qrResultImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(JSON.stringify(qrData))}&color=050318&bgcolor=ffffff`;
         DOM.qrInfo.innerHTML = `
         <strong>NIM</strong>${mhs.nim}<br>
         <strong>NAMA</strong>${mhs.nama}<br>
@@ -1749,7 +1965,7 @@
         <strong>JURUSAN</strong>${mhs.jurusan}
       `;
         DOM.qrPreview.classList.add("show");
-        showStatus(`✅ QR untuk ${mhs.nama}`, "success");
+        showStatus(`QR untuk ${mhs.nama} siap`, "success");
       }
 
       function downloadQRCode() {
@@ -1783,15 +1999,14 @@
         if (DOM.btnStartScan) {
           DOM.btnStartScan.classList.add("stop");
           DOM.btnStartScan.innerHTML =
-            '<i class="fas fa-stop"></i> Stop Scan';
+            '<i class="fas fa-stop"></i> <span>Stop Scan</span>';
         }
-        if (DOM.scanHeadStatus) DOM.scanHeadStatus.textContent = "BOOTING";
 
         try {
           AppState.html5QrCode = new Html5Qrcode("qr-reader", { verbose: false });
           const config = {
             fps: 10,
-            qrbox: { width: 250, height: 250 },
+            qrbox: { width: 240, height: 240 },
             aspectRatio: 1.0,
           };
 
@@ -1805,9 +2020,8 @@
             .then(() => {
               AppState.scannerRunning = true;
               if (DOM.scanStatus)
-                DOM.scanStatus.textContent = "🔍 Mendeteksi QR Code...";
-              if (DOM.scanHeadStatus) DOM.scanHeadStatus.textContent = "SCANNING";
-              showStatus("📷 Kamera aktif", "info", 2500);
+                DOM.scanStatus.textContent = "Mendeteksi QR Code...";
+              showStatus("Kamera aktif", "info", 2500);
             })
             .catch(() => {
               AppState.html5QrCode
@@ -1819,17 +2033,15 @@
                 )
                 .then(() => {
                   AppState.scannerRunning = true;
-                  if (DOM.scanHeadStatus)
-                    DOM.scanHeadStatus.textContent = "SCANNING";
-                  showStatus("📷 Kamera depan aktif", "info", 2500);
+                  showStatus("Kamera depan aktif", "info", 2500);
                 })
-                .catch((err) => {
-                  showStatus("❌ Gagal akses kamera", "error");
+                .catch(() => {
+                  showStatus("Gagal akses kamera", "error");
                   resetScannerButton();
                 });
             });
         } catch (e) {
-          showStatus("❌ Gagal inisialisasi scanner", "error");
+          showStatus("Gagal inisialisasi scanner", "error");
           resetScannerButton();
         }
       }
@@ -1845,7 +2057,6 @@
               AppState.html5QrCode = null;
               AppState.scannerRunning = false;
               resetScannerButton();
-              if (DOM.scanHeadStatus) DOM.scanHeadStatus.textContent = "IDLE";
             })
             .catch(() => {});
         } else {
@@ -1878,7 +2089,7 @@
 
       async function processPresensi(qrData) {
         try {
-          showStatus("⏳ Memproses...", "info", 5000);
+          showStatus("Memproses presensi...", "info", 5000);
           let nim = "";
           try {
             const data = JSON.parse(qrData);
@@ -1887,14 +2098,14 @@
             nim = qrData.trim();
           }
           if (!nim || nim.length < 3) {
-            showStatus("❌ NIM tidak valid", "error");
+            showStatus("NIM tidak valid", "error");
             AppState.isProcessing = false;
             setTimeout(startScanner, 2000);
             return;
           }
           const mhs = AppState.mahasiswaData.find((m) => m.nim === nim);
           if (!mhs) {
-            showStatus(`❌ NIM ${nim} tidak terdaftar!`, "error");
+            showStatus(`NIM ${nim} tidak terdaftar!`, "error");
             AppState.isProcessing = false;
             setTimeout(startScanner, 2000);
             return;
@@ -1904,7 +2115,7 @@
             localStorage.getItem("presensiHariIni") || "{}",
           );
           if (presensiData[nim] === today) {
-            showStatus(`⚠️ ${mhs.nama} sudah presensi!`, "warning");
+            showStatus(`${mhs.nama} sudah presensi!`, "warning");
             AppState.isProcessing = false;
             setTimeout(startScanner, 2000);
             return;
@@ -1931,15 +2142,14 @@
           presensiData[nim] = today;
           localStorage.setItem("presensiHariIni", JSON.stringify(presensiData));
 
-          showStatus(`✅ ${mhs.nama} HADIR!`, "success");
-          if (DOM.scanStatus) DOM.scanStatus.textContent = "✅ HADIR!";
-          if (DOM.scanHeadStatus) DOM.scanHeadStatus.textContent = "MATCH!";
-          if (DOM.presensiStatus) DOM.presensiStatus.textContent = "✅ Hadir";
+          showStatus(`${mhs.nama} HADIR!`, "success");
+          if (DOM.scanStatus) DOM.scanStatus.textContent = "HADIR!";
+          if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Hadir";
 
           updateStatusInTable(nim);
           setTimeout(loadDataMahasiswa, 500);
         } catch (error) {
-          showStatus(`❌ Error: ${error.message}`, "error");
+          showStatus(`Error: ${error.message}`, "error");
         } finally {
           setTimeout(() => {
             AppState.isProcessing = false;
@@ -1970,7 +2180,7 @@
       async function checkCameraPermission() {
         try {
           if (!navigator.mediaDevices?.getUserMedia) {
-            showStatus("❌ Browser tidak mendukung kamera", "error");
+            showStatus("Browser tidak mendukung kamera", "error");
             return false;
           }
           const stream = await navigator.mediaDevices.getUserMedia({
@@ -1979,18 +2189,19 @@
           stream.getTracks().forEach((t) => t.stop());
           return true;
         } catch (e) {
-          showStatus("❌ Izin kamera diperlukan", "error");
+          showStatus("Izin kamera diperlukan", "error");
           return false;
         }
       }
 
       async function init() {
         console.log(
-          "%c◆ Presensi Kelas · Neo Cyber Edition ◆",
-          "color:#c6ff00;background:#0a0a0a;font-size:14px;font-weight:bold;padding:8px 16px;font-family:monospace;",
+          "%c◈ Presensi Kelas · Holo Terminal Edition ◈",
+          "color:#00d4ff;background:#050318;font-size:14px;font-weight:bold;padding:8px 16px;font-family:monospace;text-shadow:0 0 20px #00d4ff;",
         );
         generateQR();
         updateClock();
+        updateStats();
         if (DOM.presensiStatus) DOM.presensiStatus.textContent = "Menunggu scan";
 
         await checkConnection();
